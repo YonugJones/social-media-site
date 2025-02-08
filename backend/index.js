@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
+const errorHandler = require('./middleware/errorHandler')
 const cookieParser = require('cookie-parser')
 
 // Define the main app
@@ -14,6 +15,14 @@ app.use(express.urlencoded({ extended: true }))
 
 // middleware for cookies
 app.use(cookieParser())
+
+// Index route
+app.get('/', (req, res) => {
+  res.json({ message: 'Welcome to the backend API' })
+})
+
+// Global Error Handler
+app.use(errorHandler);
 
 // Start server
 const port = process.env.PORT || 3333;
