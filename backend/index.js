@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 })
 
 // Global Error Handler
-app.use(errorHandler);
+app.use(errorHandler)
 
 // Start server
 const port = process.env.PORT || 3333;
