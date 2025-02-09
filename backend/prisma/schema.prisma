@@ -8,17 +8,18 @@ datasource db {
 }
 
 model User {
-  id         Int          @id @default(autoincrement())
-  username   String       @unique
-  email      String       @unique
-  password   String
-  bio        String?
-  profilePic String?
-  Post       Post[]
-  Comment    Comment[]
-  Like       Like[]
-  followers  Friendship[] @relation("FollowerRelation")
-  following  Friendship[] @relation("FollowingRelation")
+  id           Int          @id @default(autoincrement())
+  username     String       @unique
+  email        String       @unique
+  password     String
+  refreshToken String?
+  bio          String?
+  profilePic   String?
+  Post         Post[]
+  Comment      Comment[]
+  Like         Like[]
+  followers    Friendship[] @relation("FollowerRelation")
+  following    Friendship[] @relation("FollowingRelation")
 }
 
 model Post {
