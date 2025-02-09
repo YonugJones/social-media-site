@@ -97,9 +97,43 @@ const login = asyncHandler(async (req, res) => {
   })
 })
 
+const refresh = asyncHandler(async (req, res) => {
+  const token = req.cookies.refreshToken
+  if (!token) {
+    throw new CustomError('Refresh token required', 403)
+  }
+
+  jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, async (err, decoded) => {
+    if (err) {
+      throw new CustomError('Invalid refresh token', 403)
+    }
+
+    const user = await prisma.findUnique({
+      where: { id: decoded.id, refreshToken: token }
+    })
+
+    if (!user) {
+      throw new CustomError('Refresh token not found', 403)
+    }
+
+    const newAccessToken = generateAccessToken(user)
+    res.status(200).json({ accessToken: newAccessToken })
+  })
+})
+
+const logout = asyncHandler(async (req, res) => {
+  res.clearCookie('refreshToken')
+  res.status(200).json({
+    success: true,
+    message: 'Logged out successfully'
+  })
+})
+
 module.exports = {
   signup,
   generateAccessToken,
   generateRefreshToken,
-  login
+  login,
+  refresh,
+  logout
 }
