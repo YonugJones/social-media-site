@@ -108,7 +108,7 @@ const refresh = asyncHandler(async (req, res) => {
       throw new CustomError('Invalid refresh token', 403)
     }
 
-    const user = await prisma.findUnique({
+    const user = await prisma.user.findUnique({
       where: { id: decoded.id, refreshToken: token }
     })
 
@@ -122,7 +122,29 @@ const refresh = asyncHandler(async (req, res) => {
 })
 
 const logout = asyncHandler(async (req, res) => {
-  res.clearCookie('refreshToken')
+  const { refreshToken } = req.cookies
+  if (!refreshToken) {
+    return res.status(204).json({ message: 'No content' })
+  }
+
+  const user = await prisma.user.findFirst({ where: { refreshToken } })
+
+  if (!user) {
+    res.clearCookie('refreshToken')
+    return res.status(204).json({ message: 'No content' })
+  }
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { refreshToken: null }
+  })
+
+  res.clearCookie('refreshToken', {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'strict'
+  })
+
   res.status(200).json({
     success: true,
     message: 'Logged out successfully'

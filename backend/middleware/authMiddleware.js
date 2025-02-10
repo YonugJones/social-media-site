@@ -17,7 +17,11 @@ const protect = asyncHandler(async (req, res, next) => {
 
     next()
   } catch (err) {
-    throw new CustomError('Unauthorized: invalid token', 401)
+    if (err instanceof jwt.TokenExpiredError) {
+      throw new CustomError('Unauthorized: token has expired', 403)
+    } else {
+      throw new CustomError('Unauthorized: invalid token', 401)
+    }
   }
 }) 
 
