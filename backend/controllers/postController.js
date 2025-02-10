@@ -33,7 +33,7 @@ const editPost = asyncHandler(async (req, res) => {
     throw new CustomError('Unauthorized: user not authenticated', 401)
   }
 
-  const postId = parseInt(req.params.postId, 10);
+  const postId = parseInt(req.params.postId, 10)
   if (isNaN(postId)) {
     throw new CustomError('Invalid Post ID', 400)
   }
@@ -70,7 +70,7 @@ const deletePost = asyncHandler(async (req,res) => {
     throw new CustomError('Unauthorized: user not authenticated', 401)
   }
 
-  const postId = parseInt(req.params.postId, 10);
+  const postId = parseInt(req.params.postId, 10)
   if (isNaN(postId)) {
     throw new CustomError('Invalid Post ID', 400)
   }
@@ -199,10 +199,68 @@ const getAllPostsByUser = asyncHandler(async (req, res) => {
   })
 })
 
+const getPostById = asyncHandler(async (req, res) => {
+  const user = req.user
+  if (!user) {
+    throw new CustomError('Unauthorized: user not authenticated', 401)
+  }
+
+  const postId = parseInt(req.params.postId, 10)
+  if (isNaN(postId)) {
+    throw new CustomError('Invalid Post ID', 400)
+  }
+
+  const post = await prisma.post.findUnique({
+    where: { id: postId },
+    include: {
+      user: {
+        select: { 
+          id:true, 
+          username: true, 
+          profilePic: true 
+        }
+      },
+      comments: {
+        orderBy: { createdAt: 'desc' },
+        select: {
+          id: true,
+          postId: true,
+          content: true,
+          createdAt: true,
+          user: {
+            select: { 
+              id: true, 
+              username: true, 
+              profilePic: true 
+            }
+          },
+          _count: {
+            select: { likes: true }
+          }
+        }
+      },
+      _count: {
+        select: { likes: true }
+      }
+    }
+  })
+
+  if (!post) {
+    throw new CustomError('Post not found', 404)
+  }
+
+  res.status(200).json({
+    success: true,
+    message: 'Post fetched',
+    data: post
+  })
+})
+
 module.exports = {
   newPost,
   editPost,
   deletePost,
   getAllPosts,
-  getAllPostsByUser
+  getAllPostsByUser,
+  getPostById
 }
