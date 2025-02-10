@@ -54,7 +54,6 @@ const generateRefreshToken = (user) => {
 
 const login = asyncHandler(async (req, res) => {
   const { username, password } = req.body
-
   if (!username || !password) {
     throw new CustomError('Username and password are required', 400)
   }

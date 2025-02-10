@@ -4,6 +4,7 @@ const cors = require('cors')
 const errorHandler = require('./middleware/errorHandler')
 const cookieParser = require('cookie-parser')
 const authRouter = require('./routes/authRoute')
+const postRouter = require('./routes/postRoute')
 
 // Define the main app
 const app = express()
@@ -22,6 +23,7 @@ app.get('/', (req, res) => {
   res.json({ message: 'Welcome to the backend API' })
 })
 app.use('/auth', authRouter)
+app.use('/posts', postRouter)
 
 // Global Error Handler
 app.use(errorHandler)

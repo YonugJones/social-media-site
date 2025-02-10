@@ -3,17 +3,21 @@ const jwt = require('jsonwebtoken')
 const asyncHandler = require('express-async-handler')
 const CustomError = require('../errors/customError')
 
-const protect = asyncHandler(async (req, res, next) => {
-  let token = req.headers.authorization
-
-  if (!token || !token.startsWith('Bearer ')) {
+const authenticateToken = asyncHandler(async (req, res, next) => {
+  const authHeader = req.headers['authorization']
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
     throw new CustomError('Unauthorized: no token provided', 401)
   }
 
+  if (!process.env.ACCESS_TOKEN_SECRET) {
+    throw new CustomError('Server error: ACCESS_TOKEN_SECRET not defined', 500)
+  }
+
+  const token = authHeader.split(' ')[1]
+
   try {
-    token = token.split(' ')[1]
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
-    req.user = { id: decoded.id, username: decoded.username }
+    req.user = decoded
     next()
   } catch (err) {
     if (err instanceof jwt.TokenExpiredError) {
@@ -25,5 +29,5 @@ const protect = asyncHandler(async (req, res, next) => {
 }) 
 
 module.exports = {
-  protect
+  authenticateToken
 }
