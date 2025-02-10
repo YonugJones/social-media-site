@@ -14,7 +14,6 @@ const protect = asyncHandler(async (req, res, next) => {
     token = token.split(' ')[1]
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
     req.user = { id: decoded.id, username: decoded.username }
-
     next()
   } catch (err) {
     if (err instanceof jwt.TokenExpiredError) {
