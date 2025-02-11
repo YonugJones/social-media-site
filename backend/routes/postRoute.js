@@ -1,13 +1,14 @@
 const express = require('express')
-const { newPost, editPost, deletePost, getAllPosts, getAllPostsByUser, getPostById } = require('../controllers/postController')
+const postController = require('../controllers/postController')
 const { authenticateToken } = require('../middleware/authMiddleware')
 const router = express.Router()
 
-router.post('/', authenticateToken, newPost)
-router.put('/:postId', authenticateToken, editPost)
-router.delete('/:postId', authenticateToken, deletePost)
-router.get('/', authenticateToken, getAllPosts)
-router.get('/user/:userId', authenticateToken, getAllPostsByUser)
-router.get('/:postId', authenticateToken, getPostById)
+router.post('/', authenticateToken, postController.newPost)
+router.put('/:postId', authenticateToken, postController.editPost)
+router.delete('/:postId', authenticateToken, postController.deletePost)
+router.get('/', authenticateToken, postController.getAllPosts)
+router.get('/user/:userId', authenticateToken, postController.getAllPostsByUser)
+router.get('/:postId', authenticateToken, postController.getPostById)
+router.post('/:postId/like', authenticateToken, postController.toggleLikePost)
 
 module.exports = router

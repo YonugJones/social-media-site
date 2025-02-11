@@ -86,10 +86,7 @@ const deletePost = asyncHandler(async (req,res) => {
 
   await prisma.post.delete({ where: { id: postId } })
 
-  res.status(200).json({
-    success: true,
-    message: 'Post deleted'
-  })
+  res.status(200).json({ success: true, message: 'Post deleted' })
 })
 
 const getAllPosts = asyncHandler(async (req, res) => {
@@ -256,11 +253,36 @@ const getPostById = asyncHandler(async (req, res) => {
   })
 })
 
+const toggleLikePost = asyncHandler(async (req, res) => {
+  const user = req.user
+  if (!user) {
+    throw new CustomError('Unauthorized: user not authenticated', 401)
+  }
+
+  const postId = parseInt(req.params.postId, 10)
+  if (isNaN(postId)) {
+    throw new CustomError('Invalid Post Id', 403)
+  }
+
+  const existingLike = await prisma.like.findFirst({ where: { userId: user.id, postId } })
+  if (existingLike) {
+    await prisma.like.delete({ where: { id:existingLike.id } })
+    return res.status(200).json({ success: true, message: 'Post unliked' })
+  }
+
+  await prisma.like.create({
+    data: { userId: user.id, postId }
+  })
+
+  res.status(201).json({ success: true, message: 'Post liked' })
+})
+
 module.exports = {
   newPost,
   editPost,
   deletePost,
   getAllPosts,
   getAllPostsByUser,
-  getPostById
+  getPostById,
+  toggleLikePost
 }
