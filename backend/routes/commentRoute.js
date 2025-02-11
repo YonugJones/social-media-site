@@ -7,6 +7,7 @@ const router = express.Router({ mergeParams: true })
 router.get('/', authenticateToken, commentController.getCommentsByPost)
 router.get('/:commentId', authenticateToken, commentController.getCommentById)
 router.post('/', authenticateToken, commentController.newComment)
+router.post('/:commentId/like', authenticateToken, commentController.toggleLikeComment)
 router.put('/:commentId', authenticateToken, commentController.editComment)
 router.delete('/:commentId', authenticateToken, commentController.deleteComment)
 

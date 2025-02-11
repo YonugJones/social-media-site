@@ -211,10 +211,35 @@ const getCommentById = asyncHandler(async (req, res) => {
   })
 })
 
+const toggleLikeComment = asyncHandler(async (req, res) => {
+  const user = req.user
+  if(!user) {
+    throw new CustomError('Unauthorized: user not authenticated', 401)
+  }
+
+  const commentId = parseInt(req.params.commentId, 10)
+  if (isNaN(commentId)) {
+    throw new CustomError('Invalid Comment ID', 403)
+  }
+    
+  const existingLike = await prisma.like.findFirst({ where: { userId: user.id, commentId } })
+  if (existingLike) {
+    await prisma.like.delete({ where: { id: existingLike.id } })
+    return res.status(200).json({ success: true, message: 'Comment unliked' })
+  }
+
+  await prisma.like.create({
+    data: { userId: user.id, commentId }
+  })
+
+  res.status(201).json({ success: true, message: 'Comment liked' })
+})
+
 module.exports = {
   newComment,
   editComment,
   deleteComment,
   getCommentsByPost,
-  getCommentById
+  getCommentById,
+  toggleLikeComment
 }

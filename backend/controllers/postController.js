@@ -266,7 +266,7 @@ const toggleLikePost = asyncHandler(async (req, res) => {
 
   const existingLike = await prisma.like.findFirst({ where: { userId: user.id, postId } })
   if (existingLike) {
-    await prisma.like.delete({ where: { id:existingLike.id } })
+    await prisma.like.delete({ where: { id: existingLike.id } })
     return res.status(200).json({ success: true, message: 'Post unliked' })
   }
 
