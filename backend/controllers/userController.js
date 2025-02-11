@@ -22,6 +22,7 @@ const getUser = asyncHandler(async (req, res) => {
       bio: true,
       profilePic: true,
       followers: {
+        where: { isConfirmed: true },
         select: {
           follower: {
             select: { username: true, profilePic: true }
@@ -29,6 +30,7 @@ const getUser = asyncHandler(async (req, res) => {
         }
       },
       following: {
+        where: { isConfirmed: true },
         select: {
           following: {
             select: { username: true, profilePic: true }
