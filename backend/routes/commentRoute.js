@@ -6,5 +6,6 @@ const router = express.Router({ mergeParams: true })
 // posts/:postId/comments
 router.post('/', authenticateToken, commentController.newComment)
 router.put('/:commentId', authenticateToken, commentController.editComment)
+router.delete('/:commentId', authenticateToken, commentController.deleteComment)
 
 module.exports = router;
