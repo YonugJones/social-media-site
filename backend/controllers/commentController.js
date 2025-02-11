@@ -44,6 +44,11 @@ const editComment = asyncHandler(async (req, res) => {
     throw new CustomError('Invalid Post ID', 400)
   }
 
+  const post = await prisma.post.findUnique({ where: { id: postId } })
+  if (!post) {
+    throw new CustomError('Post not found', 404)
+  }
+
   const commentId = parseInt(req.params.commentId, 10)
   if (isNaN(commentId)) {
     throw new CustomError('Invalid Comment Id', 401)
@@ -86,6 +91,11 @@ const deleteComment = asyncHandler(async (req, res) => {
     throw new CustomError('Invalid Post ID', 400)
   }
 
+  const post = await prisma.post.findUnique({ where: { id: postId } })
+  if (!post) {
+    throw new CustomError('Post not found', 404)
+  }
+
   const commentId = parseInt(req.params.commentId, 10)
   if (isNaN(commentId)) {
     throw new CustomError('Invalid Comment Id', 401)
@@ -105,8 +115,49 @@ const deleteComment = asyncHandler(async (req, res) => {
   res.status(200).json({ success: true, message: 'Comment deleted' })
 })
 
+const getCommentsByPost = asyncHandler(async (req, res) => {
+  const user = req.user
+  if (!user) {
+    throw new CustomError('Unauthorized: user not authenticated', 401)
+  }
+
+  const postId = parseInt(req.params.postId, 10)
+  if (isNaN(postId)) {
+    throw new CustomError('Invalid Post ID', 400)
+  }
+
+  const post = await prisma.post.findUnique({ where: { id: postId } })
+  if (!post) {
+    throw new CustomError('Post not found', 404)
+  }
+
+  const comments = await prisma.comment.findMany({ 
+    where: { postId },
+    orderBy: { createdAt: 'desc' },
+    include: {
+      user: {
+        select: { 
+          id: true, 
+          username: true, 
+          profilePic: true 
+        }
+      },
+      _count: {
+        select: { likes: true }
+      }
+    } 
+  })
+
+  res.status(200).json({
+    success: true,
+    message: 'Comments from post fetched',
+    data: comments
+  })
+})
+
 module.exports = {
   newComment,
   editComment,
-  deleteComment
+  deleteComment,
+  getCommentsByPost
 }

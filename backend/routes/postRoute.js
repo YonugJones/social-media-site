@@ -4,7 +4,7 @@ const { authenticateToken } = require('../middleware/authMiddleware')
 const router = express.Router()
 
 // /posts
-router.get('/', authenticateToken, postController.getAllPosts)
+router.get('/', authenticateToken, postController.getPosts)
 router.get('/:postId', authenticateToken, postController.getPostById)
 router.post('/', authenticateToken, postController.newPost)
 router.post('/:postId/like', authenticateToken, postController.toggleLikePost)

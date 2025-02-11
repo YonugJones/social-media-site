@@ -89,7 +89,7 @@ const deletePost = asyncHandler(async (req,res) => {
   res.status(200).json({ success: true, message: 'Post deleted' })
 })
 
-const getAllPosts = asyncHandler(async (req, res) => {
+const getPosts = asyncHandler(async (req, res) => {
   const user = req.user
   if (!user) {
     throw new CustomError('Unauthorized: user not authenticated', 401)
@@ -137,7 +137,7 @@ const getAllPosts = asyncHandler(async (req, res) => {
   })
 })
 
-const getAllPostsByUser = asyncHandler(async (req, res) => {
+const getPostsByUser = asyncHandler(async (req, res) => {
   const user = req.user
   if (!user) {
     throw new CustomError('Unauthorized: user not authenticated', 401)
@@ -281,8 +281,8 @@ module.exports = {
   newPost,
   editPost,
   deletePost,
-  getAllPosts,
-  getAllPostsByUser,
+  getPosts,
+  getPostsByUser,
   getPostById,
   toggleLikePost
 }
