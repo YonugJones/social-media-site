@@ -8,5 +8,6 @@ const router = express.Router()
 router.get('/:userId', authenticateToken, userController.getUser)
 router.get('/:userId/posts', authenticateToken, postController.getPostsByUser)
 router.put('/:userId', authenticateToken, userController.editUser)
+router.delete('/:userId', authenticateToken, userController.deleteUser)
 
 module.exports = router;

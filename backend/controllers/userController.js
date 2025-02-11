@@ -98,7 +98,33 @@ const editUser = asyncHandler(async (req, res) => {
   })
 })
 
+const deleteUser = asyncHandler(async (req, res) => {
+  const user = req.user
+  if (!user) {
+    throw new CustomError('Unauthorized: user not authenticated', 401)
+  }
+
+  const userId = parseInt(req.params.userId)
+  if (!userId) {
+    throw new CustomError('Invalid User ID', 403)
+  }
+
+  const userProfile = await prisma.user.findUnique({ where: { id: userId } })
+  if (!userProfile) {
+    throw new CustomError('User not found', 401)
+  }
+
+  if (userProfile.id !== user.id) {
+    throw new CustomError('Unauthorized: users can only delete their own profile', 403)
+  }
+
+  await prisma.user.delete({ where: { id: userId } })
+
+  res.status(200).json({ success: true, message: 'User deleted' })
+})
+
 module.exports = {
   getUser,
-  editUser
+  editUser,
+  deleteUser
 }
