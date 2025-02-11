@@ -5,6 +5,8 @@ const errorHandler = require('./middleware/errorHandler')
 const cookieParser = require('cookie-parser')
 const authRouter = require('./routes/authRoute')
 const postRouter = require('./routes/postRoute')
+const commentRouter = require('./routes/commentRoute')
+const userRouter = require('./routes/userRoute')
 
 // Define the main app
 const app = express()
@@ -19,11 +21,12 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 
 // Routes
-app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to the backend API' })
-})
+app.get('/', (req, res) => { res.json({ message: 'Welcome to the backend API' }) })
+
 app.use('/auth', authRouter)
 app.use('/posts', postRouter)
+app.use('/posts/:postId', commentRouter)
+app.use('/users', userRouter)
 
 // Global Error Handler
 app.use(errorHandler)
