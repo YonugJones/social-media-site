@@ -44,11 +44,6 @@ const editComment = asyncHandler(async (req, res) => {
     throw new CustomError('Invalid Post ID', 400)
   }
 
-  const post = await prisma.post.findUnique({ where: { id: postId } })
-  if (!post) {
-    throw new CustomError('Post not found', 404)
-  }
-
   const commentId = parseInt(req.params.commentId, 10)
   if (isNaN(commentId)) {
     throw new CustomError('Invalid Comment Id', 401)
@@ -91,11 +86,6 @@ const deleteComment = asyncHandler(async (req, res) => {
     throw new CustomError('Invalid Post ID', 400)
   }
 
-  const post = await prisma.post.findUnique({ where: { id: postId } })
-  if (!post) {
-    throw new CustomError('Post not found', 404)
-  }
-
   const commentId = parseInt(req.params.commentId, 10)
   if (isNaN(commentId)) {
     throw new CustomError('Invalid Comment Id', 401)
@@ -124,11 +114,6 @@ const getCommentsByPost = asyncHandler(async (req, res) => {
   const postId = parseInt(req.params.postId, 10)
   if (isNaN(postId)) {
     throw new CustomError('Invalid Post ID', 400)
-  }
-
-  const post = await prisma.post.findUnique({ where: { id: postId } })
-  if (!post) {
-    throw new CustomError('Post not found', 404)
   }
 
   const comments = await prisma.comment.findMany({ 
@@ -174,11 +159,6 @@ const getCommentById = asyncHandler(async (req, res) => {
     throw new CustomError('Invalid Post ID', 400)
   }
 
-  const post = await prisma.post.findUnique({ where: { id: postId } })
-  if (!post) {
-    throw new CustomError('Post not found', 404)
-  }
-
   const commentId = parseInt(req.params.commentId, 10)
   if (isNaN(commentId)) {
     throw new CustomError('Invalid Comment Id', 401)
@@ -215,6 +195,11 @@ const toggleLikeComment = asyncHandler(async (req, res) => {
   const user = req.user
   if(!user) {
     throw new CustomError('Unauthorized: user not authenticated', 401)
+  }
+
+  const postId = parseInt(req.params.postId, 10)
+  if (isNaN(postId)) {
+    throw new CustomError('Invalid Post ID', 400)
   }
 
   const commentId = parseInt(req.params.commentId, 10)
