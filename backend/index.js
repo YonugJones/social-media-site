@@ -25,7 +25,7 @@ app.get('/', (req, res) => { res.json({ message: 'Welcome to the backend API' })
 
 app.use('/auth', authRouter)
 app.use('/posts', postRouter)
-app.use('/posts/:postId', commentRouter)
+app.use('/posts/:postId/comments', commentRouter)
 app.use('/users', userRouter)
 
 // Global Error Handler
