@@ -101,8 +101,41 @@ const rejectFollowRequest = asyncHandler(async (req, res) => {
   res.status(200).json({ success: true, message: 'Follow request rejected' })  
 })
 
+const removeFollower = asyncHandler(async (req, res) => {
+  const user = req.user
+  if (!user) {
+    throw new CustomError('Unauthorized: user not authenticated', 401)
+  }
+
+  const userId = user.id
+  const { followerId } = req.body
+
+  if (!followerId) {
+    throw new CustomError('Follower ID is required', 400)
+  }
+
+  const existingFriendship = await prisma.friendship.findFirst({
+    where: {
+      followerId, 
+      followingId: userId,
+      isConfirmed: true
+    }
+  })
+
+  if (!existingFriendship) {
+    throw new CustomError('Friendship not found', 404)
+  }
+
+  await prisma.friendship.delete({
+    where: { id: existingFriendship.id }
+  })
+
+  res.status(200).json({ success: true, message: 'Follower removed' })
+})
+
 module.exports = {
   followRequest,
   confirmFollowRequest,
-  rejectFollowRequest
+  rejectFollowRequest,
+  removeFollower
 }
