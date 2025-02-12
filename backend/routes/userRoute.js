@@ -16,5 +16,6 @@ router.post('/:userId/follow', authenticateToken, friendshipController.followReq
 router.put('/follow/confirm', authenticateToken, friendshipController.confirmFollowRequest)
 router.delete('/follow/reject', authenticateToken, friendshipController.rejectFollowRequest)
 router.delete('/follow/remove', authenticateToken, friendshipController.removeFollower)
+router.delete('/follow/unfollow', authenticateToken, friendshipController.unfollow)
 
 module.exports = router;

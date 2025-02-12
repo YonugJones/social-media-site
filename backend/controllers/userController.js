@@ -42,7 +42,7 @@ const getUser = asyncHandler(async (req, res) => {
 
   const formattedProfile = {
     ...userProfile,
-    follwers: userProfile.followers.map(f => f.follower),
+    followers: userProfile.followers.map(f => f.follower),
     following: userProfile.following.map(f => f.following)
   }
   
