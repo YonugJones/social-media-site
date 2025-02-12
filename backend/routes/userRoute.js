@@ -13,5 +13,6 @@ router.put('/:userId', authenticateToken, userController.editUser)
 router.delete('/:userId', authenticateToken, userController.deleteUser)
 
 router.post('/:userId/follow', authenticateToken, friendshipController.followRequest)
+router.put('/follow/confirm', authenticateToken, friendshipController.confirmFollowRequest)
 
 module.exports = router;

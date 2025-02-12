@@ -18,8 +18,8 @@ model User {
   posts        Post[]
   comments     Comment[]
   likes        Like[]
-  followers    Friendship[] @relation("FollowerRelation")
-  following    Friendship[] @relation("FollowingRelation")
+  followers    Friendship[] @relation("FollowingRelation") // users THIS user is following
+  following    Friendship[] @relation("FollowerRelation") // users who follow THIS user
 }
 
 model Post {

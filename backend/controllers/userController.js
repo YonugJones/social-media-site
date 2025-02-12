@@ -21,25 +21,25 @@ const getUser = asyncHandler(async (req, res) => {
       email: true,
       bio: true,
       profilePic: true,
-      followers: {
-        where: { isConfirmed: true },
+      followers: { 
+        where: { isConfirmed: true, followingId: userId },
         select: {
-          follower: {
-            select: { username: true, profilePic: true }
+          follower: { 
+            select: { id: true, username: true, profilePic: true }
           }
         }
       },
-      following: {
-        where: { isConfirmed: true },
+      following: { 
+        where: { isConfirmed: true, followerId: userId },
         select: {
-          following: {
-            select: { username: true, profilePic: true }
+          following: { 
+            select: { id: true, username: true, profilePic: true }
           }
         }
       }
     }
   })
-
+  
   if (!userProfile) {
     throw new CustomError('User not found', 404)
   }
