@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
+const corsOptions = require('./config/corsOptions')
 const errorHandler = require('./middleware/errorHandler')
 const cookieParser = require('cookie-parser')
 const authRouter = require('./routes/authRoute')
@@ -10,6 +11,9 @@ const userRouter = require('./routes/userRoute')
 
 // Define the main app
 const app = express()
+
+// Cross Origin Resource Sharing
+app.use(cors(corsOptions));
 
 // Built in Middleware for JSON
 app.use(express.json())
