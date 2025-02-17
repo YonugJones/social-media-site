@@ -1,0 +1,107 @@
+body {
+  background-color: rgb(230, 235, 244);
+}
+
+.form-container {
+  width: 100%;
+  max-width: 320px;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: rgb(247, 247, 247);
+  padding: 1rem;
+  border-radius: 10px;
+  margin: 5rem auto;
+  color: black;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  flex-grow: 1;
+  padding-bottom: 1rem;
+}
+
+a, a:visited {
+  /* color: rgb(25, 48, 69); */
+  color: rgb(40, 84, 126);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+button,
+textarea {
+  font-size: 12px;
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+}
+
+button {
+  padding: 0.5rem;
+  background-color: rgb(58, 162, 58);
+  color: rgb(247, 247, 247);
+  width: 120px;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: rgb(50, 140, 50); 
+}
+
+label,
+button {
+  margin-top: 1rem;
+}
+
+.instructions {
+  font-size: 0.75rem;
+  border-radius: 0.5rem;
+  background: #000;
+  color: #fff;
+  padding: 0.25rem;
+  position: relative;
+  bottom: -10px;
+}
+
+.instructions > svg {
+  margin-right: 0.25rem;
+}
+
+.offscreen {
+  position: absolute;
+  left: -9999px;
+}
+
+.hide {
+  display: none;
+}
+
+.valid {
+  color: limegreen;
+  margin-left: 0.25rem;
+}
+
+.invalid {
+  color: red;
+  margin-left: 0.25rem;
+}
+
+.errmsg {
+  background-color: lightpink;
+  color: firebrick;
+  font-weight: bold;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.line {
+  display: inline-block;
+}
