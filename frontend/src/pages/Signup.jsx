@@ -78,7 +78,10 @@ const Signup = () => {
         <section className='form-container'>
           <p className={ errMsg ? 'errmsg' : 'offscreen' }>{errMsg}</p>
           <form onSubmit={handleSubmit}>
-          <h1>Create a new account</h1>
+          <div className='form-header'>
+            <h1>Create a new account</h1>
+            <p>It&apos;s quick and easy.</p>        
+          </div>
             {/* USERNAME FIELD */}
             <label htmlFor='username'>
               <span className={ validUsername ? 'valid' : 'hide' }>
