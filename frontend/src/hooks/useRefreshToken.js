@@ -1,5 +1,7 @@
+// This calls the refresh api function and sets the auth with the accessToken
+
 import { useAuth } from './useAuth'
-import axiosPublic from '../utils/axiosPublic'
+import { axiosPublic } from '../utils/axios'
 
 const useRefreshToken = () => {
   const { setAuth } = useAuth()

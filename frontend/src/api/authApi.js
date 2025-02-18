@@ -1,4 +1,4 @@
-import axiosPublic from '../utils/axiosPublic'
+import { axiosPublic } from '../utils/axios'
 
 export const signupUser = async (userData) => {
   try {

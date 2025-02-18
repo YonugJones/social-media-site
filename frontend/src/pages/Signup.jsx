@@ -4,7 +4,7 @@ import { signupUser } from '../api/authApi'
 import { faCheck, faTimes, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link } from 'react-router-dom'
-import '../styles/Signup.css'
+import styles from '../styles/Signup.module.css'
 // Declare regex variables
 const USERNAME_REGEX = /^\S{3,24}$/
 const EMAIL_REGEX = /^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/
@@ -73,30 +73,31 @@ const Signup = () => {
   }
 
   return (
-    <div className='signup-container'>
+    <div className={styles['signup-container']}>
       { success ? (
-        <section className='form-container'>
+        <section className={styles['form-container']}>
           <h1>Success</h1>
           <Link to='/login'>Login</Link>
         </section>
       ) : (
-        <section className='form-container'>
-          <p className={ errMsg ? 'errmsg' : 'offscreen' }>{errMsg}</p>
+        <section className={styles['form-container']}>
+          <p className={ errMsg ? styles['errmsg'] : styles['offscreen'] }>{errMsg}</p>
           <form onSubmit={handleSubmit}>
-          <div className='form-header'>
+          <div className={styles['form-header']}>
             <h1>Create a new account</h1>
             <p>It&apos;s quick and easy.</p>        
           </div>
             {/* USERNAME FIELD */}
-            <label htmlFor='username'>
-              <span className={ validUsername ? 'valid' : 'hide' }>
+            <label htmlFor='username' className={styles['signup-label']}>
+              <span className={ validUsername ? styles['valid'] : styles['hide'] }>
                 <FontAwesomeIcon icon={faCheck} aria-hidden='true' />
               </span>
-              <span className={ validUsername || !username ? 'hide' : 'invalid' }>
+              <span className={ validUsername || !username ? styles['hide'] : styles['invalid'] }>
                 <FontAwesomeIcon icon={faTimes} aria-hidden='true' />
               </span>
             </label>
             <input 
+              className={styles['signup-input']}
               type='text' 
               id='username'
               autoComplete='off'
@@ -105,22 +106,23 @@ const Signup = () => {
               placeholder='Username'
               required
             />
-            <p className={ username && !validUsername ? 'instructions' : 'offscreen'}>
+            <p className={ username && !validUsername ? styles['instructions'] : styles['offscreen']}>
               <FontAwesomeIcon icon={faInfoCircle} aria-hidden='true' />
               Must have 3 to 24 characters <br />
               Username cannot contain spaces <br />
             </p>
 
             {/* EMAIL FIELD */}
-            <label htmlFor='email'>
-              <span className={ validEmail ? 'valid' : 'hide' }>
+            <label htmlFor='email' className={styles['signup-label']}>
+              <span className={ validEmail ? styles['valid'] : styles['hide'] }>
                 <FontAwesomeIcon icon={faCheck} aria-hidden='true' />
               </span>
-              <span className={ validEmail || !email ? 'hide' : 'invalid' }>
+              <span className={ validEmail || !email ? styles['hide'] : styles['invalid'] }>
                 <FontAwesomeIcon icon={faTimes} aria-hidden='true' />
               </span>
             </label>  
             <input 
+              className={styles['signup-input']}
               type='email' 
               id='email'
               autoComplete='off'
@@ -129,30 +131,31 @@ const Signup = () => {
               placeholder='Email'
               required
             />
-            <p className={ email && !validEmail ? 'instructions' : 'offscreen'}>
+            <p className={ email && !validEmail ? styles['instructions'] : styles['offscreen']}>
               <FontAwesomeIcon icon={faInfoCircle} aria-hidden='true' />
               Must be a valid email address <br />
             </p>
 
             {/* PASSWORD FIELD */}
-            <label htmlFor='password'>
-              <span className={ validPassword ? 'valid' : 'hide' }>
+            <label htmlFor='password' className={styles['signup-label']}>
+              <span className={ validPassword ? styles['valid'] : styles['hide'] }>
                 <FontAwesomeIcon icon={faCheck} aria-hidden='true' />
               </span>
-              <span className={ validPassword || !password ? 'hide' : 'invalid' }>
+              <span className={ validPassword || !password ? styles['hide'] : styles['invalid'] }>
                 <FontAwesomeIcon icon={faTimes} aria-hidden='true' />
               </span>
             </label>
             <input 
-            type='password' 
-            id='password'
-            autoComplete='off'
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-            placeholder='Password'
-            required
+              className={styles['signup-input']}
+              type='password' 
+              id='password'
+              autoComplete='off'
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              placeholder='Password'
+              required
             />
-            <p className={ password && !validPassword ? 'instructions' : 'offscreen' }>
+            <p className={ password && !validPassword ? styles['instructions'] : styles['offscreen'] }>
               <FontAwesomeIcon icon={faInfoCircle} aria-hidden='true' />
               Must be at least 10 characters <br />
               Password must contain upper and lower case letters, a number, and a special character <br />
@@ -160,15 +163,16 @@ const Signup = () => {
             </p>
         
             {/* CONFIRM PASSWORD FIELD */}
-            <label htmlFor='confirmPassword'>
-              <span className={ validConfirmPassword && confirmPassword ? 'valid' : 'hide' }>
+            <label htmlFor='confirmPassword' className={styles['signup-label']}>
+              <span className={ validConfirmPassword && confirmPassword ? styles['valid'] : styles['hide'] }>
                 <FontAwesomeIcon icon={faCheck} aria-hidden='true' />
               </span>
-              <span className={ validConfirmPassword || !confirmPassword ? 'hide' : 'invalid' }>
+              <span className={ validConfirmPassword || !confirmPassword ? styles['hide'] : styles['invalid'] }>
                 <FontAwesomeIcon icon={faTimes} aria-hidden='true' />
               </span>
             </label>
             <input 
+              className={styles['signup-input']}
               type='password' 
               id='confirmPassword'
               autoComplete='off'
@@ -177,21 +181,19 @@ const Signup = () => {
               placeholder='Confirm Password'
               required
             />
-            <p className={ confirmPassword.length > 0 && !validConfirmPassword ? 'instructions' : 'offscreen' }>
+            <p className={ confirmPassword.length > 0 && !validConfirmPassword ? styles['instructions'] : styles['offscreen'] }>
               <FontAwesomeIcon icon={faInfoCircle} aria-hidden='true' />
               Passwords must match <br />
             </p>
 
-            <button disabled={ !validUsername || !validEmail || !validPassword || !validConfirmPassword ? true : false }>
+            <button className={styles['signup-button']} disabled={ !validUsername || !validEmail || !validPassword || !validConfirmPassword ? true : false }>
               <strong>Signup</strong>
             </button>
 
           </form>
           <p>
-            <span className='line'>
-              <Link to='/login'>
-              Already have an account?
-              </Link>
+            <span>
+              <Link className={styles['login-link']} to='/login'>Already have an account?</Link>
             </span>
           </p>
         </section>
