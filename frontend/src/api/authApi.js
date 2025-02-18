@@ -19,13 +19,3 @@ export const loginUser = async (userData) => {
     throw err
   }
 }
-
-export const refreshAccessToken = async (axiosInstance, token) => {
-  try {
-    const response = await axiosInstance.post('/auth/refresh', token)
-    return response.data
-  } catch (err) {
-    console.error('API error:', err)
-    throw err
-  }
-}
