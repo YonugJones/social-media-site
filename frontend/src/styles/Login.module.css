@@ -88,3 +88,7 @@
 .login-button:hover {
   background-color: rgb(28, 67, 104);
 }
+
+.username {
+  margin-top: 1rem;
+}

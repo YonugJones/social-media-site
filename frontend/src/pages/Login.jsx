@@ -46,7 +46,7 @@ const Login = () => {
             <h1>Log Into Social Media App</h1>
           </div>
           {/* USERNAME FIELD */}
-          <label htmlFor='username'></label>
+          <label htmlFor='username' className={`${styles['login-label']} ${styles['username']}`}></label>
           <input 
             type='text' 
             id='username'
@@ -58,7 +58,7 @@ const Login = () => {
           />
           <p className={styles['try-field']}>Try: Guest</p>
           {/* PASSWORD FIELD */}
-          <label htmlFor='password'></label>
+          <label htmlFor='password' className={styles['login-label password']}></label>
           <input 
             type='password' 
             id='password'
