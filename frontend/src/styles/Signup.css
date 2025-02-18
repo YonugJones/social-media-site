@@ -39,8 +39,8 @@ form {
 
 .form-header h1,
 .form-header p {
-  margin: 0; /* Remove margin */
-  padding: 0; /* Remove padding */
+  margin: 0; 
+  padding: 0; 
 }
 
 .form-header p {

@@ -1,7 +1,9 @@
 // Imports
 import { useState, useEffect } from 'react'
-import { faCheck, faTimes, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import useAxios from '../hooks/useAxios'
+import { signupUser } from '../api/authApi'
+import { faCheck, faTimes, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link } from 'react-router-dom'
 import '../styles/Signup.css'
 // Declare regex variables
@@ -12,6 +14,8 @@ const specialChars = '!?+-_,.=@#$%^&*|<>'
 
 const Signup = () => {
   // declare state variables
+  const axiosInstance = useAxios()
+
   const [username, setUsername] = useState('')
   const [validUsername, setValidUsername] = useState(false)
 
@@ -52,19 +56,26 @@ const Signup = () => {
     setErrMsg('')
   }, [username, email, password, confirmPassword])
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!validUsername || !validEmail || !validPassword || !validConfirmPassword) {
-      setErrMsg('Invalid form submission');
-      return;
+    
+    try {
+      await signupUser(axiosInstance, { username, email, password, confirmPassword })
+      setSuccess(true) 
+      setUsername('')
+      setEmail('')
+      setPassword('')
+      setConfirmPassword('')
+    } catch (err) {
+      if (!err?.response) {
+        setErrMsg('No server response')
+      } else {
+        console.log(err)
+        setErrMsg(err.response.data.error || 'Signup failed')
+      }
     }
 
-    setSuccess(true) 
-    setUsername('')
-    setEmail('')
-    setPassword('')
-    setConfirmPassword('')
+    
   }
 
   return (

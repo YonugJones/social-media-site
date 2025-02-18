@@ -16,6 +16,11 @@ const signup = asyncHandler(async (req, res) => {
     throw new CustomError('Username is taken', 409)
   }
 
+  const emailExists = await prisma.user.findUnique({ where: { email } })
+  if (emailExists) {
+    throw new CustomError('Email is taken', 409)
+  }
+
   const hashedPassword = await bcrypt.hash(password, 10)
 
   const newUser = await prisma.user.create({
