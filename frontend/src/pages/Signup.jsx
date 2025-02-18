@@ -1,6 +1,5 @@
 // Imports
 import { useState, useEffect } from 'react'
-import useAxios from '../hooks/useAxios'
 import { signupUser } from '../api/authApi'
 import { faCheck, faTimes, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -13,9 +12,6 @@ const PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{10,}$
 const specialChars = '!?+-_,.=@#$%^&*|<>'
 
 const Signup = () => {
-  // declare state variables
-  const axiosInstance = useAxios()
-
   const [username, setUsername] = useState('')
   const [validUsername, setValidUsername] = useState(false)
 
@@ -60,7 +56,7 @@ const Signup = () => {
     e.preventDefault();
     
     try {
-      await signupUser(axiosInstance, { username, email, password, confirmPassword })
+      await signupUser({ username, email, password, confirmPassword })
       setSuccess(true) 
       setUsername('')
       setEmail('')
@@ -74,8 +70,6 @@ const Signup = () => {
         setErrMsg(err.response.data.error || 'Signup failed')
       }
     }
-
-    
   }
 
   return (

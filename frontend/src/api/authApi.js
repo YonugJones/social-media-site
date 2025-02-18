@@ -1,6 +1,8 @@
-export const signupUser = async (axiosInstance, userData) => {
+import axiosPublic from '../utils/axiosPublic'
+
+export const signupUser = async (userData) => {
   try {
-    const response = await axiosInstance.post('/auth/signup', userData)
+    const response = await axiosPublic.post('/auth/signup', userData)
     return response.data
   } catch (err) {
     console.error('API error:', err)
@@ -8,9 +10,19 @@ export const signupUser = async (axiosInstance, userData) => {
   }
 }
 
-export const loginUser = async (axiosInstance, userData) => {
+export const loginUser = async (userData) => {
   try {
-    const response = await axiosInstance.post('/auth/login', userData)
+    const response = await axiosPublic.post('/auth/login', userData)
+    return response.data
+  } catch (err) {
+    console.error('API error:', err)
+    throw err
+  }
+}
+
+export const refreshAccessToken = async (axiosInstance, token) => {
+  try {
+    const response = await axiosInstance.post('/auth/refresh', token)
     return response.data
   } catch (err) {
     console.error('API error:', err)
