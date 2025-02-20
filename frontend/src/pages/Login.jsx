@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
 import useAuth from '../hooks/useAuth'
 import { loginUser } from '../api/authApi'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import styles from '../styles/Login.module.css'
 
 const Login = () => {
   const { setAuth } = useAuth()
+  const navigate = useNavigate()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [errMsg, setErrMsg] = useState('')
@@ -24,10 +25,11 @@ const Login = () => {
         id: response.user.id,
         username: response.user.username,
         email: response.user.email,
-        accessToken: response.user.accessToken
+        accessToken: response.accessToken
       })
       setUsername('')
       setPassword('')
+      navigate('/')
     } catch (err) {
       if (!err?.response) {
         setErrMsg('No server response')
