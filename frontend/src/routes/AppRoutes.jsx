@@ -1,7 +1,8 @@
+import { createBrowserRouter } from 'react-router-dom'
 import Login from '../pages/Login'
 import Signup from '../pages/Signup'
 
-const routes = [
+const router = createBrowserRouter([
   {
     path: '/login',
     element: <Login />
@@ -10,6 +11,6 @@ const routes = [
     path: '/signup',
     element: <Signup />
   }
-]
+])
 
-export default routes
+export default router
