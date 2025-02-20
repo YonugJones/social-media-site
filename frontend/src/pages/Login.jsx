@@ -21,9 +21,10 @@ const Login = () => {
     try {
       const response = await loginUser({ username, password })
       setAuth({
-        id: response.userData.id,
-        username: response.userData.username,
-        accessToken: response.userData.accessToken
+        id: response.user.id,
+        username: response.user.username,
+        email: response.user.email,
+        accessToken: response.user.accessToken
       })
       setUsername('')
       setPassword('')
