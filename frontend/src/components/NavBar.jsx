@@ -1,8 +1,21 @@
 import styles from '../styles/NavBar.module.css'
 import useAuth from '../hooks/useAuth'
+import { useNavigate } from 'react-router-dom'
+import { logoutUser } from '../api/authApi'
 
 const NavBar = () => {
-  const { auth } = useAuth()
+  const { auth, setAuth } = useAuth()
+  const navigate = useNavigate()
+
+  const handleLogout = async () => {
+    try {
+      await logoutUser()
+      setAuth(null)
+      navigate('/login')
+    } catch (err) {
+      console.log('Logout failed:', err)
+    }
+  }
 
   return (
     <div className={styles['nav-bar']}>
@@ -11,7 +24,7 @@ const NavBar = () => {
       </div>
       <div className={styles['nav-bar-right']}>
         <div>{ `Welcome, ${auth.username}` }</div>
-        <div><button>Logout</button></div>
+        <div><button className={styles['logout-button']} onClick={handleLogout}>Logout</button></div>
       </div>
     </div>
   )

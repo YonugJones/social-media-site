@@ -16,4 +16,20 @@
 
 .nav-bar-right {
   display: flex;
+  align-items: center;
+}
+
+.logout-button {
+  padding: 0.5rem;
+  background-color: rgb(224, 184, 140);
+  color: rgb(247, 247, 247);
+  width: 60px;
+  margin: 0 auto;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+}
+
+.logout-button:hover {
+  background-color: rgb(194, 159, 122);
 }

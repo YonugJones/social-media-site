@@ -83,7 +83,7 @@ const login = asyncHandler(async (req, res) => {
 
   res.cookie('refreshToken', refreshToken, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: process.env.NODE_ENV === 'production' ? true : false,
     sameSite: 'strict',
     maxAge: 7 * 24 * 60 * 60 * 1000
   })
@@ -127,6 +127,7 @@ const refresh = asyncHandler(async (req, res) => {
 
 const logout = asyncHandler(async (req, res) => {
   const { refreshToken } = req.cookies
+
   if (!refreshToken) {
     return res.status(204).json({ message: 'No content' })
   }
