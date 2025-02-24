@@ -1,5 +1,11 @@
+import styles from '../styles/Home.module.css'
+
 const Home = () => {
-  return <h1>HOME</h1>
+  return (
+    <div className={styles['home']}>
+      <h1>HOME</h1>
+    </div>
+  )
 }
 
 export default Home

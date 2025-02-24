@@ -1,0 +1,7 @@
+.home {
+  background-color: rgba(25, 48, 69, 0.5);
+  display: flex;
+  height: calc(100vh - 70px);
+  border-radius: 10px;
+  padding: 10px;
+}

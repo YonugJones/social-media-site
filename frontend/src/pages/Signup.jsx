@@ -82,7 +82,7 @@ const Signup = () => {
       ) : (
         <section className={styles['form-container']}>
           <p className={ errMsg ? styles['errmsg'] : styles['offscreen'] }>{errMsg}</p>
-          <form onSubmit={handleSubmit}>
+          <form className={styles['form']} onSubmit={handleSubmit}>
           <div className={styles['form-header']}>
             <h1>Create a new account</h1>
             <p>It&apos;s quick and easy.</p>        

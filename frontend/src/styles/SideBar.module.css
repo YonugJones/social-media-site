@@ -1,0 +1,9 @@
+.side-bar {
+  background-color: rgba(25, 48, 69, 0.5);
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  
+}

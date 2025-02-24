@@ -34,6 +34,14 @@
   color: gray;
 }
 
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  flex-grow: 1;
+  padding-bottom: 1rem;
+}
+
 .instructions {
   font-size: 0.75rem;
   border-radius: 0.5rem;
@@ -76,6 +84,10 @@
 }
 
 .signup-button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   padding: 0.5rem;
   background-color: rgb(58, 162, 58);
   color: rgb(247, 247, 247);
@@ -83,6 +95,7 @@
   width: 120px;
   margin: 0 auto;
   cursor: pointer;
+  border-radius: 5px;
 }
 
 .signup-button:hover {
@@ -94,15 +107,17 @@
   margin-top: 1rem;
 }
 
-.signup-input
+.signup-input,
 .signup-button {
-  font-size: 12px;
-  padding: 1rem;
-  border-radius: 0.5rem;
+  font-size: 10px;
+  padding: 0.5rem;
+}
+
+.signup-input:last-of-type {
+  margin-bottom: 5px;
 }
 
 .login-link, .login-link:visited {
-  /* color: rgb(25, 48, 69); */
   color: rgb(40, 84, 126);
   text-decoration: none;
   font-weight: 600;

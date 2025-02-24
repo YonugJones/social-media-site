@@ -1,15 +1,17 @@
+import NavBar from '../components/NavBar'
+import SideBar from '../components/SideBar'
 import { Outlet } from 'react-router-dom'
 import styles from '../styles/MainLayout.module.css'
 
 const MainLayout = () => {
   return (
     <div className={styles['main-layout']}>
-      {/* <Navbar /> */}
+      <NavBar />
       <div className={styles['content']}>
-        {/* <Sidebar /> */}
-        <main>
+        <SideBar />
+        <div className={styles['outlet']}>
           <Outlet />
-        </main>
+        </div>
       </div>
     </div>
   )

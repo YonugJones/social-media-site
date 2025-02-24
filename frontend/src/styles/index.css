@@ -1,12 +1,6 @@
-body {
+* body {
+  margin: 0;
+  padding: 0;
   background-color: rgb(230, 235, 244);
   font-family: Arial, Helvetica, sans-serif;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  flex-grow: 1;
-  padding-bottom: 1rem;
 }

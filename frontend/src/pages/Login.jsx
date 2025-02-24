@@ -44,13 +44,14 @@ const Login = () => {
     <div className={styles['login-container']}>
       <section className={styles['form-container']}>
         <p className={ errMsg ? styles['errmsg'] : styles['offscreen'] }>{errMsg}</p>
-        <form onSubmit={handleSubmit}>
+        <form className={styles['form']} onSubmit={handleSubmit}>
           <div className={styles['form-header']}>
             <h1>Log Into Social Media App</h1>
           </div>
           {/* USERNAME FIELD */}
           <label htmlFor='username' className={`${styles['login-label']} ${styles['username']}`}></label>
           <input 
+            className={styles['login-input']}
             type='text' 
             id='username'
             autoComplete='on'
@@ -63,6 +64,7 @@ const Login = () => {
           {/* PASSWORD FIELD */}
           <label htmlFor='password' className={styles['login-label password']}></label>
           <input 
+            className={styles['login-input']}
             type='password' 
             id='password'
             autoComplete='off'
