@@ -253,6 +253,66 @@ const getPostById = asyncHandler(async (req, res) => {
   })
 })
 
+const getFeedPosts = asyncHandler(async (req, res) => {
+  const userId = req.user.id
+
+  const following = await prisma.friendship.findMany({
+    where: { followerId: userId, isConfirmed: true },
+    select: { followingId: true }
+  })
+
+  const followingIds = following.map(f => f.followingId)
+
+  const feedUserIds = [userId, ...followingIds]
+
+  const posts = await prisma.post.findMany({
+    where: {
+      userId: { in: feedUserIds }
+    },
+    orderBy: { createdAt: 'desc' },
+    include: {
+      user: {
+        select: {
+          id: true,
+          username: true,
+          profilePic: true
+        }
+      },
+      comments: {
+        orderBy: { createdAt: 'desc' },
+        select: {
+          id: true,
+          postId: true,
+          content: true,
+          createdAt: true,
+          user: {
+            select: {
+              id: true,
+              username: true,
+              profilePic: true
+            }
+          },
+          _count: {
+            select: { likes: true }
+          }
+        }
+      },
+      _count: {
+        select: { 
+          likes: true, 
+          comments: true
+        }
+      }
+    }
+  })
+
+  res.status(200).json({
+    success: true,
+    message: 'User feed fetched',
+    data: posts
+  })
+})
+
 const toggleLikePost = asyncHandler(async (req, res) => {
   const user = req.user
   if (!user) {
@@ -284,5 +344,6 @@ module.exports = {
   getPosts,
   getPostsByUser,
   getPostById,
+  getFeedPosts,
   toggleLikePost
 }
