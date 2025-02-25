@@ -19,6 +19,10 @@
   align-items: center;
 }
 
+.nav-bar button {
+  margin-left: 10px;
+}
+
 .logout-button {
   padding: 0.5rem;
   background-color: rgb(224, 184, 140);

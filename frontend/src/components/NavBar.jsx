@@ -24,7 +24,7 @@ const NavBar = () => {
       </div>
       <div className={styles['nav-bar-right']}>
         <div>{ `Welcome, ${auth.username}` }</div>
-        <div><button className={styles['logout-button']} onClick={handleLogout}>Logout</button></div>
+        <button className={styles['logout-button']} onClick={handleLogout}>Logout</button>
       </div>
     </div>
   )
