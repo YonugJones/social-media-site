@@ -6,6 +6,7 @@ const router = express.Router()
 
 // /posts
 router.get('/', authenticateToken, postController.getPosts)
+router.get('/feed', authenticateToken, postController.getFeedPosts)
 router.get('/:postId', authenticateToken, postController.getPostById)
 router.post('/', authenticateToken, validatePost, postController.newPost)
 router.post('/:postId/like', authenticateToken, postController.toggleLikePost)
