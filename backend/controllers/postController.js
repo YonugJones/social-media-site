@@ -184,7 +184,10 @@ const getPostsByUser = asyncHandler(async (req, res) => {
         }
       },
       _count: {
-        select: { likes: true }
+        select: { 
+          likes: true, 
+          comments: true
+        }
       }
     }
   })
