@@ -1,8 +1,7 @@
-import { axiosPrivate } from '../utils/axios'
-
-export const getFeedPosts = async () => {
+export const getFeedPosts = async (axiosPrivateInstance) => {
   try {
-    const response = await axiosPrivate.post('/posts/feed')
+    const response = await axiosPrivateInstance.get('/posts/feed')
+    console.log('getFeedPosts API call:', response.data) 
     return response.data
   } catch (err) {
     console.error('API error:', err)
