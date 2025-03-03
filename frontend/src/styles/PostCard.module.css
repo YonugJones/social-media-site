@@ -1,12 +1,36 @@
 .post {
   display: flex;
   flex-direction: column;
+  margin: 10px;
+  padding: 10px;
   background-color: rgba(230, 235, 244, 0.5);
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  border-radius: 10px;
 }
 
 .header,
 .footer {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
+.header img {
+  width: 30px;
+  height: auto;
+  margin-right: 5px;
+}
+
+.header-user {
+  display: flex;
+}
+
+.comments-container,
+.likes-container {
+  display: flex;
+  align-items: center;
+}
+
+.fa-icon {
+  margin-right: 5px;
+}

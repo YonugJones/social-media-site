@@ -6,9 +6,11 @@ const PostCard = ({ post }) => {
   return (
     <div className={styles['post']}>
       <div className={styles['header']}>
-        <img src={post.user.profilePic || '/default-profile.svg'} alt='profile' />
-        <h3>{post.user.username}</h3>
-        <p>{new Date(post.createdAt).toLocaleString()}</p>
+        <div className={styles['header-user']}>
+          <img src={post.user.profilePic || '/default-profile.svg'} alt='profile' />
+          <h3>{post.user.username}</h3>
+        </div>
+        <p className={styles['header-date']}>{new Date(post.createdAt).toLocaleString()}</p>
       </div>
       <div className={styles['content']}>
         <p>{post.content}</p>
@@ -16,18 +18,18 @@ const PostCard = ({ post }) => {
       <div className={styles['footer']}>
         <div className={styles['likes-container']}>
           <div className={styles['likes-img']}>
-            <FontAwesomeIcon icon={faHeart} /> 
+            <FontAwesomeIcon className={styles['fa-icon']} icon={faHeart} /> 
           </div>
           <div className={styles['likes-count']}>
-            <p>{post.likes.length}</p>
+            <p>{post._count.likes}</p>
           </div>
         </div>
         <div className={styles['comments-container']}>
           <div className={styles['comments-img']}>
-            <FontAwesomeIcon icon={faComment} />
+            <FontAwesomeIcon className={styles['fa-icon']} icon={faComment} />
           </div>
           <div className={styles['comments-count']}>
-            <p>{post.comments.length}</p>
+            <p>{post._count.comments}</p>
           </div>
         </div>
       </div>
