@@ -4,25 +4,8 @@
 // import styles from '../styles/PostDetails.module.css'
 
 // const PostDetails = ({ post }) => {
-//   if (!post) return <p>Loading...</p>
-  
 //   return (
-//     <div className={styles['post']}>
-//       <div className={styles['post-header']}>
-//         <img className={styles['profile-pic']} src={post.user.profilePic || '/default-profile.svg'} alt='profile' />
-//         <h3>{post.user.username}</h3>
-//         <p>{new Date(post.createdAt).toLocaleDateString()}</p>
-//       </div>
-//       <p>{post.content}</p>
-//       <div className={styles['post-footer']}>
-//         <span>
-//           <FontAwesomeIcon icon={faHeart} /> {post.likes.length}
-//         </span>
-//         <span>
-//           <FontAwesomeIcon icon={faComment} /> {post.comments.length}
-//         </span>
-//       </div>
-//     </div>
+//     
 //   )
 // }
 

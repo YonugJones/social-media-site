@@ -1,0 +1,12 @@
+.post {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(230, 235, 244, 0.5);
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.header,
+.footer {
+  display: flex;
+}
+

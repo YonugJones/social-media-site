@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { getFeedPosts } from '../api/postApi'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
-import PostDetails from './PostDetails'
 import styles from '../styles/Home.module.css'
 
 const Home = () => {

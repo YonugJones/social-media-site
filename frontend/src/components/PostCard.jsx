@@ -1,6 +1,5 @@
 import { faComment, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import PropTypes from 'prop-types'
 import styles from '../styles/PostCard.module.css'
 
 const PostCard = ({ post }) => {
