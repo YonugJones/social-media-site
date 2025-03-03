@@ -1,11 +1,13 @@
 .post {
   display: flex;
   flex-direction: column;
-  margin: 10px;
-  padding: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  padding: 0 10px 0 10px;
   background-color: rgba(230, 235, 244, 0.5);
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   border-radius: 10px;
+  cursor: pointer;
 }
 
 .header,
@@ -16,21 +18,37 @@
 }
 
 .header img {
-  width: 30px;
-  height: auto;
+  width: auto;
+  height: 20px;
   margin-right: 5px;
 }
 
 .header-user {
   display: flex;
+  align-items: center;
 }
 
-.comments-container,
-.likes-container {
+.likes-container,
+.repost-container, 
+.comments-container {
   display: flex;
   align-items: center;
+  transition: color 0.3s ease;
+}
+
+.likes-container:hover {
+  color: red;
+}
+
+.repost-container:hover {
+  color: green;
+}
+
+.comments-container:hover {
+  color: blue;
 }
 
 .fa-icon {
   margin-right: 5px;
 }
+

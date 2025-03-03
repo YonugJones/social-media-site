@@ -24,7 +24,7 @@ const PostList = () => {
   }, [axiosPrivate])
 
   return (
-    <div className={styles['post-list-container']}>
+    <div className={styles['post-list']}>
       <ul>
         {posts.length > 0 ? (
           posts.map((post) => <PostCard key={post.id} post={post} />)
