@@ -2,15 +2,29 @@ import { useState } from 'react'
 import { faComment, faHeart, faRepeat } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import styles from '../styles/PostCard.module.css'
+import useAxiosPrivate from '../hooks/useAxiosPrivate'
+import { toggleLikePost } from '../api/postApi'
 
 const PostCard = ({ post }) => {
+  const axiosPrivate = useAxiosPrivate()
   const [isLiked, setIsLiked] = useState(post.isLiked)
+  const [likeCount, setLikeCount] = useState(post._count.likes)
   const [isHovered, setIsHovered] = useState(false)
 
-  const handleLikeClick = () => {
-    setIsLiked(prev => !prev)
-    console.log('like clicked!')
-    // add API logic to handle like click here
+  const handleLikeClick = async () => {
+    const previousLikeState = isLiked
+    const previousLikeCount = likeCount
+
+    setIsLiked(!isLiked)
+    setLikeCount(isLiked ? likeCount - 1 : likeCount + 1)
+
+    try {
+      await toggleLikePost(axiosPrivate, post.id)
+    } catch (err) {
+      console.error('Error toggling like:', err)
+      setIsLiked(previousLikeState)
+      setLikeCount(previousLikeCount)
+    }
   }
 
   return (
@@ -40,7 +54,7 @@ const PostCard = ({ post }) => {
             <FontAwesomeIcon className={styles['fa-icon']} icon={faHeart} />
           </div>
           <div className={styles['likes-count']}>
-            <p>{post._count.likes}</p>
+            <p>{likeCount}</p>
           </div>
         </button>
         <button className={styles['repost-container']} onClick={() => console.log('repost clicked!')}>
