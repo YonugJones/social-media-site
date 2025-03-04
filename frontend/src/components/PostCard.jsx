@@ -1,9 +1,18 @@
-
+import { useState } from 'react'
 import { faComment, faHeart, faRepeat } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import styles from '../styles/PostCard.module.css'
 
 const PostCard = ({ post }) => {
+  const [isLiked, setIsLiked] = useState(post.isLiked)
+  const [isHovered, setIsHovered] = useState(false)
+
+  const handleLikeClick = () => {
+    setIsLiked(prev => !prev)
+    console.log('like clicked!')
+    // add API logic to handle like click here
+  }
+
   return (
     <div className={styles['post']}>
       <div className={styles['header']}>
@@ -17,9 +26,18 @@ const PostCard = ({ post }) => {
         <p>{post.content}</p>
       </div>
       <div className={styles['footer']}>
-        <button className={styles['likes-container']} onClick={() => console.log('like clicked!')}>
+        <button 
+          className={`
+            ${styles['likes-container']} 
+            ${isLiked ? styles['liked'] : styles['unliked']} 
+            ${isHovered && isLiked ? styles['unliked'] : ''}
+          `} 
+          onClick={handleLikeClick}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
           <div className={styles['likes-img']}>
-            <FontAwesomeIcon className={styles['fa-icon']} icon={faHeart} /> 
+            <FontAwesomeIcon className={styles['fa-icon']} icon={faHeart} />
           </div>
           <div className={styles['likes-count']}>
             <p>{post._count.likes}</p>

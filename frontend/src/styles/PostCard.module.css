@@ -37,13 +37,34 @@
   border: none;
   cursor: pointer;
   padding: 0;
-  display: flex;
-  align-items: center;
-  transition: color 0.3s ease
+  transition: color 0.3s ease;
 }
 
-.likes-container:hover {
+.likes-container .fa-icon,
+.repost-container .fa-icon,
+.comments-container .fa-icon {
+  transition: color 0.3s ease;
+  cursor: pointer;
+}
+
+.liked,
+.liked .fa-icon {
   color: red;
+}
+
+.unliked,
+.unliked .fa-icon {
+  color: black;
+}
+
+.likes-container:hover,
+.likes-container .fa-icon:hover {
+  color: red;
+}
+
+.likes-container.liked:hover,
+.likes-container.liked:hover .fa-icon {
+  color: black;
 }
 
 .repost-container:hover {
@@ -57,4 +78,3 @@
 .fa-icon {
   margin-right: 5px;
 }
-
