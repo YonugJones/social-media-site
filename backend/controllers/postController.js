@@ -305,14 +305,20 @@ const getFeedPosts = asyncHandler(async (req, res) => {
           likes: true, 
           comments: true
         }
-      }
+      },
+      likes: { select: { userId: true } }
     }
   })
+
+  const postsWithLikes = posts.map(post => ({
+    ...post,
+    isLiked: post.likes.some(like => like.userId === userId)
+  }))
 
   res.status(200).json({
     success: true,
     message: 'User feed fetched',
-    data: posts
+    data: postsWithLikes
   })
 })
 
