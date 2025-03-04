@@ -7,3 +7,13 @@ export const getFeedPosts = async (axiosPrivateInstance) => {
     throw err
   }
 }
+
+export const toggleLikePost = async (axiosPrivateInstance, postId) => {
+  try {
+    const response = await axiosPrivateInstance.post(`/posts/${postId}/like`)
+    return response.data
+  } catch (err) {
+    console.error('API error:', err)
+    throw err
+  }
+}

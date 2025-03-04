@@ -1,3 +1,4 @@
+
 import { faComment, faHeart, faRepeat } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import styles from '../styles/PostCard.module.css'
@@ -16,30 +17,30 @@ const PostCard = ({ post }) => {
         <p>{post.content}</p>
       </div>
       <div className={styles['footer']}>
-        <div className={styles['likes-container']}>
+        <button className={styles['likes-container']} onClick={() => console.log('like clicked!')}>
           <div className={styles['likes-img']}>
             <FontAwesomeIcon className={styles['fa-icon']} icon={faHeart} /> 
           </div>
           <div className={styles['likes-count']}>
             <p>{post._count.likes}</p>
           </div>
-        </div>
-        <div className={styles['repost-container']}>
+        </button>
+        <button className={styles['repost-container']} onClick={() => console.log('repost clicked!')}>
           <div className={styles['repost-img']}>
             <FontAwesomeIcon className={styles['fa-icon']} icon={faRepeat} /> 
           </div>
           <div className={styles['repost-count']}>
             <p>TBD</p>
           </div>
-        </div>
-        <div className={styles['comments-container']}>
+        </button>
+        <button className={styles['comments-container']} onClick={() => console.log('comment clicked')}>
           <div className={styles['comments-img']}>
             <FontAwesomeIcon className={styles['fa-icon']} icon={faComment} />
           </div>
           <div className={styles['comments-count']}>
             <p>{post._count.comments}</p>
           </div>
-        </div>
+        </button>
       </div>
     </div>
   )
