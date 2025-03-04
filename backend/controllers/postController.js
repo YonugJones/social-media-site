@@ -191,11 +191,16 @@ const getPostsByUser = asyncHandler(async (req, res) => {
       }
     }
   })
+  
+  const postsWithLikes = posts.map(post => ({
+    ...post,
+    isLiked: post.likes.some(like => like.userId === userId)
+  }))
 
   res.status(200).json({
     success: true,
     message: 'All posts by user fetched',
-    data: posts
+    data: postsWithLikes
   })
 })
 
@@ -219,6 +224,9 @@ const getPostById = asyncHandler(async (req, res) => {
           username: true, 
           profilePic: true 
         }
+      },
+      likes: {
+        select: { userId: true }
       },
       comments: {
         orderBy: { createdAt: 'desc' },
@@ -249,10 +257,15 @@ const getPostById = asyncHandler(async (req, res) => {
     throw new CustomError('Post not found', 404)
   }
 
+  const postWithLikes = {
+    ...post,
+    isLiked: post.likes.some(like => like.userId === user.id)
+  }
+
   res.status(200).json({
     success: true,
     message: 'Post fetched',
-    data: post
+    data: postWithLikes
   })
 })
 
