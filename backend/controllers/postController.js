@@ -220,7 +220,7 @@ const getPostById = asyncHandler(async (req, res) => {
     include: {
       user: {
         select: { 
-          id:true, 
+          id: true, 
           username: true, 
           profilePic: true 
         }
@@ -230,17 +230,16 @@ const getPostById = asyncHandler(async (req, res) => {
       },
       comments: {
         orderBy: { createdAt: 'desc' },
-        select: {
-          id: true,
-          postId: true,
-          content: true,
-          createdAt: true,
+        include: {
           user: {
             select: { 
               id: true, 
               username: true, 
               profilePic: true 
             }
+          },
+          likes: {
+            select: { userId: true } 
           },
           _count: {
             select: { likes: true }
@@ -259,7 +258,16 @@ const getPostById = asyncHandler(async (req, res) => {
 
   const postWithLikes = {
     ...post,
-    isLiked: post.likes.some(like => like.userId === user.id)
+    isLiked: post.likes.some(like => like.userId === user.id),
+    comments: post.comments.map(comment => ({
+      id: comment.id,
+      postId: comment.postId,
+      content: comment.content,
+      createdAt: comment.createdAt,
+      user: comment.user,
+      _count: comment._count, 
+      isLiked: comment.likes.some(like => like.userId === user.id) 
+    }))
   }
 
   res.status(200).json({

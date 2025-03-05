@@ -1,5 +1,29 @@
-// import { faComment, faHeart } from '@fortawesome/free-solid-svg-icons'
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useParams } from 'react-router-dom'
+import usePost from '../hooks/usePost'
+import PostCard from '../components/PostCard'
+import styles from '../styles/PostDetails.module.css'
+
+const PostDetails = () => {
+  const { postId } = useParams()
+  const { post, error } = usePost(postId)
+
+  if (error) return <p>Error loading post</p>
+  if (!post) return <p>Loading...</p>
+
+  return (
+    <div className={styles['post-details']}>
+      <PostCard post={post} />
+
+      <div className={styles['comments-section']}>
+        
+      </div>
+    </div>
+  )
+}
+
+export default PostDetails
+
+// OLD CODE
 // import PropTypes from 'prop-types'
 // import styles from '../styles/PostDetails.module.css'
 
