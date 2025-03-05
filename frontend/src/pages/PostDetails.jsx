@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom'
 import usePost from '../hooks/usePost'
 import PostCard from '../components/PostCard'
+import CommentCard from '../components/CommentCard'
 import styles from '../styles/PostDetails.module.css'
 
 const PostDetails = () => {
@@ -15,7 +16,11 @@ const PostDetails = () => {
       <PostCard post={post} />
 
       <div className={styles['comments-section']}>
-        
+        {post.comments.length > 0 ? (
+          post.comments.map((comment) => <CommentCard key={comment.id} comment={comment} />)
+        ) : (
+          <p>No comments yet</p>
+        )}
       </div>
     </div>
   )

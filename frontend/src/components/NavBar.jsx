@@ -1,6 +1,6 @@
 import styles from '../styles/NavBar.module.css'
 import useAuth from '../hooks/useAuth'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { logoutUser } from '../api/authApi'
 
 const NavBar = () => {
@@ -20,7 +20,9 @@ const NavBar = () => {
   return (
     <div className={styles['nav-bar']}>
       <div className={styles['nav-bar-left']}>
-        <h2>Social Media App</h2>
+        <Link to='/' className={styles['homepage-link']}>
+          <h2>Social Media App</h2>
+        </Link>
       </div>
       <div className={styles['nav-bar-right']}>
         <div>{ `Welcome, ${auth.username}` }</div>
