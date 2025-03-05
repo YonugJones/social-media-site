@@ -1,8 +1,8 @@
-.post-list {
+.user-feed {
   display: flex;
   flex-direction: column;
 }
 
-.post-list ul {
+.user-feed ul {
   margin: 0;
 }

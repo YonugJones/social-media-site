@@ -1,12 +1,12 @@
 import useFeedPosts from '../hooks/useFeedPosts'
 import PostCard from './PostCard'
-import styles from '../styles/PostList.module.css'
+import styles from '../styles/UserFeed.module.css'
 
-const PostList = () => {
+const UserFeed = () => {
   const { posts, error } = useFeedPosts()
 
   return (
-    <div className={styles['post-list']}>
+    <div className={styles['user-feed']}>
       {error && <p>Error loading posts</p>}
       <ul>
         {posts.length > 0 ? (
@@ -19,4 +19,4 @@ const PostList = () => {
   )
 }
 
-export default PostList
+export default UserFeed

@@ -1,9 +1,9 @@
-import PostList from '../components/PostList'
+import UserFeed from '../components/UserFeed'
 
 const Home = () => {
 
   return (
-    <PostList />
+    <UserFeed />
   )
 }
 
