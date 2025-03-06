@@ -1,3 +1,13 @@
+export const newComment = async (axiosPrivateInstance, postId) => {
+  try {
+    const response = await axiosPrivateInstance.post(`/posts/${postId}/comments`)
+    return response.data
+  } catch (err) {
+    console.error('API error:', err)
+    throw err
+  }
+}
+
 export const toggleLikeComment = async (axiosPrivateInstance, postId, commentId) => {
   try {
     const response = await axiosPrivateInstance.post(`/posts/${postId}/comments/${commentId}/like`)
