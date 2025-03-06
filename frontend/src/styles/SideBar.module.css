@@ -5,5 +5,9 @@
   height: auto;
   display: flex;
   flex-direction: column;
-  
+}
+
+.home-link {
+  text-decoration: none;
+  color: inherit;
 }
