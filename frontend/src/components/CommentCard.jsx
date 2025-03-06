@@ -35,19 +35,23 @@ const CommentCard = ({ comment }) => {
 
   return (
     <div className={styles['comment']}>
-      <div className={styles['header']}>
-        <div className={styles['header-user']}>
-          <img src={comment.user.profilePic || '/default-profile.svg'} alt='profile' />
+
+      <img 
+        className={styles['profile-pic']} 
+        src={comment.user.profilePic || '/default-profile.svg'} alt='profile' 
+      />
+
+      <div className={styles['middle']}>
+        <div className={styles['header']}>
           <h3>{comment.user.username}</h3>
+          <p className={styles['header-date']}>
+            {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
+          </p>
         </div>
-        <p className={styles['header-date']}>
-          {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
-        </p>
-      </div>
-      <div className={styles['content']}>
         <p>{comment.content}</p>
       </div>
-      <div className={styles['footer']}>
+
+      <div className={styles['right']}>
         <button 
           className={`
             ${styles['likes-container']} 
@@ -66,6 +70,7 @@ const CommentCard = ({ comment }) => {
           </div>
         </button>
       </div>
+
     </div>
   )
 }

@@ -1,25 +1,53 @@
 .comment {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   margin-bottom: 10px;
   margin-right: 10px;
   padding: 0 10px 0 10px;
   cursor: pointer;
 }
 
-.header,
-.footer {
-  display: flex;
-  align-items: center;
-}
-
-.header img {
+.profile-pic {
   width: auto;
   height: 20px;
-  margin-right: 5px;
+  margin-right: 20px;
 }
 
-.header-user {
+.likes-container {
   display: flex;
   align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.3s ease;
+}
+
+.likes-container .fa-icon {
+  transition: color 0.3s ease;
+  cursor: pointer;
+}
+
+.liked,
+.liked .fa-icon {
+  color: red;
+}
+
+.unliked,
+.unliked .fa-icon {
+  color: black;
+}
+
+.likes-container:hover,
+.likes-container .fa-icon:hover {
+  color: red;
+}
+
+.likes-container.liked:hover,
+.likes-container.liked:hover .fa-icon {
+  color: black;
+}
+
+.fa-icon {
+  margin-right: 5px;
 }
