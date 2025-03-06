@@ -5,27 +5,41 @@
   margin-right: 10px;
   padding: 0 10px 0 10px;
   background-color: rgba(230, 235, 244, 0.5);
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
   border-radius: 10px;
   cursor: pointer;
 }
 
-.header,
-.footer {
+.header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
 .header img {
   width: auto;
   height: 20px;
-  margin-right: 5px;
+  margin-right: 9px;
 }
 
 .header-user {
   display: flex;
   align-items: center;
+}
+
+.date {
+  margin-left: 10px;
+  color: gray;
+}
+
+.content,
+.footer {
+  padding-left: 25px;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .likes-container,
@@ -54,7 +68,7 @@
 
 .unliked,
 .unliked .fa-icon {
-  color: black;
+  color: rgb(69, 69, 69);
 }
 
 .likes-container:hover,
@@ -64,7 +78,7 @@
 
 .likes-container.liked:hover,
 .likes-container.liked:hover .fa-icon {
-  color: black;
+  color: rgb(69, 69, 69);
 }
 
 .repost-container:hover {
@@ -73,6 +87,11 @@
 
 .comments-container:hover {
   color: blue;
+}
+
+.comments-container,
+.repost-container {
+  color: rgb(69, 69, 69);
 }
 
 .fa-icon {

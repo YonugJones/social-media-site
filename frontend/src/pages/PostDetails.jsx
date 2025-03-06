@@ -28,15 +28,6 @@ const PostDetails = () => {
 
 export default PostDetails
 
-// OLD CODE
-// import PropTypes from 'prop-types'
-// import styles from '../styles/PostDetails.module.css'
-
-// const PostDetails = ({ post }) => {
-//   return (
-//     
-//   )
-// }
 
 // PostDetails.propTypes = {
 //   post: PropTypes.shape({
@@ -64,5 +55,3 @@ export default PostDetails
 //     ).isRequired
 //   }).isRequired
 // }
-
-// export default PostDetails

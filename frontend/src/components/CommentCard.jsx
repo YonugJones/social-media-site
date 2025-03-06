@@ -35,23 +35,18 @@ const CommentCard = ({ comment }) => {
 
   return (
     <div className={styles['comment']}>
-
-      <img 
-        className={styles['profile-pic']} 
-        src={comment.user.profilePic || '/default-profile.svg'} alt='profile' 
-      />
-
-      <div className={styles['middle']}>
-        <div className={styles['header']}>
-          <h3>{comment.user.username}</h3>
-          <p className={styles['header-date']}>
+      {/* LEFT */}
+      <div className={styles['header']}>
+        <div className={styles['header-left']}>
+          <img 
+            className={styles['profile-pic']} 
+            src={comment.user.profilePic || '/default-profile.svg'} alt='profile' 
+          />
+          <h3 className={styles['username']}>{comment.user.username}</h3>
+          <p className={styles['date']}>
             {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
           </p>
         </div>
-        <p>{comment.content}</p>
-      </div>
-
-      <div className={styles['right']}>
         <button 
           className={`
             ${styles['likes-container']} 
@@ -69,6 +64,11 @@ const CommentCard = ({ comment }) => {
             <p>{likeCount}</p>
           </div>
         </button>
+      </div>
+      
+      {/* CONTENT */}
+      <div className={styles['content']}>
+        <p>{comment.content}</p>
       </div>
 
     </div>

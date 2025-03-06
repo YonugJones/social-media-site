@@ -5,6 +5,7 @@ import styles from '../styles/PostCard.module.css'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import { toggleLikePost } from '../api/postApi'
 import { useNavigate } from 'react-router-dom'
+import { formatDistanceToNow } from 'date-fns'
 
 const PostCard = ({ post }) => {
   const axiosPrivate = useAxiosPrivate()
@@ -41,16 +42,21 @@ const PostCard = ({ post }) => {
 
   return (
     <div className={styles['post']} onClick={handleCardClick}>
+      {/* TOP */}
       <div className={styles['header']}>
         <div className={styles['header-user']}>
           <img src={post.user.profilePic || '/default-profile.svg'} alt='profile' />
           <h3>{post.user.username}</h3>
         </div>
-        <p className={styles['header-date']}>{new Date(post.createdAt).toLocaleDateString()}</p>
+        <p className={styles['date']}>
+          {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
+        </p>
       </div>
+      {/* MIDDLE */}
       <div className={styles['content']}>
         <p>{post.content}</p>
       </div>
+      {/* BOTTOM */}
       <div className={styles['footer']}>
         <button 
           className={`

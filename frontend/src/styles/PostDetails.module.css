@@ -1,5 +1,10 @@
-.comment-section {
+.post-details {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  margin-left: 40px;
+}
+
+.comments-section {
+  display: flex;
+  flex-direction: column;
 }
