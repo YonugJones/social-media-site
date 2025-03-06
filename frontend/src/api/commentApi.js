@@ -1,6 +1,6 @@
-export const newComment = async (axiosPrivateInstance, postId) => {
+export const newComment = async (axiosPrivateInstance, postId, content) => {
   try {
-    const response = await axiosPrivateInstance.post(`/posts/${postId}/comments`)
+    const response = await axiosPrivateInstance.post(`/posts/${postId}/comments`, { content })
     return response.data
   } catch (err) {
     console.error('API error:', err)
