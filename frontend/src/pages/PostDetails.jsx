@@ -30,7 +30,6 @@ const PostDetails = () => {
   }, [axiosPrivate, postId])
 
   const handleNewComment = (newComment) => {
-    console.log('handleNewComment:', newComment);
     setPost((prevPost) => ({
       ...prevPost,
       comments: [...prevPost.comments, newComment]
