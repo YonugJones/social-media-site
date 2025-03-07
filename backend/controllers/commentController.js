@@ -26,10 +26,34 @@ const newComment = asyncHandler(async (req, res) => {
     }
   })
 
+  const fullComment = await prisma.comment.findUnique({
+    where: { id: comment.id },
+    include: {
+      user: {
+        select: { 
+          id: true, 
+          username: true, 
+          profilePic: true 
+        }
+      },
+      likes: {
+        select: { userId: true } 
+      },
+      _count: {
+        select: { likes: true }
+      }
+    }
+  })
+
+  const commentWithLikes = {
+    ...fullComment,
+    isLiked: fullComment.likes.some(like => like.userId === user.id) 
+  }
+
   res.status(201).json({
     success: true,
     message: 'Comment created',
-    data: comment
+    data: commentWithLikes
   })
 })
 
