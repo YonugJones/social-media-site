@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import useAuth from '../hooks/useAuth'
 import styles from '../styles/CommentCard.module.css'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
-import { toggleLikeComment } from '../api/commentApi'
+import { toggleLikeComment, deleteComment } from '../api/commentApi'
 import { formatDistanceToNow } from 'date-fns'
 
 const CommentCard = ({ comment }) => {
@@ -32,6 +32,15 @@ const CommentCard = ({ comment }) => {
       console.error('Error toggling like:', err)
       setIsLiked(previousLikeState)
       setLikeCount(previousLikeCount)
+    }
+  }
+
+  const handleDelete = async () => {
+    try {
+      const response = await deleteComment(axiosPrivate, comment.postId, comment.id)
+      console.log(response)
+    } catch (err) {
+      console.error('Error deleting comment:', err)
     }
   }
 
@@ -76,7 +85,7 @@ const CommentCard = ({ comment }) => {
       {auth.id === comment.user.id && (
         <div className={styles['button-container']}>
           <button>Edit</button>
-          <button>Delete</button>
+          <button onClick={handleDelete}>Delete</button>
         </div>
       )}
     </div>

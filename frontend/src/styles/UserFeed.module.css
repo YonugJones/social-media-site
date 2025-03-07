@@ -1,6 +1,7 @@
 .user-feed {
   display: flex;
   flex-direction: column;
+  padding: 10px;
 }
 
 .user-feed ul {

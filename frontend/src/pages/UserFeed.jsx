@@ -1,5 +1,5 @@
 import useFeedPosts from '../hooks/useFeedPosts'
-import PostCard from './PostCard'
+import PostCard from '../components/PostCard'
 import styles from '../styles/UserFeed.module.css'
 
 const UserFeed = () => {
