@@ -11,7 +11,7 @@ const CommentCard = ({ comment, onDelete }) => {
   const axiosPrivate = useAxiosPrivate()
   const { auth } = useAuth()
   const [isLiked, setIsLiked] = useState(comment.isLiked) 
-  const [likeCount, setLikeCount] = useState(comment._count.likes)
+  const [likeCount, setLikeCount] = useState(comment._count.likes || 0)
   const [isHovered, setIsHovered] = useState(false)
 
   useEffect(() => {

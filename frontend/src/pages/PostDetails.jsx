@@ -1,3 +1,6 @@
+// Fetches post state and displays accordingly. 
+// Handles Post / comment changes
+
 import { useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
@@ -26,7 +29,15 @@ const PostDetails = () => {
     fetchPost()
   }, [axiosPrivate, postId])
 
-  const handleCommentDelete = (deletedCommentId) => {
+  const handleNewComment = (newComment) => {
+    console.log('handleNewComment:', newComment);
+    setPost((prevPost) => ({
+      ...prevPost,
+      comments: [...prevPost.comments, newComment]
+    }))
+  }
+
+  const handleDeleteComment = (deletedCommentId) => {
     setPost((prevPost) => ({
       ...prevPost,
       comments: prevPost.comments.filter((comment) => comment.id !== deletedCommentId)
@@ -46,12 +57,12 @@ const PostDetails = () => {
           <CommentCard 
             key={comment.id} 
             comment={comment} 
-            onDelete={handleCommentDelete}
+            onDelete={handleDeleteComment}
           />))
         ) : (
           <p>No comments yet</p>
         )}
-        <NewComment postId={postId} />
+        <NewComment postId={postId} onCommentAdded={handleNewComment} />
       </div>
     </div>
   )
@@ -59,7 +70,7 @@ const PostDetails = () => {
 
 export default PostDetails
 
-
+// OLD
 // PostDetails.propTypes = {
 //   post: PropTypes.shape({
 //     id: PropTypes.number.isRequired,
