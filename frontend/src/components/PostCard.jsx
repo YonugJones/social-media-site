@@ -7,7 +7,7 @@ import { toggleLikePost } from '../api/postApi'
 import { useNavigate } from 'react-router-dom'
 import { formatDistanceToNow } from 'date-fns'
 
-const PostCard = ({ post }) => {
+const PostCard = ({ post, onToggleCommentForm }) => {
   const axiosPrivate = useAxiosPrivate()
   const [isLiked, setIsLiked] = useState(post.isLiked)
   const [likeCount, setLikeCount] = useState(post._count.likes)
@@ -83,7 +83,7 @@ const PostCard = ({ post }) => {
             <p>TBD</p>
           </div>
         </button>
-        <button className={styles['comments-container']} onClick={() => console.log('comment clicked')}>
+        <button className={styles['comments-container']} onClick={() => onToggleCommentForm(post.id)}>
           <div className={styles['comments-img']}>
             <FontAwesomeIcon className={styles['fa-icon']} icon={faComment} />
           </div>

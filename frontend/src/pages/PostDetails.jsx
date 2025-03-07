@@ -15,6 +15,7 @@ const PostDetails = () => {
   const axiosPrivate = useAxiosPrivate()
   const [post, setPost] = useState(null)
   const [error, setError] = useState(null)
+  const [showCommentForm, setShowCommentForm] = useState(false)
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -36,6 +37,10 @@ const PostDetails = () => {
     }))
   }
 
+  const handleToggleCommentForm = () => {
+    setShowCommentForm((prev) => !prev)
+  }
+
   const handleDeleteComment = (deletedCommentId) => {
     setPost((prevPost) => ({
       ...prevPost,
@@ -48,7 +53,7 @@ const PostDetails = () => {
 
   return (
     <div className={styles['post-details']}>
-      <PostCard post={post} />
+      <PostCard post={post} onToggleCommentForm={handleToggleCommentForm} />
 
       <div className={styles['comments-section']}>
         {post.comments.length > 0 ? (
@@ -61,7 +66,7 @@ const PostDetails = () => {
         ) : (
           <p>No comments yet</p>
         )}
-        <NewComment postId={postId} onCommentAdded={handleNewComment} />
+        {showCommentForm && <NewComment postId={postId} onCommentAdded={handleNewComment} />}
       </div>
     </div>
   )
