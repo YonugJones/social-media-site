@@ -1,13 +1,15 @@
 import { useState } from 'react'
 import { newComment } from '../api/commentApi'
+import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import { useNavigate } from 'react-router-dom'
 import styles from '../styles/NewComment.module.css'
 
-const NewComment = (postId) => {
+const NewComment = ({ postId }) => {
   const [content, setContent] = useState('')
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(null)
+  const axiosPrivate = useAxiosPrivate()
   const navigate = useNavigate()
 
   const handleChange = (e) => {
@@ -21,7 +23,7 @@ const NewComment = (postId) => {
     setLoading(true)
 
     try {
-      await newComment(postId, { content })
+      await newComment(axiosPrivate, postId, content)
       setContent('')
       setSuccess(true)
       navigate(`/posts/${postId}`)

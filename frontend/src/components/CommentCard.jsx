@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import useAuth from '../hooks/useAuth'
 import styles from '../styles/CommentCard.module.css'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import { toggleLikeComment } from '../api/commentApi'
@@ -8,6 +9,7 @@ import { formatDistanceToNow } from 'date-fns'
 
 const CommentCard = ({ comment }) => {
   const axiosPrivate = useAxiosPrivate()
+  const { auth } = useAuth()
   const [isLiked, setIsLiked] = useState(comment.isLiked) 
   const [likeCount, setLikeCount] = useState(comment._count.likes)
   const [isHovered, setIsHovered] = useState(false)
@@ -18,24 +20,24 @@ const CommentCard = ({ comment }) => {
   }, [comment])
 
   const handleLikeClick = async () => {
-      const previousLikeState = isLiked
-      const previousLikeCount = likeCount
-  
-      setIsLiked(!isLiked)
-      setLikeCount(isLiked ? likeCount - 1 : likeCount + 1)
-  
-      try {
-        await toggleLikeComment(axiosPrivate, comment.postId, comment.id) 
-      } catch (err) {
-        console.error('Error toggling like:', err)
-        setIsLiked(previousLikeState)
-        setLikeCount(previousLikeCount)
-      }
+    const previousLikeState = isLiked
+    const previousLikeCount = likeCount
+
+    setIsLiked(!isLiked)
+    setLikeCount(isLiked ? likeCount - 1 : likeCount + 1)
+
+    try {
+      await toggleLikeComment(axiosPrivate, comment.postId, comment.id) 
+    } catch (err) {
+      console.error('Error toggling like:', err)
+      setIsLiked(previousLikeState)
+      setLikeCount(previousLikeCount)
     }
+  }
 
   return (
     <div className={styles['comment']}>
-      {/* LEFT */}
+
       <div className={styles['header']}>
         <div className={styles['header-left']}>
           <img 
@@ -71,6 +73,12 @@ const CommentCard = ({ comment }) => {
         <p>{comment.content}</p>
       </div>
 
+      {auth.id === comment.user.id && (
+        <div className={styles['button-container']}>
+          <button>Edit</button>
+          <button>Delete</button>
+        </div>
+      )}
     </div>
   )
 }

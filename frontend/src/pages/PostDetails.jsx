@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom'
 import usePost from '../hooks/usePost'
 import PostCard from '../components/PostCard'
 import CommentCard from '../components/CommentCard'
+import NewComment from '../components/NewComment'
 import styles from '../styles/PostDetails.module.css'
 
 const PostDetails = () => {
@@ -21,6 +22,7 @@ const PostDetails = () => {
         ) : (
           <p>No comments yet</p>
         )}
+        <NewComment postId={postId} />
       </div>
     </div>
   )
