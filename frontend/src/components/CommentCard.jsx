@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
-import { faHeart } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import useAuth from '../hooks/useAuth'
-import styles from '../styles/CommentCard.module.css'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import { toggleLikeComment, deleteComment } from '../api/commentApi'
 import { formatDistanceToNow } from 'date-fns'
+import { faHeart } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import styles from '../styles/CommentCard.module.css'
 
-const CommentCard = ({ comment }) => {
+const CommentCard = ({ comment, onDelete }) => {
   const axiosPrivate = useAxiosPrivate()
   const { auth } = useAuth()
   const [isLiked, setIsLiked] = useState(comment.isLiked) 
@@ -37,8 +37,8 @@ const CommentCard = ({ comment }) => {
 
   const handleDelete = async () => {
     try {
-      const response = await deleteComment(axiosPrivate, comment.postId, comment.id)
-      console.log(response)
+      await deleteComment(axiosPrivate, comment.postId, comment.id)
+      onDelete(comment.id)
     } catch (err) {
       console.error('Error deleting comment:', err)
     }

@@ -1,5 +1,7 @@
 import { useParams } from 'react-router-dom'
-import usePost from '../hooks/usePost'
+import { useState, useEffect } from 'react'
+import useAxiosPrivate from '../hooks/useAxiosPrivate'
+import { getPost } from '../api/postApi'
 import PostCard from '../components/PostCard'
 import CommentCard from '../components/CommentCard'
 import NewComment from '../components/NewComment'
@@ -7,7 +9,29 @@ import styles from '../styles/PostDetails.module.css'
 
 const PostDetails = () => {
   const { postId } = useParams()
-  const { post, error } = usePost(postId)
+  const axiosPrivate = useAxiosPrivate()
+  const [post, setPost] = useState(null)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const response = await getPost(axiosPrivate, postId)
+        setPost(response.data)
+      } catch (err) {
+        setError(err)
+      }
+    }
+
+    fetchPost()
+  }, [axiosPrivate, postId])
+
+  const handleCommentDelete = (deletedCommentId) => {
+    setPost((prevPost) => ({
+      ...prevPost,
+      comments: prevPost.comments.filter((comment) => comment.id !== deletedCommentId)
+    }))
+  }
 
   if (error) return <p>Error loading post</p>
   if (!post) return <p>Loading...</p>
@@ -18,7 +42,12 @@ const PostDetails = () => {
 
       <div className={styles['comments-section']}>
         {post.comments.length > 0 ? (
-          post.comments.map((comment) => <CommentCard key={comment.id} comment={comment} />)
+          post.comments.map((comment) => (
+          <CommentCard 
+            key={comment.id} 
+            comment={comment} 
+            onDelete={handleCommentDelete}
+          />))
         ) : (
           <p>No comments yet</p>
         )}

@@ -10,7 +10,7 @@ export const newComment = async (axiosPrivateInstance, postId, content) => {
 
 export const deleteComment = async (axiosPrivateInstance, postId, commentId) => {
   try {
-    const response = await axiosPrivateInstance.delete(`/posts/${postId}/comment/${commentId}`)
+    const response = await axiosPrivateInstance.delete(`/posts/${postId}/comments/${commentId}`)
     return response.data
   } catch (err) {
     console.error('API error:', err)
