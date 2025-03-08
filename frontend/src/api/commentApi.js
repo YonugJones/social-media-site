@@ -8,9 +8,9 @@ export const newComment = async (axiosPrivateInstance, postId, content) => {
   }
 }
 
-export const editComment = async (axiosPrivateInstance, postId, commentId) => {
+export const editComment = async (axiosPrivateInstance, postId, commentId, content) => {
   try {
-    const response = await axiosPrivateInstance.put(`/posts/${postId}/comments/${commentId}`)
+    const response = await axiosPrivateInstance.put(`/posts/${postId}/comments/${commentId}`, { content })
     return response.data
   } catch (err) {
     console.error('API error:', err)
