@@ -8,6 +8,16 @@ export const newComment = async (axiosPrivateInstance, postId, content) => {
   }
 }
 
+export const editComment = async (axiosPrivateInstance, postId, commentId) => {
+  try {
+    const response = await axiosPrivateInstance.put(`/posts/${postId}/comments/${commentId}`)
+    return response.data
+  } catch (err) {
+    console.error('API error:', err)
+    throw err
+  }
+}
+
 export const deleteComment = async (axiosPrivateInstance, postId, commentId) => {
   try {
     const response = await axiosPrivateInstance.delete(`/posts/${postId}/comments/${commentId}`)
