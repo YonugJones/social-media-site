@@ -27,3 +27,13 @@ export const toggleLikePost = async (axiosPrivateInstance, postId) => {
     throw err
   }
 }
+
+export const newPost = async (axiosPrivateInstance, content) => {
+  try {
+    const response = await axiosPrivateInstance.post('/posts', { content })
+    return response.data
+  } catch (err) {
+    console.error('API error:', err)
+    throw err
+  }
+}
