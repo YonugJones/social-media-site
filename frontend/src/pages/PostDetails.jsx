@@ -35,6 +35,7 @@ const PostDetails = () => {
       ...prevPost,
       comments: [...prevPost.comments, newComment]
     }))
+    setShowCommentForm(false)
   }
 
   const handleToggleCommentForm = () => {
