@@ -6,6 +6,7 @@ import ProtectedRoute from './ProtectedRoute'
 import MainLayout from '../layouts/MainLayout'
 import UserFeed from '../pages/UserFeed'
 import PostDetails from '../pages/PostDetails'
+import NewPost from '../components/NewPost'
 
 const router = createBrowserRouter([
   {
@@ -22,7 +23,8 @@ const router = createBrowserRouter([
         element: <MainLayout />,
         children: [
           { path: '/', element: <UserFeed /> },
-          { path: '/posts/:postId', element: <PostDetails /> }
+          { path: '/posts/:postId', element: <PostDetails /> },
+          { path: '/new-post', element: <NewPost /> }
         ]
       }
     ]
