@@ -3,8 +3,8 @@
 
 import { useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import { getPost } from '../api/postApi'
+import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import PostCard from '../components/PostCard'
 import CommentCard from '../components/CommentCard'
 import NewComment from '../components/NewComment'
