@@ -1,18 +1,22 @@
 import { useState, useEffect } from 'react'
 import useAuth from '../hooks/useAuth'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
-import { toggleLikeComment, deleteComment } from '../api/commentApi'
+import { toggleLikeComment, editComment, deleteComment } from '../api/commentApi'
 import { formatDistanceToNow } from 'date-fns'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import styles from '../styles/CommentCard.module.css'
 
-const CommentCard = ({ comment, onDelete }) => {
+const CommentCard = ({ comment, onEdit, onDelete }) => {
   const axiosPrivate = useAxiosPrivate()
   const { auth } = useAuth()
+
   const [isLiked, setIsLiked] = useState(comment.isLiked) 
   const [likeCount, setLikeCount] = useState(comment._count.likes || 0)
   const [isHovered, setIsHovered] = useState(false)
+
+  const [isEditing, setIsEditing] = useState(false)
+  const [editedContent, setEditedContent] = useState(comment.content)
 
   useEffect(() => {
     setIsLiked(comment.isLiked)
@@ -33,6 +37,25 @@ const CommentCard = ({ comment, onDelete }) => {
       setIsLiked(previousLikeState)
       setLikeCount(previousLikeCount)
     }
+  }
+
+  const handleEditClick = () => {
+    setIsEditing(true)
+  }
+
+  const handleSaveEdit = async () => {
+    try {
+      const updatedComment = await editComment(axiosPrivate, comment.postId, comment.id, editedContent)
+      onEdit(updatedComment.data)
+      setIsEditing(false)
+    } catch (err) {
+      console.error('Error editing comment:', err)
+    }
+  }
+
+  const handleCancelEdit = () => {
+    setEditedContent(comment.content)
+    setIsEditing(false)
   }
 
   const handleDelete = async () => {
@@ -77,15 +100,31 @@ const CommentCard = ({ comment, onDelete }) => {
         </button>
       </div>
       
-      {/* CONTENT */}
       <div className={styles['content']}>
-        <p>{comment.content}</p>
+        {isEditing ? (
+          <textarea 
+            className={styles['edit-textarea']}
+            value={editedContent}
+            onChange={(e) => setEditedContent(e.target.value)}
+          />
+        ) : (
+          <p>{comment.content}</p>
+        )}
       </div>
 
       {auth.id === comment.user.id && (
         <div className={styles['button-container']}>
-          <button>Edit</button>
-          <button onClick={handleDelete}>Delete</button>
+          {isEditing ? (
+            <>
+              <button onClick={handleSaveEdit}>Save</button>
+              <button onClick={handleCancelEdit}>Cancel</button>
+            </>
+          ) : (
+            <>
+              <button onClick={handleEditClick}>Edit</button>
+              <button onClick={handleDelete}>Delete</button>
+            </>
+          )}
         </div>
       )}
     </div>

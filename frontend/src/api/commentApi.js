@@ -37,5 +37,3 @@ export const toggleLikeComment = async (axiosPrivateInstance, postId, commentId)
     throw err
   }
 }
-
-// add editComment

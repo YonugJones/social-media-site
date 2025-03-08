@@ -42,6 +42,15 @@ const PostDetails = () => {
     setShowCommentForm((prev) => !prev)
   }
 
+  const handleEditComment = (editedComment) => {
+    setPost((prevPost) => ({
+      ...prevPost,
+      comments: prevPost.comments.map((comment) =>
+        comment.id === editedComment.id ? { ...comment, content: editedComment.content } : comment
+      )
+    }))
+  }
+
   const handleDeleteComment = (deletedCommentId) => {
     setPost((prevPost) => ({
       ...prevPost,
@@ -62,12 +71,18 @@ const PostDetails = () => {
           <CommentCard 
             key={comment.id} 
             comment={comment} 
+            onEdit={handleEditComment}
             onDelete={handleDeleteComment}
           />))
         ) : (
           <p>No comments yet</p>
         )}
-        {showCommentForm && <NewComment postId={postId} onCommentAdded={handleNewComment} />}
+        {showCommentForm && (
+          <NewComment 
+            postId={postId} 
+            onCommentAdded={handleNewComment} 
+          />
+        )}
       </div>
     </div>
   )
