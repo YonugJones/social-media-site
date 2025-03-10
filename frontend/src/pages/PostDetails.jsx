@@ -21,7 +21,7 @@ const PostDetails = () => {
     const fetchPost = async () => {
       try {
         const response = await getPost(axiosPrivate, postId)
-        setPost(response.data)
+        setPost({ ...response.data, comments: response.data.comments || [] })
       } catch (err) {
         setError(err)
       }
@@ -33,7 +33,7 @@ const PostDetails = () => {
   const handleNewComment = (newComment) => {
     setPost((prevPost) => ({
       ...prevPost,
-      comments: [...prevPost.comments, newComment]
+      comments: prevPost.comments ? [...prevPost.comments, newComment] : [newComment]
     }))
     setShowCommentForm(false)
   }

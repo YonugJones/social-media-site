@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { newPost } from '../api/postApi'
+import { useNavigate } from 'react-router-dom'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import styles from '../styles/NewPost.module.css'
 
@@ -9,6 +10,7 @@ const NewPost = ({ onPostAdded }) => {
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false)
   const axiosPrivate = useAxiosPrivate()
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     setContent(e.target.value)
@@ -18,15 +20,22 @@ const NewPost = ({ onPostAdded }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (!content.trim()) {
+      setError('Post content cannot be empty.')
+      return
+    }
     setLoading(true)
 
     try {
       const response = await newPost(axiosPrivate, content)
       setContent('')
       setSuccess(true)
-      onPostAdded(response.data)
+      if (onPostAdded) {
+        onPostAdded(response.data)
+      }
+      navigate('/')
     } catch (err) {
-      setError(err.response?.data.message || 'Failed to add comment')
+      setError(err.response?.data.message || 'Failed to create post')
     } finally {
       setLoading(false)
     }

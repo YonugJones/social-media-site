@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { getFeedPosts } from '../api/postApi'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import PostCard from '../components/PostCard'
+import NewPost from '../components/NewPost'
 import styles from '../styles/UserFeed.module.css'
 
 const UserFeed = () => {
@@ -24,12 +25,18 @@ const UserFeed = () => {
     fetchPosts()
   }, [axiosPrivate])
 
+  const handleNewPost = (newPost) => {
+    setPosts((prevPosts) => [newPost, ...prevPosts])
+  }
+
   const handleToggleCommentForm = () => {
     console.log('you clicked the comment icon!')
   }
 
   return (
     <div className={styles['user-feed']}>
+      <NewPost onPostAdded={handleNewPost} />
+
       {error && <p>Error loading posts</p>}
       <ul>
         {posts.length > 0 ? (

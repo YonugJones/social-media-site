@@ -15,15 +15,50 @@ const newPost = asyncHandler(async (req, res) => {
 
   const post = await prisma.post.create({
     data: {
-      userId: user.id,
       content,
+      userId: user.id
+    },
+  })
+
+  const postWithInfo = await prisma.post.findUnique({
+    where: { id: post.id },
+    include: {
+      user: {
+        select: { 
+          id: true, 
+          username: true, 
+          profilePic: true 
+        }
+      },
+      comments: {
+        orderBy: { createdAt: 'desc' },
+        select: {
+          id: true,
+          postId: true,
+          content: true,
+          createdAt: true,
+          user: {
+            select: { 
+              id: true, 
+              username: true, 
+              profilePic: true 
+            }
+          },
+          _count: {
+            select: { likes: true }
+          }
+        }
+      },
+      _count: {
+        select: { likes: true, comments: true }
+      }
     },
   })
 
   res.status(201).json({
     success: true,
     message: 'Post created',
-    data: post
+    data: postWithInfo
   })
 })
 
