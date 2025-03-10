@@ -38,6 +38,17 @@ export const newPost = async (axiosPrivateInstance, content) => {
   }
 }
 
+// router.put('/:postId', authenticateToken, validatePost, postController.editPost)
+export const editPost = async (axiosPrivateInstance, postId, content) => {
+  try {
+    const response = await axiosPrivateInstance.put(`/posts/${postId}`, { content })
+    return response.data
+  } catch (err) {
+    console.error('API error:', err)
+    throw err
+  }
+}
+
 export const deletePost = async (axiosPrivateInstance, postId) => {
   try {
     const response = await axiosPrivateInstance.delete(`/posts/${postId}`)
