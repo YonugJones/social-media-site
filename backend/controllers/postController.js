@@ -92,10 +92,45 @@ const editPost = asyncHandler(async (req, res) => {
     data: { content }
   })
 
+  const postWithInfo = await prisma.post.findUnique({
+    where: { id: updatedPost.id },
+    include: {
+      user: {
+        select: { 
+          id: true, 
+          username: true, 
+          profilePic: true 
+        }
+      },
+      comments: {
+        orderBy: { createdAt: 'desc' },
+        select: {
+          id: true,
+          postId: true,
+          content: true,
+          createdAt: true,
+          user: {
+            select: { 
+              id: true, 
+              username: true, 
+              profilePic: true 
+            }
+          },
+          _count: {
+            select: { likes: true }
+          }
+        }
+      },
+      _count: {
+        select: { likes: true, comments: true }
+      }
+    },
+  })
+
   res.status(200).json({
     success: true,
     message: 'Post updated',
-    data: updatedPost
+    data: postWithInfo
   })
 })
 

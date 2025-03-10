@@ -38,7 +38,6 @@ export const newPost = async (axiosPrivateInstance, content) => {
   }
 }
 
-// router.put('/:postId', authenticateToken, validatePost, postController.editPost)
 export const editPost = async (axiosPrivateInstance, postId, content) => {
   try {
     const response = await axiosPrivateInstance.put(`/posts/${postId}`, { content })
