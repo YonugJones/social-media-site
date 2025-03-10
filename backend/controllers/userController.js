@@ -40,6 +40,10 @@ const getUser = asyncHandler(async (req, res) => {
     }
   })
 
+  if (!userProfile) {
+    throw new CustomError('User not found', 401)
+  }
+
   const formattedProfile = {
     ...userProfile,
     followers: userProfile.followers.map(f => f.follower),

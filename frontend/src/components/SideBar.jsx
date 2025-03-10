@@ -7,8 +7,6 @@ const SideBar = () => {
       <ul>
         <li><Link to='/' className={styles['home-link']}>HOME</Link></li>
         {/* <li>NEW MESSAGE</li> */}
-        <li>FOLLWERS</li>
-        <li>FOLLOWING</li>
         <li>PROFILE</li>
       </ul>
     </div>
