@@ -15,6 +15,11 @@
   align-items: center;
 }
 
+.header-info {
+  display: flex;
+  align-items: center;
+}
+
 .header img {
   width: auto;
   height: 20px;
@@ -24,6 +29,13 @@
 .header-user {
   display: flex;
   align-items: center;
+}
+
+.header-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-left: auto;
 }
 
 .date {

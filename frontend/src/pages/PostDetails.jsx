@@ -1,7 +1,7 @@
 // Fetches post state and displays accordingly. 
 // Handles Post / comment changes
 
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { getPost } from '../api/postApi'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
@@ -13,6 +13,7 @@ import styles from '../styles/PostDetails.module.css'
 const PostDetails = () => {
   const { postId } = useParams()
   const axiosPrivate = useAxiosPrivate()
+  const navigate = useNavigate()
   const [post, setPost] = useState(null)
   const [error, setError] = useState(null)
   const [showCommentForm, setShowCommentForm] = useState(false)
@@ -29,6 +30,12 @@ const PostDetails = () => {
 
     fetchPost()
   }, [axiosPrivate, postId])
+
+  const handleDeletePost = (deletedPostId) => {
+    if (post.id === deletedPostId) {
+      navigate('/')
+    }
+  }
 
   const handleNewComment = (newComment) => {
     setPost((prevPost) => ({
@@ -63,7 +70,11 @@ const PostDetails = () => {
 
   return (
     <div className={styles['post-details']}>
-      <PostCard post={post} onToggleCommentForm={handleToggleCommentForm} />
+      <PostCard 
+        post={post} 
+        onToggleCommentForm={handleToggleCommentForm} 
+        onDelete={handleDeletePost}
+      />
 
       <div className={styles['comments-section']}>
         {post.comments.length > 0 ? (
@@ -89,31 +100,3 @@ const PostDetails = () => {
 }
 
 export default PostDetails
-
-// OLD
-// PostDetails.propTypes = {
-//   post: PropTypes.shape({
-//     id: PropTypes.number.isRequired,
-//     content: PropTypes.string.isRequired,
-//     createdAt: PropTypes.string.isRequired,
-//     user: PropTypes.shape({
-//       id: PropTypes.number.isRequired,
-//       username: PropTypes.string.isRequired,
-//       profilePic: PropTypes.string
-//     }).isRequired,
-//     likes: PropTypes.arrayOf(PropTypes.object).isRequired,
-//     comments: PropTypes.arrayOf(
-//       PropTypes.shape({
-//         id: PropTypes.number.isRequired,
-//         postId: PropTypes.number.isRequired,
-//         content: PropTypes.string.isRequired,
-//         createdAt: PropTypes.string.isRequired,
-//         user: PropTypes.shape({
-//           id: PropTypes.number.isRequired,
-//           username: PropTypes.string.isRequired,
-//           profilePic: PropTypes.string
-//         }).isRequired
-//       })
-//     ).isRequired
-//   }).isRequired
-// }

@@ -1,18 +1,20 @@
 import { useState, useEffect } from 'react'
+import useAuth from '../hooks/useAuth'
 import { faComment, faHeart, faRepeat } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import styles from '../styles/PostCard.module.css'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
-import { toggleLikePost } from '../api/postApi'
+import { toggleLikePost, deletePost } from '../api/postApi'
 import { useNavigate } from 'react-router-dom'
 import { formatDistanceToNow } from 'date-fns'
 
-const PostCard = ({ post, onToggleCommentForm }) => {
+const PostCard = ({ post, onToggleCommentForm, onDelete }) => {
   const axiosPrivate = useAxiosPrivate()
   const [isLiked, setIsLiked] = useState(post.isLiked)
   const [likeCount, setLikeCount] = useState(post._count.likes)
   const [isHovered, setIsHovered] = useState(false)
   const navigate = useNavigate()
+  const { auth } = useAuth()
 
   useEffect(() => {
     setIsLiked(post.isLiked)
@@ -40,17 +42,38 @@ const PostCard = ({ post, onToggleCommentForm }) => {
     navigate(`/posts/${post.id}`)
   }
 
+  const handleDelete = async (e) => {
+    e.stopPropagation()
+
+    try {
+      await deletePost(axiosPrivate, post.id)
+      onDelete(post.id)
+    } catch (err) {
+      console.error('Error deleting post:', err)
+    }
+  }
+
   return (
     <div className={styles['post']} onClick={handleCardClick}>
       {/* TOP */}
       <div className={styles['header']}>
-        <div className={styles['header-user']}>
-          <img src={post.user.profilePic || '/default-profile.svg'} alt='profile' />
-          <h3>{post.user.username}</h3>
+
+        <div className={styles['header-info']}>
+          <div className={styles['header-user']}>
+            <img src={post.user.profilePic || '/default-profile.svg'} alt='profile' />
+            <h3>{post.user.username}</h3>
+          </div>
+          <p className={styles['date']}>
+            {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
+          </p>
         </div>
-        <p className={styles['date']}>
-          {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
-        </p>
+
+        {auth.id === post.user.id && (
+          <div className={styles['header-buttons']}>
+            <button onClick={handleDelete}>Delete</button>
+          </div>
+        )}
+
       </div>
       {/* MIDDLE */}
       <div className={styles['content']}>

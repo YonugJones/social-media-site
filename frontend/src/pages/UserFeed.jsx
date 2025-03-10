@@ -33,6 +33,10 @@ const UserFeed = () => {
     console.log('you clicked the comment icon!')
   }
 
+  const handleDeletePost = (deletedPostId) => {
+    setPosts((prevPosts) => prevPosts.filter((post) => post.id !== deletedPostId))
+  }
+
   return (
     <div className={styles['user-feed']}>
       <NewPost onPostAdded={handleNewPost} />
@@ -40,7 +44,14 @@ const UserFeed = () => {
       {error && <p>Error loading posts</p>}
       <ul>
         {posts.length > 0 ? (
-          posts.map((post) => <PostCard key={post.id} post={post} onToggleCommentForm={handleToggleCommentForm} />)
+          posts.map((post) => (
+            <PostCard 
+              key={post.id} 
+              post={post} 
+              onToggleCommentForm={handleToggleCommentForm} 
+              onDelete={handleDeletePost}
+            />
+          ))
         ) : (
           <p>No posts to display</p>
         )}
