@@ -4,17 +4,21 @@ import { faComment, faHeart, faRepeat } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import styles from '../styles/PostCard.module.css'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
-import { toggleLikePost, deletePost } from '../api/postApi'
+import { toggleLikePost, editPost, deletePost } from '../api/postApi'
 import { useNavigate } from 'react-router-dom'
 import { formatDistanceToNow } from 'date-fns'
 
-const PostCard = ({ post, onToggleCommentForm, onDelete }) => {
+const PostCard = ({ post, onToggleCommentForm, onEdit, onDelete }) => {
+  const navigate = useNavigate()
   const axiosPrivate = useAxiosPrivate()
+  const { auth } = useAuth()
+
   const [isLiked, setIsLiked] = useState(post.isLiked)
   const [likeCount, setLikeCount] = useState(post._count.likes)
   const [isHovered, setIsHovered] = useState(false)
-  const navigate = useNavigate()
-  const { auth } = useAuth()
+
+  const [isEditing, setIsEditing] = useState(false)
+  const [editedContent, setEditedContent] = useState(post.content)
 
   useEffect(() => {
     setIsLiked(post.isLiked)
@@ -40,6 +44,26 @@ const PostCard = ({ post, onToggleCommentForm, onDelete }) => {
 
   const handleCardClick = () => {
     navigate(`/posts/${post.id}`)
+  }
+
+  const handleEditClick = (e) => {
+    e.stopPropagation()
+    setIsEditing(true)
+  }
+
+  const handleSaveEdit = async () => {
+    try {
+      const response = await editPost(axiosPrivate, post.id, editedContent)
+      onEdit(response.data)
+      setIsEditing(false)
+    } catch (err) {
+      console.error('Error editing post:', err)
+    }
+  }
+
+  const handleCancelEdit = () => {
+    setEditedContent(post.content)
+    setIsEditing(false)
   }
 
   const handleDelete = async (e) => {
@@ -69,16 +93,36 @@ const PostCard = ({ post, onToggleCommentForm, onDelete }) => {
         </div>
 
         {auth.id === post.user.id && (
-          <div className={styles['header-buttons']}>
-            <button onClick={handleDelete}>Delete</button>
+          <div className={styles['button-container']}>
+            {isEditing ? (
+              <>
+                <button onClick={handleSaveEdit}>Save</button>
+                <button onClick={handleCancelEdit}>Cancel</button>
+              </>
+            ) : (
+              <>
+                <button onClick={handleEditClick}>Edit</button>
+                <button onClick={handleDelete}>Delete</button>
+              </>
+            )}
           </div>
         )}
 
       </div>
+
       {/* MIDDLE */}
       <div className={styles['content']}>
-        <p>{post.content}</p>
+        {isEditing ? (
+          <textarea 
+            className={styles['edit-textarea']}
+            value={editedContent}
+            onChange={(e) => setEditedContent(e.target.value)}
+          />
+        ) : (
+          <p>{post.content}</p>
+        )}
       </div>
+
       {/* BOTTOM */}
       <div className={styles['footer']}>
         <button 

@@ -31,6 +31,10 @@ const PostDetails = () => {
     fetchPost()
   }, [axiosPrivate, postId])
 
+  const handleEditPost = (updatedPost) => {
+    setPost(updatedPost)
+  }
+
   const handleDeletePost = (deletedPostId) => {
     if (post.id === deletedPostId) {
       navigate('/')
@@ -73,6 +77,7 @@ const PostDetails = () => {
       <PostCard 
         post={post} 
         onToggleCommentForm={handleToggleCommentForm} 
+        onEdit={handleEditPost}
         onDelete={handleDeletePost}
       />
 

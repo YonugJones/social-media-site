@@ -33,6 +33,12 @@ const UserFeed = () => {
     console.log('you clicked the comment icon!')
   }
 
+  const handleEditPost = (updatedPost) => {
+    setPosts((prevPosts) => 
+      prevPosts.map((post) => (post.id === updatedPost.id ? updatedPost : post))
+    )
+  }
+
   const handleDeletePost = (deletedPostId) => {
     setPosts((prevPosts) => prevPosts.filter((post) => post.id !== deletedPostId))
   }
@@ -49,6 +55,7 @@ const UserFeed = () => {
               key={post.id} 
               post={post} 
               onToggleCommentForm={handleToggleCommentForm} 
+              onEdit={handleEditPost}
               onDelete={handleDeletePost}
             />
           ))
