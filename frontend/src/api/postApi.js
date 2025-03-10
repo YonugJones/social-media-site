@@ -37,3 +37,13 @@ export const newPost = async (axiosPrivateInstance, content) => {
     throw err
   }
 }
+
+export const deletePost = async (axiosPrivateInstance, postId) => {
+  try {
+    const response = await axiosPrivateInstance.delete(`/posts/${postId}`)
+    return response.data
+  } catch (err) {
+    console.error('API error:', err)
+    throw err
+  }
+}
