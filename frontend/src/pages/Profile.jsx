@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { getUser, getPostsByUser } from '../api/userApi'
+import useAuth from '../hooks/useAuth'
 import PostCard from '../components/PostCard'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import { useParams } from 'react-router-dom'
@@ -7,12 +8,16 @@ import styles from '../styles/Profile.module.css'
 
 const Profile = () => {
   // const [success, setSuccess] = useState(false)
-  const { userId } = useParams()
+  let { userId } = useParams()
+  userId = Number(userId)
+  const { auth } = useAuth()
   const axiosPrivate = useAxiosPrivate()
   const [profile, setProfile] = useState({})
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+
+  console.log(userId === auth.id) // logs true
 
   // immeidately fetch user profile and posts on mount
   useEffect(() => {
@@ -71,6 +76,10 @@ const Profile = () => {
         <p>{profile.bio}</p>
       </div>
 
+      {auth.id === userId && (
+        <button className={styles['edit-button']}>Edit Profile</button>
+      )}
+
       <div className={styles['profile-posts']}>
         <h2>{profile.username}&apos;s Posts</h2>
         {posts.length > 0 ? (
@@ -85,6 +94,8 @@ const Profile = () => {
           <p>No posts to display</p>
         )}
       </div>
+
+   
       
     </div>
   )
