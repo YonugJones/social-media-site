@@ -5,10 +5,36 @@
   height: auto;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.side-bar-links {
+  list-style-type: none;
+  padding: 0;
 }
 
 .home-link,
-.new-post-link {
+.profile-link {
+  margin-bottom: 10px; 
+  width: 100%; 
+}
+
+.link {
   text-decoration: none;
-  color: inherit;
+  color: inherit; 
+  display: block;
+  padding: 0.5rem;
+  background-color: rgb(224, 184, 140);
+  color: rgb(247, 247, 247);
+  width: 80px;
+  margin: 0 auto;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  text-align: center; 
+}
+
+.link:hover {
+  background-color: rgb(194, 159, 122);
 }

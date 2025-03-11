@@ -7,10 +7,14 @@ const SideBar = () => {
 
   return (
     <div className={styles['side-bar']}>
-      <ul>
-        <li><Link to='/' className={styles['home-link']}>HOME</Link></li>
+      <ul className={styles['side-bar-links']}>
+        <li className={styles['home-link']}>
+          <Link to='/' className={styles['link']}>HOME</Link>
+        </li>
         {/* <li>NEW MESSAGE</li> */}
-        <li><Link to={`/profile/${auth.id}`}>PROFILE</Link></li>
+        <li className={styles['profile-link']}>
+          <Link to={`/profile/${auth.id}`} className={styles['link']}>PROFILE</Link>
+        </li>
       </ul>
     </div>
   )
