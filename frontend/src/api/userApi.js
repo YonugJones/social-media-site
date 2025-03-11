@@ -17,3 +17,13 @@ export const getPostsByUser = async (axiosPrivateInstance, userId) => {
     throw err
   }
 }
+
+export const editUser = async (axiosPrivateInstance, userData) => {
+  try {
+    const response = await axiosPrivateInstance.put(`/users/${userData.userId}`)
+    return response.data
+  } catch (err) {
+    console.error('API error:', err)
+    throw err
+  }
+}
