@@ -17,8 +17,6 @@ const Profile = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
-  console.log(userId === auth.id) // logs true
-
   // immeidately fetch user profile and posts on mount
   useEffect(() => {
     const fetchProfileAndPosts = async () => {

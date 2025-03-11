@@ -51,7 +51,8 @@ const PostCard = ({ post, onToggleCommentForm, onEdit, onDelete }) => {
     setIsEditing(true)
   }
 
-  const handleSaveEdit = async () => {
+  const handleSaveEdit = async (e) => {
+    e.stopPropagation()
     try {
       const response = await editPost(axiosPrivate, post.id, editedContent)
       onEdit(response.data)
@@ -61,7 +62,8 @@ const PostCard = ({ post, onToggleCommentForm, onEdit, onDelete }) => {
     }
   }
 
-  const handleCancelEdit = () => {
+  const handleCancelEdit = (e) => {
+    e.stopPropagation()
     setEditedContent(post.content)
     setIsEditing(false)
   }
@@ -117,6 +119,7 @@ const PostCard = ({ post, onToggleCommentForm, onEdit, onDelete }) => {
             className={styles['edit-textarea']}
             value={editedContent}
             onChange={(e) => setEditedContent(e.target.value)}
+            onClick={(e) => e.stopPropagation()}
           />
         ) : (
           <p>{post.content}</p>

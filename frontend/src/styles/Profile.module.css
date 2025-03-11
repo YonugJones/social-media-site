@@ -56,3 +56,17 @@
 .profile-bio {
   display: flex;
 }
+
+.edit-button {
+  padding: 0.5rem;
+  background-color: rgb(224, 184, 140);
+  color: rgb(247, 247, 247);
+  width: 100px;
+  cursor: pointer;
+  border: none;
+  border-radius: 20px;
+}
+
+.edit-button:hover {
+  background-color: rgb(194, 159, 122);
+}
