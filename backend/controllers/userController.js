@@ -21,6 +21,14 @@ const getUser = asyncHandler(async (req, res) => {
       email: true,
       bio: true,
       profilePic: true,
+      posts: true,
+      _count: {
+        select: {
+          posts: true,
+          followers: true,
+          following: true
+        }
+      },
       followers: { 
         where: { isConfirmed: true, followingId: userId },
         select: {

@@ -1,0 +1,27 @@
+.profile-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-header {
+  display: flex;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-sub-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.posts-container,
+.followers-container,
+.following-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}

@@ -6,6 +6,7 @@ import ProtectedRoute from './ProtectedRoute'
 import MainLayout from '../layouts/MainLayout'
 import UserFeed from '../pages/UserFeed'
 import PostDetails from '../pages/PostDetails'
+import Profile from '../pages/Profile'
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
         children: [
           { path: '/', element: <UserFeed /> },
           { path: '/posts/:postId', element: <PostDetails /> },
+          { path: '/profile/:userId', element: <Profile /> } 
         ]
       }
     ]
