@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { getUser } from '../api/userApi'
+import { getUser, getPostsByUser } from '../api/userApi'
+import PostCard from '../components/PostCard'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import { useParams } from 'react-router-dom'
 import styles from '../styles/Profile.module.css'
@@ -9,23 +10,30 @@ const Profile = () => {
   const { userId } = useParams()
   const axiosPrivate = useAxiosPrivate()
   const [profile, setProfile] = useState({})
-  const [loading, setLoading] = useState(true)
+  const [posts, setPosts] = useState([])
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
-  // immeidately fetch user data on mount
+  // immeidately fetch user profile and posts on mount
   useEffect(() => {
-    const fetchUser = async () => {
+    const fetchProfileAndPosts = async () => {
+      setLoading(true)
       try {
-        const response = await getUser(axiosPrivate, userId)
-        setProfile(response.data)
+        const [userResponse, postsResponse] = await Promise.all([
+          getUser(axiosPrivate, userId),
+          getPostsByUser(axiosPrivate, userId)
+        ])
+
+        setProfile(userResponse.data)
+        setPosts(postsResponse.data)
       } catch (err) {
-        setError(err.response?.data.message || 'Failed to retrieve profile')
+        setError(err.response?.data.message || 'Failed to retrieve profile and posts')
       } finally {
         setLoading(false)
       }
     }
 
-    fetchUser()
+    fetchProfileAndPosts()
   }, [axiosPrivate, userId])
 
   return (
@@ -61,6 +69,21 @@ const Profile = () => {
 
       <div className={styles['profile-bio']}>
         <p>{profile.bio}</p>
+      </div>
+
+      <div className={styles['profile-posts']}>
+        <h2>{profile.username}&apos;s Posts</h2>
+        {posts.length > 0 ? (
+          posts.map((post) => (
+            <PostCard 
+              key={post.id} 
+              post={post} 
+              onToggleCommentForm={() => console.log('Comment icon clicked')} 
+            />
+          ))
+        ) : (
+          <p>No posts to display</p>
+        )}
       </div>
       
     </div>

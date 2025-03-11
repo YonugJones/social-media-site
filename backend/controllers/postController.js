@@ -234,6 +234,9 @@ const getPostsByUser = asyncHandler(async (req, res) => {
           profilePic: true 
         }
       },
+      likes: {
+        select: { userId: true }
+      },
       comments: {
         orderBy: { createdAt: 'desc' },
         select: {
