@@ -39,6 +39,11 @@ const Profile = () => {
     fetchProfileAndPosts()
   }, [axiosPrivate, userId])
 
+  const handleEditClick = () => {
+    // handleEditClick logic
+    console.log('handleEditClick clicked!')
+  }
+
   return (
     <div className={styles['profile-container']}>
       {loading && <p>Loading profile...</p>}
@@ -50,8 +55,9 @@ const Profile = () => {
           <img src={profile.profilePic || '/default-profile.svg'} alt='profile' />
         </div>
         <div className={styles['profile-info']}>
-          <div className={styles['username']}>
-            {profile.username}
+          <div className={styles['username-and-email-container']}>
+            <p className={styles['username']}>{profile.username}</p>
+            <p className={styles['email']}>{profile.email}</p>
           </div>
           <div className={styles['profile-sub-info']}>
           <div className={styles['posts-container']}>
@@ -75,7 +81,12 @@ const Profile = () => {
       </div>
 
       {auth.id === userId && (
-        <button className={styles['edit-button']}>Edit Profile</button>
+        <button 
+          className={styles['edit-button']}
+          onClick={handleEditClick}
+        >
+          Edit Profile
+        </button>
       )}
 
       <div className={styles['profile-posts']}>

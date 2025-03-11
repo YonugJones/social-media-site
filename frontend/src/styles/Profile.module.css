@@ -29,9 +29,17 @@
   padding-right: 20px;
 }
 
-.username {
+.username-and-email-container {
   display: flex;
+}
+
+.username {
   font-weight: bold;
+}
+
+.email {
+  margin-left: 10px;
+  color: gray;
 }
 
 .profile-sub-info {
