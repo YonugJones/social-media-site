@@ -1,20 +1,41 @@
 .profile-container {
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
 }
 
 .profile-header {
   display: flex;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.profile-pic {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-pic img {
+  width: auto;
+  height: 50px;
+  margin-right: 9px;
 }
 
 .profile-info {
   display: flex;
   flex-direction: column;
+  width: 100%;
+  padding-right: 20px;
+}
+
+.username {
+  display: flex;
+  font-weight: bold;
 }
 
 .profile-sub-info {
   display: flex;
-  align-items: center;
   justify-content: space-between;
 }
 
@@ -24,4 +45,14 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+
+.posts-container p,
+.followers-container p,
+.following-container p {
+  margin: 0; 
+}
+
+.profile-bio {
+  display: flex;
 }

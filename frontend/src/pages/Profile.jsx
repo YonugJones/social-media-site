@@ -34,6 +34,7 @@ const Profile = () => {
       {error && <p>{error}</p>}
 
       <div className={styles['profile-header']}>
+
         <div className={styles['profile-pic']}>
           <img src={profile.profilePic || '/default-profile.svg'} alt='profile' />
         </div>
@@ -57,9 +58,11 @@ const Profile = () => {
           </div>
         </div>
       </div>
+
       <div className={styles['profile-bio']}>
         <p>{profile.bio}</p>
       </div>
+      
     </div>
   )
 }
