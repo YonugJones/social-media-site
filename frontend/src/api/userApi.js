@@ -18,9 +18,9 @@ export const getPostsByUser = async (axiosPrivateInstance, userId) => {
   }
 }
 
-export const editUser = async (axiosPrivateInstance, userData) => {
+export const editUser = async (axiosPrivateInstance, userId, userData) => {
   try {
-    const response = await axiosPrivateInstance.put(`/users/${userData.userId}`)
+    const response = await axiosPrivateInstance.put(`/users/${userId}`, userData)
     return response.data
   } catch (err) {
     console.error('API error:', err)
