@@ -169,7 +169,20 @@ const rejectFollowRequest = asyncHandler(async (req, res) => {
     where: { id: existingFriendship.id }
   })
 
-  res.status(200).json({ success: true, message: 'Follow request rejected' })  
+  const followers = await prisma.friendship.findMany({
+    where: { isConfirmed: true, followerId: userId },
+    select: {
+      follower: {
+        select: { id: true, username: true, profilePic: true }
+      }
+    }
+  })  
+
+  res.status(200).json({ 
+    success: true, 
+    message: 'Follow request rejected',
+    data: followers.map(f => f.follower)
+  })  
 })
 
 const removeFollower = asyncHandler(async (req, res) => {
