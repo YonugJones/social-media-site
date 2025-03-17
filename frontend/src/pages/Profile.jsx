@@ -3,7 +3,7 @@ import { getUser, getPostsByUser, editUser } from '../api/userApi'
 import useAuth from '../hooks/useAuth'
 import PostCard from '../components/PostCard'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import styles from '../styles/Profile.module.css'
 
 const Profile = () => {
@@ -125,14 +125,17 @@ const Profile = () => {
                 <p>{profile?._count?.posts ?? 0}</p>
                 <p>posts</p>
               </div>
+
               <div className={styles['followers-container']}>
                 <p>{profile?._count?.followers ?? 0}</p>
-                <p>followers</p>
+                <Link to={`/profile/${userId}/followers`}>followers</Link>
               </div>
+
               <div className={styles['following-container']}>
                 <p>{profile?._count?.following ?? 0}</p>
-                <p>following</p>
+                <Link to={`/profile/${userId}/following`}>following</Link>
               </div>
+
               </div>
             </div>
 
