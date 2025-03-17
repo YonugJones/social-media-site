@@ -27,3 +27,13 @@ export const rejectFollowRequest = async (axiosPrivateInstance, followerId) => {
     throw err
   }
 }
+
+export const removeFollower = async (axiosPrivateInstance, followerId) => {
+  try {
+    const response = await axiosPrivateInstance.delete('/users/follow/remove', { followerId })
+    return response.data
+  } catch (err) {
+    console.error('API error:', err)
+    throw err
+  }
+}
