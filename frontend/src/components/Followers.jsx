@@ -5,9 +5,8 @@ const Followers = ({ followers, onClose }) => {
   return (
     <div className={styles['overlay']}>
       <div className={styles['overlay-content']}>
-        <h2>Followers</h2>
         <button onClick={onClose} className={styles['close-button']}>X</button>
-        <UsersList users={followers} />
+        <UsersList users={followers} type='followers' />
       </div>
     </div>
   )

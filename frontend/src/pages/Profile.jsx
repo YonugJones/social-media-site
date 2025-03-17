@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
-import { getUser, getPostsByUser, editUser } from '../api/userApi'
+import { getUser, getPostsByUser, editUser, getFollowers, getFollowing } from '../api/userApi'
 import useAuth from '../hooks/useAuth'
 import PostCard from '../components/PostCard'
+import Followers from '../components/Followers'
+import Following from '../components/Following'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
-import { useParams, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import styles from '../styles/Profile.module.css'
 
 const Profile = () => {
@@ -23,6 +25,11 @@ const Profile = () => {
     bio: profile.bio || '',
     profilePic: profile.profilePic || ''
   })
+
+  const [followers, setFollowers] = useState([])
+  const [following, setFollowing] = useState([])
+  const [showFollowers, setShowFollowers] = useState(false)
+  const [showFollowing, setShowFollowing] = useState(false)
 
   // immeidately fetch user profile and posts on mount
   useEffect(() => {
@@ -56,6 +63,24 @@ const Profile = () => {
     })
   }, [profile])
 
+  // fetch followers and following data
+  useEffect(() => {
+    const fetchFollowData = async () => {
+      try {
+        const [followersData, followingData] = await Promise.all([
+          getFollowers(axiosPrivate, userId),
+          getFollowing(axiosPrivate, userId)
+        ])
+        setFollowers(followersData.data)
+        setFollowing(followingData.data)
+      } catch (err) {
+        setError(err.response?.data.message || 'Failed to retrieve followers/following')
+      }
+    }
+
+    fetchFollowData()
+  }, [axiosPrivate, userId])
+
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
@@ -79,6 +104,16 @@ const Profile = () => {
     } catch (err) {
       setError(err.response?.data.message || 'Failed to update profile')
     }
+  }
+
+  const handleShowFollowers = () => {
+    setShowFollowers((prev) => !prev)
+    setShowFollowing(false)
+  }
+
+  const handleShowFollowing = () => {
+    setShowFollowing((prev) => !prev)
+    setShowFollowers(false)
   }
 
   return (
@@ -116,27 +151,35 @@ const Profile = () => {
             </div>
 
             <div className={styles['profile-info']}>
+
               <div className={styles['username-and-email-container']}>
                 <p className={styles['username']}>{profile.username}</p>
                 <p className={styles['email']}>{profile.email}</p>
               </div>
+
               <div className={styles['profile-sub-info']}>
-              <div className={styles['posts-container']}>
-                <p>{profile?._count?.posts ?? 0}</p>
-                <p>posts</p>
+
+                <div className={styles['posts-container']}>
+                  <p>{profile?._count?.posts ?? 0}</p>
+                  <p>posts</p>
+                </div>
+
+                <div className={styles['followers-container']}>
+                  <p>{profile?._count?.followers ?? 0}</p>
+                  <button onClick={handleShowFollowers} className={styles['toggle-button']}>
+                    followers
+                  </button>
+                </div>
+
+                <div className={styles['following-container']}>
+                  <p>{profile?._count?.following ?? 0}</p>
+                  <button onClick={handleShowFollowing} className={styles['toggle-button']}>
+                    following
+                  </button>
+                </div>
+
               </div>
 
-              <div className={styles['followers-container']}>
-                <p>{profile?._count?.followers ?? 0}</p>
-                <Link to={`/profile/${userId}/followers`}>followers</Link>
-              </div>
-
-              <div className={styles['following-container']}>
-                <p>{profile?._count?.following ?? 0}</p>
-                <Link to={`/profile/${userId}/following`}>following</Link>
-              </div>
-
-              </div>
             </div>
 
           </div>
@@ -156,6 +199,9 @@ const Profile = () => {
 
         </div>
       )}
+
+      {showFollowers && <Followers followers={followers} onClose={handleShowFollowers} />}
+      {showFollowing && <Following following={following} onClose={handleShowFollowing} />}
 
       <div className={styles['profile-posts']}>
         <h2>{profile.username}&apos;s Posts</h2>

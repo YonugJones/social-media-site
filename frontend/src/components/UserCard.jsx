@@ -4,7 +4,12 @@ const UserCard = ({ user, type, onAction }) => {
   return (
     <div className={styles['user-card']}>
       <div className={styles['user-info']}>
-        <img src={user.profilePic || '/default-pic.svg'} alt={`${user.username}'s profile`} />
+        <div className={styles['profile-pic']}>
+          <img 
+            src={user.profilePic || '/default-profile.svg'} 
+            alt={`${user.username}'s profile`} 
+          />
+        </div>
         <p>{user.username}</p>
       </div>
       <div className={styles['actions']}>
@@ -16,7 +21,7 @@ const UserCard = ({ user, type, onAction }) => {
         ) : type === 'followers' ? (
           <button onClick={() => onAction('followBack', user.id)}>Follow Back</button>
         ) : (
-          <button onClick={() => onAction('unfollow')}>Unfollow</button>
+          <button onClick={() => onAction('unfollow', user.id)}>Unfollow</button>
         )}
       </div>
     </div>
