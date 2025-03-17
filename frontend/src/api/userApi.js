@@ -27,3 +27,23 @@ export const editUser = async (axiosPrivateInstance, userId, userData) => {
     throw err
   }
 }
+
+export const getFollowers = async (axiosPrivateInstance, userId) => {
+  try {
+    const response = await axiosPrivateInstance.get(`/users/${userId}/followers`)
+    return response.data
+  } catch (err) {
+    console.error('API error:', err)
+    throw err
+  }
+}
+
+export const getFollowing = async (axiosPrivateInstance, userId) => {
+  try {
+    const response = await axiosPrivateInstance.get(`/users/${userId}/following`)
+    return response.data
+  } catch (err) {
+    console.error('API error:', err)
+    throw err
+  }
+}
