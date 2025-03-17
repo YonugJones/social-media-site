@@ -37,3 +37,13 @@ export const removeFollower = async (axiosPrivateInstance, followerId) => {
     throw err
   }
 }
+
+export const unfollow = async (axiosPrivateInstance, followingId) => {
+  try {
+    const response = await axiosPrivateInstance.delete('/users/follow/unfollow', { followingId })
+    return response.data
+  } catch (err) {
+    console.error('API error:', err)
+    throw err
+  }
+}
