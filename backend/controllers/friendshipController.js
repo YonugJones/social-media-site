@@ -125,7 +125,7 @@ const confirmFollowRequest = asyncHandler(async (req, res) => {
   })
 
   const followers = await prisma.friendship.findMany({
-    where: { isConfirmed: true, followerId: userId },
+    where: { isConfirmed: true, followingId: userId },
     select: {
       follower: {
         select: { id: true, username: true, profilePic: true }
@@ -170,7 +170,7 @@ const rejectFollowRequest = asyncHandler(async (req, res) => {
   })
 
   const followers = await prisma.friendship.findMany({
-    where: { isConfirmed: true, followerId: userId },
+    where: { isConfirmed: true, followingId: userId },
     select: {
       follower: {
         select: { id: true, username: true, profilePic: true }
@@ -213,7 +213,20 @@ const removeFollower = asyncHandler(async (req, res) => {
     where: { id: existingFriendship.id }
   })
 
-  res.status(200).json({ success: true, message: 'Follower removed' })
+  const followers = await prisma.friendship.findMany({
+    where: { isConfirmed: true, followingId: userId },
+    select: {
+      follower: {
+        select: { id: true, username: true, profilePic: true }
+      }
+    }
+  })  
+
+  res.status(200).json({ 
+    success: true, 
+    message: 'Follower removed', 
+    data: followers.map(f => f.follower)
+  })
 })
 
 const unfollow = asyncHandler(async (req, res) => {
@@ -245,7 +258,20 @@ const unfollow = asyncHandler(async (req, res) => {
     where: { id: existingFriendship.id }
   })
 
-  res.status(200).json({ success: true, message: 'User unfollowed' })
+  const following = await prisma.friendship({
+    where: { isConfirmed: true, followerId: userId },
+    select: {
+      following: {
+        select: { id: true, username: true, profilePic: true }
+      }
+    }
+  })
+
+  res.status(200).json({ 
+    success: true, 
+    message: 'User unfollowed', 
+    data: following.map(f => f.following)
+  })
 })
 
 module.exports = {
