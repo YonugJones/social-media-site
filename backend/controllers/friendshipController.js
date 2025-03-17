@@ -2,6 +2,64 @@ const prisma = require('../prisma/prismaClient')
 const asyncHandler = require('express-async-handler')
 const CustomError = require('../errors/customError')
 
+const getFollowers = asyncHandler(async (req, res) => {
+  const user = req.user
+  if (!user) {
+    throw new CustomError('Unauthorized: user not authenticated', 401)
+  }
+
+  const userId = user.id
+
+  const userProfile = await prisma.user.findUnique({ where: { id: userId } })
+  if (!userProfile) {
+    throw new CustomError('User not found', 404)
+  }
+
+  const followers = await prisma.friendship.findMany({
+    where: { isConfirmed: true, followingId: userId },
+    select: {
+      follower: {
+        select: { id: true, username: true, profilePic: true }
+      }
+    }
+  })
+
+  res.status(200).json({
+    success: true,
+    message: 'Followers fetched',
+    data: followers.map(f => f.follower)
+  })
+})
+
+const getFollowing = asyncHandler(async (req, res) => {
+  const user = req.user
+  if (!user) {
+    throw new CustomError('Unauthorized: user not authenticated', 401)
+  }
+
+  const userId = user.id
+
+  const userProfile = await prisma.user.findUnique({ where: { id: userId } })
+  if (!userProfile) {
+    throw new CustomError('User not found', 404)
+  }
+
+  const following = await prisma.friendship.findMany({
+    where: { isConfirmed: true, followerId: userId },
+    select: {
+      following: {
+        select: { id: true, username: true, profilePic: true }
+      }
+    }
+  })
+
+  res.status(200).json({
+    success: true,
+    message: 'Following fetched',
+    data: following.map(f => f.following) 
+  })
+})
+
 const followRequest = asyncHandler(async (req, res) => {
   const user = req.user
   if (!user) {
@@ -165,6 +223,8 @@ const unfollow = asyncHandler(async (req, res) => {
 })
 
 module.exports = {
+  getFollowers,
+  getFollowing,
   followRequest,
   confirmFollowRequest,
   rejectFollowRequest,

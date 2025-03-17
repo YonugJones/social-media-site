@@ -13,6 +13,8 @@ router.get('/:userId', authenticateToken, userController.getUser)
 router.put('/:userId', authenticateToken, validateEditUser, userController.editUser)
 router.delete('/:userId', authenticateToken, userController.deleteUser)
 
+router.get('/:userId/followers', authenticateToken, friendshipController.getFollowers)
+router.get('/:userId/following', authenticateToken, friendshipController.getFollowing)
 router.post('/:userId/follow', authenticateToken, friendshipController.followRequest)
 router.put('/follow/confirm', authenticateToken, friendshipController.confirmFollowRequest)
 router.delete('/follow/reject', authenticateToken, friendshipController.rejectFollowRequest)
