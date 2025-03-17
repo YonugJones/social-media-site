@@ -19,7 +19,10 @@ const UserCard = ({ user, type, onAction }) => {
             <button onClick={() => onAction('reject', user.id)}>Reject</button>
           </>
         ) : type === 'followers' ? (
-          <button onClick={() => onAction('followBack', user.id)}>Follow Back</button>
+          <>
+            <button onClick={() => onAction('followBack', user.id)}>Follow Back</button>
+            <button onClick={() => onAction('remove', user.id)}>Remove</button>
+          </>
         ) : (
           <button onClick={() => onAction('unfollow', user.id)}>Unfollow</button>
         )}
@@ -29,3 +32,4 @@ const UserCard = ({ user, type, onAction }) => {
 }
 
 export default UserCard
+

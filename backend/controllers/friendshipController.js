@@ -124,7 +124,20 @@ const confirmFollowRequest = asyncHandler(async (req, res) => {
     data: { isConfirmed: true }
   })
 
-  res.status(200).json({ success: true, message: 'Follow request confirmed' })
+  const followers = await prisma.friendship.findMany({
+    where: { isConfirmed: true, followerId: userId },
+    select: {
+      follower: {
+        select: { id: true, username: true, profilePic: true }
+      }
+    }
+  })
+
+  res.status(200).json({ 
+    success: true, 
+    message: 'Follow request confirmed',
+    data: followers.map(f => f.follower)
+  })
 })
 
 const rejectFollowRequest = asyncHandler(async (req, res) => {

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { getUser, getPostsByUser, editUser, getFollowers, getFollowing } from '../api/userApi'
+import { followRequest, confirmFollowRequest, rejectFollowRequest, removeFollower, unfollow } from '../api/friendshipApi'
 import useAuth from '../hooks/useAuth'
 import PostCard from '../components/PostCard'
 import Followers from '../components/Followers'
@@ -116,6 +117,42 @@ const Profile = () => {
     setShowFollowers(false)
   }
 
+  const handleFollowAction = async (action, targetUserId) => {
+    try {
+      let response
+      switch (action) {
+        case 'accept': 
+          response = await confirmFollowRequest(axiosPrivate, targetUserId)
+          setFollowers((prev) =>
+            prev.map((follower) => 
+              follower.id === targetUserId ? { ...follower, isConfirmed: true } : follower
+            )
+          )
+          break
+        case 'reject':
+          response = await rejectFollowRequest(axiosPrivate, targetUserId)
+          setFollowers((prev) => prev.filter((follower) => follower.id !== targetUserId))
+          break
+        case 'followBack':
+          response = await followRequest(axiosPrivate, targetUserId)
+          setFollowing((prev) => [...prev, response.data])
+          break
+        case 'unfollow':
+          response = await unfollow(axiosPrivate, targetUserId)
+          setFollowing((prev) => prev.filter((user) => user.id !== targetUserId))
+          break
+        case 'remove':
+          response = await removeFollower(axiosPrivate, targetUserId)
+          setFollowers((prev) => prev.filter((user) => user.id !== targetUserId))
+          break
+        default:
+          console.warn('Unknown action', action)
+      }
+    } catch (err) {
+      console.error('Error handling follow action:', err)
+    }
+  }
+
   return (
     <>
       {isEditing ? (
@@ -200,8 +237,8 @@ const Profile = () => {
         </div>
       )}
 
-      {showFollowers && <Followers followers={followers} onClose={handleShowFollowers} />}
-      {showFollowing && <Following following={following} onClose={handleShowFollowing} />}
+      {showFollowers && <Followers followers={followers} onClose={handleShowFollowers} onAction={handleFollowAction} />}
+      {showFollowing && <Following following={following} onClose={handleShowFollowing} onAction={handleFollowAction} />}
 
       <div className={styles['profile-posts']}>
         <h2>{profile.username}&apos;s Posts</h2>
