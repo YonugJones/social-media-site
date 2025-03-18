@@ -20,7 +20,9 @@ export const confirmFollowRequest = async (axiosPrivateInstance, followerId) => 
 
 export const rejectFollowRequest = async (axiosPrivateInstance, followerId) => {
   try {
-    const response = await axiosPrivateInstance.delete('/users/follow/reject', { followerId })
+    const response = await axiosPrivateInstance.delete('/users/follow/reject', {
+      data: { followerId }
+    })
     return response.data
   } catch (err) {
     console.error('API error:', err)
@@ -30,7 +32,9 @@ export const rejectFollowRequest = async (axiosPrivateInstance, followerId) => {
 
 export const removeFollower = async (axiosPrivateInstance, followerId) => {
   try {
-    const response = await axiosPrivateInstance.delete('/users/follow/remove', { followerId })
+    const response = await axiosPrivateInstance.delete('/users/follow/remove', {
+      data: { followerId }
+    })
     return response.data
   } catch (err) {
     console.error('API error:', err)
@@ -40,7 +44,9 @@ export const removeFollower = async (axiosPrivateInstance, followerId) => {
 
 export const unfollow = async (axiosPrivateInstance, followingId) => {
   try {
-    const response = await axiosPrivateInstance.delete('/users/follow/unfollow', { followingId })
+    const response = await axiosPrivateInstance.delete('/users/follow/unfollow', {
+      data: { followingId }
+    })
     return response.data
   } catch (err) {
     console.error('API error:', err)
