@@ -10,7 +10,6 @@ import { useParams } from 'react-router-dom'
 import styles from '../styles/Profile.module.css'
 
 const Profile = () => {
-  // const [success, setSuccess] = useState(false)
   const { userId } = useParams()
   const { auth } = useAuth()
   const axiosPrivate = useAxiosPrivate()
@@ -120,33 +119,42 @@ const Profile = () => {
   const handleFollowAction = async (action, targetUserId) => {
     try {
       let response
+      let updatedData
+
       switch (action) {
-        case 'accept': 
+
+        case 'confirm':
           response = await confirmFollowRequest(axiosPrivate, targetUserId)
-          setFollowers((prev) =>
-            prev.map((follower) => 
-              follower.id === targetUserId ? { ...follower, isConfirmed: true } : follower
-            )
-          )
+          updatedData = response.data
+          setFollowers(updatedData)
           break
+
         case 'reject':
           response = await rejectFollowRequest(axiosPrivate, targetUserId)
-          setFollowers((prev) => prev.filter((follower) => follower.id !== targetUserId))
+          updatedData = response.data
+          setFollowers(updatedData)
           break
-        case 'followBack':
-          response = await followRequest(axiosPrivate, targetUserId)
-          setFollowing((prev) => [...prev, response.data])
-          break
-        case 'unfollow':
-          response = await unfollow(axiosPrivate, targetUserId)
-          setFollowing((prev) => prev.filter((user) => user.id !== targetUserId))
-          break
+
         case 'remove':
           response = await removeFollower(axiosPrivate, targetUserId)
-          setFollowers((prev) => prev.filter((user) => user.id !== targetUserId))
+          updatedData = response.data
+          setFollowers(updatedData)
           break
+          
+        case 'unfollow':
+          response = await unfollow(axiosPrivate, targetUserId)
+          updatedData = response.data
+          setFollowing(updatedData)  
+          break
+
+        case 'followBack':
+          response = await followRequest(axiosPrivate, targetUserId)
+          updatedData = response.data
+          setFollowing(updatedData)
+          break
+
         default:
-          console.warn('Unknown action', action)
+          console.warn('Unknown action:', action)
       }
     } catch (err) {
       console.error('Error handling follow action:', err)

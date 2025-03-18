@@ -91,7 +91,20 @@ const followRequest = asyncHandler(async (req, res) => {
     data: { followerId: userId, followingId: followId }
   })
 
-  res.status(201).json({ success: true, message: 'Follow request sent' })
+  const following = await prisma.friendship.findMany({
+    where: { isConfirmed: true, followerId: userId },
+    select: {
+      following: {
+        select: { id: true, username: true, profilePic: true }
+      }
+    }
+  })
+
+  res.status(201).json({ 
+    success: true, 
+    message: 'Follow request sent', 
+    data: following.map(f => f.following)
+  })
 })
 
 const confirmFollowRequest = asyncHandler(async (req, res) => {
@@ -258,7 +271,7 @@ const unfollow = asyncHandler(async (req, res) => {
     where: { id: existingFriendship.id }
   })
 
-  const following = await prisma.friendship({
+  const following = await prisma.friendship.findMany({
     where: { isConfirmed: true, followerId: userId },
     select: {
       following: {

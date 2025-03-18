@@ -15,7 +15,7 @@ const UserCard = ({ user, type, onAction }) => {
       <div className={styles['actions']}>
         {user.isConfirmed === false ? (
           <>
-            <button onClick={() => onAction('accept', user.id)}>Accept</button>
+            <button onClick={() => onAction('confirm', user.id)}>Confirm</button>
             <button onClick={() => onAction('reject', user.id)}>Reject</button>
           </>
         ) : type === 'followers' ? (
