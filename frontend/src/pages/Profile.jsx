@@ -106,14 +106,32 @@ const Profile = () => {
     }
   }
 
-  const handleShowFollowers = () => {
+  const handleShowFollowers = async () => {
     setShowFollowers((prev) => !prev)
     setShowFollowing(false)
+
+    if (!showFollowers) {
+      try {
+        const followersData = await getFollowers(axiosPrivate, userId)
+        setFollowers(followersData.data)
+      } catch (err) {
+        setError(err.response?.data.message || 'Failed to retrieve followers')
+      }
+    }
   }
 
-  const handleShowFollowing = () => {
+  const handleShowFollowing = async () => {
     setShowFollowing((prev) => !prev)
     setShowFollowers(false)
+
+    if (!showFollowing) {
+      try {
+        const followingData = await getFollowing(axiosPrivate, userId)
+        setFollowing(followingData.data)
+      } catch (err) {
+        setError(err.response?.data.message || 'Failed to retreive following')
+      }
+    }
   }
 
   const handleFollowAction = async (action, targetUserId) => {
