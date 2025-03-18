@@ -136,48 +136,44 @@ const Profile = () => {
 
   const handleFollowAction = async (action, targetUserId) => {
     try {
-      let response
-      let updatedData
-
       switch (action) {
-
         case 'confirm':
-          response = await confirmFollowRequest(axiosPrivate, targetUserId)
-          updatedData = response.data
-          setFollowers(updatedData)
+          await confirmFollowRequest(axiosPrivate, targetUserId)
           break
-
+  
         case 'reject':
-          response = await rejectFollowRequest(axiosPrivate, targetUserId)
-          updatedData = response.data
-          setFollowers(updatedData)
+          await rejectFollowRequest(axiosPrivate, targetUserId)
           break
-
+  
         case 'remove':
-          response = await removeFollower(axiosPrivate, targetUserId)
-          updatedData = response.data
-          setFollowers(updatedData)
+          await removeFollower(axiosPrivate, targetUserId)
           break
           
         case 'unfollow':
-          response = await unfollow(axiosPrivate, targetUserId)
-          updatedData = response.data
-          setFollowing(updatedData)  
+          await unfollow(axiosPrivate, targetUserId)
           break
-
+  
         case 'followBack':
-          response = await followRequest(axiosPrivate, targetUserId)
-          updatedData = response.data
-          setFollowing(updatedData)
+          await followRequest(axiosPrivate, targetUserId)
           break
-
+  
         default:
           console.warn('Unknown action:', action)
       }
+  
+      const [updatedFollowers, updatedFollowing] = await Promise.all([
+        getFollowers(axiosPrivate, userId),
+        getFollowing(axiosPrivate, userId)  
+      ])
+  
+      setFollowers(updatedFollowers.data)
+      setFollowing(updatedFollowing.data)
+  
     } catch (err) {
       console.error('Error handling follow action:', err)
     }
   }
+  
 
   return (
     <>
