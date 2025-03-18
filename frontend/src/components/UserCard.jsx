@@ -1,7 +1,11 @@
+import useAuth from '../hooks/useAuth'
 import styles from '../styles/UserCard.module.css'
 
-const UserCard = ({ user, type, following, onAction }) => {
+const UserCard = ({ user, type, following, onAction, profileOwnerId }) => {
+  const { auth } = useAuth()
   const isAlreadyFollowing = following?.some(f => f.id === user.id)
+
+  const isProfileOwner = auth.id === profileOwnerId
 
   return (
     <div className={styles['user-card']}>
@@ -17,18 +21,24 @@ const UserCard = ({ user, type, following, onAction }) => {
       <div className={styles['actions']}>
         {user.isConfirmed === false ? (
           <>
-            <button onClick={() => onAction('confirm', user.id)}>Confirm</button>
-            <button onClick={() => onAction('reject', user.id)}>Reject</button>
+            {isProfileOwner && (
+              <>
+                <button onClick={() => onAction('confirm', user.id)}>Confirm</button>
+                <button onClick={() => onAction('reject', user.id)}>Reject</button>
+              </>
+            )}
           </>
         ) : type === 'followers' ? (
           <>
-            {!isAlreadyFollowing && ( 
+            {isProfileOwner && !isAlreadyFollowing && ( 
               <button onClick={() => onAction('followBack', user.id)}>Follow Back</button>
             )}
-            <button onClick={() => onAction('remove', user.id)}>Remove</button>
+            {isProfileOwner && (
+              <button onClick={() => onAction('remove', user.id)}>Remove</button>
+            )}
           </>
         ) : (
-          <button onClick={() => onAction('unfollow', user.id)}>Unfollow</button>
+          isProfileOwner && <button onClick={() => onAction('unfollow', user.id)}>Unfollow</button>
         )}
       </div>
     </div>

@@ -268,6 +268,7 @@ const Profile = () => {
           following={following}
           onClose={handleShowFollowers} 
           onAction={handleFollowAction} 
+          profileOwnerId={profile.id}
         />
       )}
 
@@ -276,6 +277,7 @@ const Profile = () => {
           following={following} 
           onClose={handleShowFollowing} 
           onAction={handleFollowAction} 
+          profileOwnerId={profile.id}
         />
       )}
 

@@ -1,7 +1,7 @@
 import UserCard from './UserCard'
 import styles from '../styles/UsersList.module.css'
 
-const UsersList = ({ users, following, type, onAction }) => {
+const UsersList = ({ users, following, type, onAction, profileOwnerId }) => {
   return (
     <div className={styles['users-list-container']}>
       <h2>{type === 'followers' ? 'Followers' : 'Following'}</h2>
@@ -15,6 +15,7 @@ const UsersList = ({ users, following, type, onAction }) => {
             following={following}
             type={type} 
             onAction={onAction} 
+            profileOwnerId={profileOwnerId}
           />
         )
       )}
