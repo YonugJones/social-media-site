@@ -15,6 +15,7 @@ router.delete('/:userId', authenticateToken, userController.deleteUser)
 
 router.get('/:userId/followers', authenticateToken, friendshipController.getFollowers)
 router.get('/:userId/following', authenticateToken, friendshipController.getFollowing)
+router.get('/:userId/nonFollowing', authenticateToken, friendshipController.getNonFollowing)
 router.post('/:userId/follow', authenticateToken, friendshipController.followRequest)
 router.put('/follow/confirm', authenticateToken, friendshipController.confirmFollowRequest)
 router.delete('/follow/reject', authenticateToken, friendshipController.rejectFollowRequest)

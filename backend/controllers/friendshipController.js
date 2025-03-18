@@ -31,6 +31,40 @@ const getFollowers = asyncHandler(async (req, res) => {
   })
 })
 
+const getNonFollowing = asyncHandler(async (req, res) => {
+  const user = req.user
+  if (!user) {
+    throw new CustomError('Unauthorized: user not authenticated')
+  }
+
+  const userId = req.id
+
+  const nonFollowing = await prisma.user.findMany({
+    where: {
+      id : { not: userId },
+      NOT: {
+        followers: {
+          some: {
+            followerId: userId,
+            isConfirmed: true
+          }
+        }
+      }
+    },
+    select: {
+      id: true,
+      username: true,
+      profilePic: true
+    }
+  })
+
+  res.status(200).json({
+    success: true,
+    message: 'All users not followed fetched',
+    data: nonFollowing
+  })
+})
+
 const getFollowing = asyncHandler(async (req, res) => {
   const user = req.user
   if (!user) {
@@ -290,6 +324,7 @@ const unfollow = asyncHandler(async (req, res) => {
 module.exports = {
   getFollowers,
   getFollowing,
+  getNonFollowing,
   followRequest,
   confirmFollowRequest,
   rejectFollowRequest,
