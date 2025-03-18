@@ -46,6 +46,11 @@ const PostCard = ({ post, onToggleCommentForm, onEdit, onDelete }) => {
     navigate(`/posts/${post.id}`)
   }
 
+  const handleUsernameClick = (e) => {
+    e.stopPropagation()
+    navigate(`/profile/${post.userId}`)
+  }
+
   const handleEditClick = (e) => {
     e.stopPropagation()
     setIsEditing(true)
@@ -87,7 +92,7 @@ const PostCard = ({ post, onToggleCommentForm, onEdit, onDelete }) => {
         <div className={styles['header-info']}>
           <div className={styles['header-user']}>
             <img src={post.user.profilePic || '/default-profile.svg'} alt='profile' />
-            <h3>{post.user.username}</h3>
+            <button className={styles['header-user-button']} onClick={handleUsernameClick}><h3>{post.user.username}</h3></button>
           </div>
           <p className={styles['date']}>
             {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
