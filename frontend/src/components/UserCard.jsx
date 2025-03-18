@@ -1,6 +1,8 @@
 import styles from '../styles/UserCard.module.css'
 
-const UserCard = ({ user, type, onAction }) => {
+const UserCard = ({ user, type, following, onAction }) => {
+  const isAlreadyFollowing = following?.some(f => f.id === user.id)
+
   return (
     <div className={styles['user-card']}>
       <div className={styles['user-info']}>
@@ -20,7 +22,9 @@ const UserCard = ({ user, type, onAction }) => {
           </>
         ) : type === 'followers' ? (
           <>
-            <button onClick={() => onAction('followBack', user.id)}>Follow Back</button>
+            {!isAlreadyFollowing && ( 
+              <button onClick={() => onAction('followBack', user.id)}>Follow Back</button>
+            )}
             <button onClick={() => onAction('remove', user.id)}>Remove</button>
           </>
         ) : (

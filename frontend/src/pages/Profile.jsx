@@ -262,8 +262,22 @@ const Profile = () => {
         </div>
       )}
 
-      {showFollowers && <Followers followers={followers} onClose={handleShowFollowers} onAction={handleFollowAction} />}
-      {showFollowing && <Following following={following} onClose={handleShowFollowing} onAction={handleFollowAction} />}
+      {showFollowers && (
+        <Followers 
+          followers={followers} 
+          following={following}
+          onClose={handleShowFollowers} 
+          onAction={handleFollowAction} 
+        />
+      )}
+
+      {showFollowing && (
+        <Following 
+          following={following} 
+          onClose={handleShowFollowing} 
+          onAction={handleFollowAction} 
+        />
+      )}
 
       <div className={styles['profile-posts']}>
         <h2>{profile.username}&apos;s Posts</h2>
