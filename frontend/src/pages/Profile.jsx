@@ -107,31 +107,33 @@ const Profile = () => {
   }
 
   const handleShowFollowers = async () => {
-    setShowFollowers((prev) => !prev)
-    setShowFollowing(false)
-
     if (!showFollowers) {
       try {
         const followersData = await getFollowers(axiosPrivate, userId)
+        console.log('Fetched followers:', followersData.data) // correctly shows followers
         setFollowers(followersData.data)
       } catch (err) {
         setError(err.response?.data.message || 'Failed to retrieve followers')
       }
     }
+
+    setShowFollowers((prev) => !prev)
+    setShowFollowing(false)
   }
 
   const handleShowFollowing = async () => {
-    setShowFollowing((prev) => !prev)
-    setShowFollowers(false)
-
     if (!showFollowing) {
       try {
         const followingData = await getFollowing(axiosPrivate, userId)
+        console.log('Fetched following:', followingData.data) // correctly shows following, empty array
         setFollowing(followingData.data)
       } catch (err) {
         setError(err.response?.data.message || 'Failed to retreive following')
       }
     }
+
+    setShowFollowing((prev) => !prev)
+    setShowFollowers(false)
   }
 
   const handleFollowAction = async (action, targetUserId) => {
@@ -224,7 +226,8 @@ const Profile = () => {
                 </div>
 
                 <div className={styles['followers-container']}>
-                  <p>{profile?._count?.followers ?? 0}</p>
+                  <p>{profile?._count?.followers ?? 0}</p> {/* incorrectly shows 4 */}
+                  
                   <button onClick={handleShowFollowers} className={styles['toggle-button']}>
                     followers
                   </button>
