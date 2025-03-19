@@ -37,7 +37,7 @@ const getNonFollowing = asyncHandler(async (req, res) => {
     throw new CustomError('Unauthorized: user not authenticated')
   }
 
-  const userId = req.id
+  const userId = user.id
 
   const nonFollowing = await prisma.user.findMany({
     where: {
