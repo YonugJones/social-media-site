@@ -11,7 +11,6 @@ const SideBar = () => {
         <li className={styles['home-link']}>
           <Link to='/' className={styles['link']}>HOME</Link>
         </li>
-        {/* <li>NEW MESSAGE</li> */}
         <li className={styles['profile-link']}>
           <Link to={`/profile/${auth.id}`} className={styles['link']}>PROFILE</Link>
         </li>

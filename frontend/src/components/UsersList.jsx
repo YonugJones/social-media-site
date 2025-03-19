@@ -4,7 +4,11 @@ import styles from '../styles/UsersList.module.css'
 const UsersList = ({ users, following, type, onAction, profileOwnerId }) => {
   return (
     <div className={styles['users-list-container']}>
-      <h2>{type === 'followers' ? 'Followers' : 'Following'}</h2>
+      <h2>
+        {type === 'followers' ? 'Followers' : 
+        type === 'following' ? 'Following' : 
+        'Users you can follow'}
+      </h2>
       {users.length === 0 ? (
         <p>No {type} yet</p>
       ) : (
