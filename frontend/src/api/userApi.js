@@ -47,3 +47,13 @@ export const getFollowing = async (axiosPrivateInstance, userId) => {
     throw err
   }
 }
+
+export const getNonFollowing = async (axiosPrivateInstance, userId) => {
+  try {
+    const response = await axiosPrivateInstance.get(`/users/${userId}/nonfollowing`)
+    return response.data
+  } catch (err) {
+    console.error('API error:', err)
+    throw err
+  }
+}
