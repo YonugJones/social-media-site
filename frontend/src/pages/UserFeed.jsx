@@ -1,5 +1,3 @@
-// fetches FeedPosts state and displays
-
 import { useState, useEffect } from 'react'
 import { getFeedPosts } from '../api/postApi'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'

@@ -1,9 +1,6 @@
-// Fetches post state and displays accordingly. 
-// Handles Post / comment changes
-
 import { useParams, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { getPost } from '../api/postApi'
+import { getPostById } from '../api/postApi'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import PostCard from '../components/PostCard'
 import CommentCard from '../components/CommentCard'
@@ -21,7 +18,7 @@ const PostDetails = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await getPost(axiosPrivate, postId)
+        const response = await getPostById(axiosPrivate, postId)
         setPost({ ...response.data, comments: response.data.comments || [] })
       } catch (err) {
         setError(err)

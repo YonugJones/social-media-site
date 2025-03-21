@@ -2,8 +2,9 @@ const express = require('express')
 const { signup, login, refresh, logout } = require('../controllers/authController')
 const { validateSignup } = require('../middleware/validateInput')
 const router = express.Router()
-
-// /auth
+/*
+/auth
+*/
 router.post('/signup', validateSignup, signup)
 router.post('/login', login)
 router.post('/refresh', refresh)

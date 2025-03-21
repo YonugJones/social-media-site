@@ -57,6 +57,35 @@ const newComment = asyncHandler(async (req, res) => {
   })
 })
 
+const toggleLikeComment = asyncHandler(async (req, res) => {
+  const user = req.user
+  if(!user) {
+    throw new CustomError('Unauthorized: user not authenticated', 401)
+  }
+
+  const postId = parseInt(req.params.postId, 10)
+  if (isNaN(postId)) {
+    throw new CustomError('Invalid Post ID', 400)
+  }
+
+  const commentId = parseInt(req.params.commentId, 10)
+  if (isNaN(commentId)) {
+    throw new CustomError('Invalid Comment ID', 403)
+  }
+    
+  const existingLike = await prisma.like.findFirst({ where: { userId: user.id, commentId } })
+  if (existingLike) {
+    await prisma.like.delete({ where: { id: existingLike.id } })
+    return res.status(200).json({ success: true, message: 'Comment unliked' })
+  }
+
+  await prisma.like.create({
+    data: { userId: user.id, commentId }
+  })
+
+  res.status(201).json({ success: true, message: 'Comment liked' })
+})
+
 const editComment = asyncHandler(async (req, res) => {
   const user = req.user
   if (!user) {
@@ -129,126 +158,102 @@ const deleteComment = asyncHandler(async (req, res) => {
   res.status(200).json({ success: true, message: 'Comment deleted' })
 })
 
-const getCommentsByPost = asyncHandler(async (req, res) => {
-  const user = req.user
-  if (!user) {
-    throw new CustomError('Unauthorized: user not authenticated', 401)
-  }
 
-  const postId = parseInt(req.params.postId, 10)
-  if (isNaN(postId)) {
-    throw new CustomError('Invalid Post ID', 400)
-  }
+// const getCommentsByPost = asyncHandler(async (req, res) => {
+//   const user = req.user
+//   if (!user) {
+//     throw new CustomError('Unauthorized: user not authenticated', 401)
+//   }
 
-  const comments = await prisma.comment.findMany({ 
-    where: { postId },
-    orderBy: { createdAt: 'desc' },
-    include: {
-      user: {
-        select: { 
-          id: true, 
-          username: true, 
-          profilePic: true 
-        }
-      },
-      _count: {
-        select: { likes: true }
-      }
-    } 
-  })
+//   const postId = parseInt(req.params.postId, 10)
+//   if (isNaN(postId)) {
+//     throw new CustomError('Invalid Post ID', 400)
+//   }
 
-  if (comments.length === 0) {
-    return res.status(200).json({ 
-      success: true, 
-      message: 'This post has no comments',
-      data: []
-    })
-  }
+//   const comments = await prisma.comment.findMany({ 
+//     where: { postId },
+//     orderBy: { createdAt: 'desc' },
+//     include: {
+//       user: {
+//         select: { 
+//           id: true, 
+//           username: true, 
+//           profilePic: true 
+//         }
+//       },
+//       _count: {
+//         select: { likes: true }
+//       }
+//     } 
+//   })
 
-  res.status(200).json({
-    success: true,
-    message: 'Comments from post fetched',
-    data: comments
-  })
-})
+//   if (comments.length === 0) {
+//     return res.status(200).json({ 
+//       success: true, 
+//       message: 'This post has no comments',
+//       data: []
+//     })
+//   }
 
-const getCommentById = asyncHandler(async (req, res) => {
-  const user = req.user
-  if (!user) {
-    throw new CustomError('Unauthorized: user not authenticated', 401)
-  }
+//   res.status(200).json({
+//     success: true,
+//     message: 'Comments from post fetched',
+//     data: comments
+//   })
+// })
 
-  const postId = parseInt(req.params.postId, 10)
-  if (isNaN(postId)) {
-    throw new CustomError('Invalid Post ID', 400)
-  }
+/*
+Ay yo waddup!
+*/
 
-  const commentId = parseInt(req.params.commentId, 10)
-  if (isNaN(commentId)) {
-    throw new CustomError('Invalid Comment Id', 401)
-  }
+// const getCommentById = asyncHandler(async (req, res) => {
+//   const user = req.user
+//   if (!user) {
+//     throw new CustomError('Unauthorized: user not authenticated', 401)
+//   }
 
-  const comment = await prisma.comment.findUnique({
-    where: { id: commentId },
-    include: {
-      user: {
-        select: { 
-          id: true, 
-          username: true, 
-          profilePic: true 
-        }
-      },
-      _count: {
-        select: { likes: true }
-      }
-    } 
-  })
+//   const postId = parseInt(req.params.postId, 10)
+//   if (isNaN(postId)) {
+//     throw new CustomError('Invalid Post ID', 400)
+//   }
 
-  if (!comment) {
-    throw new CustomError('Comment not found', 404)
-  }
+//   const commentId = parseInt(req.params.commentId, 10)
+//   if (isNaN(commentId)) {
+//     throw new CustomError('Invalid Comment Id', 401)
+//   }
 
-  res.status(200).json({
-    success: true,
-    message: 'Comment fetched',
-    data: comment
-  })
-})
+//   const comment = await prisma.comment.findUnique({
+//     where: { id: commentId },
+//     include: {
+//       user: {
+//         select: { 
+//           id: true, 
+//           username: true, 
+//           profilePic: true 
+//         }
+//       },
+//       _count: {
+//         select: { likes: true }
+//       }
+//     } 
+//   })
 
-const toggleLikeComment = asyncHandler(async (req, res) => {
-  const user = req.user
-  if(!user) {
-    throw new CustomError('Unauthorized: user not authenticated', 401)
-  }
+//   if (!comment) {
+//     throw new CustomError('Comment not found', 404)
+//   }
 
-  const postId = parseInt(req.params.postId, 10)
-  if (isNaN(postId)) {
-    throw new CustomError('Invalid Post ID', 400)
-  }
-
-  const commentId = parseInt(req.params.commentId, 10)
-  if (isNaN(commentId)) {
-    throw new CustomError('Invalid Comment ID', 403)
-  }
-    
-  const existingLike = await prisma.like.findFirst({ where: { userId: user.id, commentId } })
-  if (existingLike) {
-    await prisma.like.delete({ where: { id: existingLike.id } })
-    return res.status(200).json({ success: true, message: 'Comment unliked' })
-  }
-
-  await prisma.like.create({
-    data: { userId: user.id, commentId }
-  })
-
-  res.status(201).json({ success: true, message: 'Comment liked' })
-})
+//   res.status(200).json({
+//     success: true,
+//     message: 'Comment fetched',
+//     data: comment
+//   })
+// })
 
 module.exports = {
   newComment,
+  toggleLikeComment,
   editComment,
   deleteComment,
-  getCommentsByPost,
-  getCommentById,
-  toggleLikeComment
+  // getCommentsByPost,
+  // getCommentById,
 }

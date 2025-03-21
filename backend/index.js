@@ -5,8 +5,9 @@ const corsOptions = require('./config/corsOptions')
 const errorHandler = require('./middleware/errorHandler')
 const cookieParser = require('cookie-parser')
 const authRouter = require('./routes/authRoute')
-const postRouter = require('./routes/postRoute')
 const commentRouter = require('./routes/commentRoute')
+const friendshipRouter = require('./routes/friendshipRoute')
+const postRouter = require('./routes/postRoute')
 const userRouter = require('./routes/userRoute')
 
 // Define the main app
@@ -28,8 +29,9 @@ app.use(cookieParser())
 app.get('/', (req, res) => { res.json({ message: 'Welcome to the backend API' }) })
 
 app.use('/auth', authRouter)
-app.use('/posts', postRouter)
 app.use('/posts/:postId/comments', commentRouter)
+app.use('/friendship', friendshipRouter)
+app.use('/posts', postRouter)
 app.use('/users', userRouter)
 
 // Global Error Handler

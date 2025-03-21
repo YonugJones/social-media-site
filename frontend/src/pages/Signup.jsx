@@ -1,11 +1,10 @@
-// Imports
 import { useState, useEffect } from 'react'
 import { signupUser } from '../api/authApi'
 import { faCheck, faTimes, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link } from 'react-router-dom'
 import styles from '../styles/Signup.module.css'
-// Declare regex variables
+
 const USERNAME_REGEX = /^\S{3,24}$/
 const EMAIL_REGEX = /^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/
 const PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{10,}$/

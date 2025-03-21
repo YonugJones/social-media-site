@@ -1,6 +1,15 @@
 import { useState, useEffect } from 'react'
-import { getUser, getPostsByUser, editUser, getFollowers, getFollowing } from '../api/userApi'
-import { followRequest, confirmFollowRequest, rejectFollowRequest, removeFollower, unfollow } from '../api/friendshipApi'
+import { getUser, getPostsByUser, editUser } from '../api/userApi'
+import { 
+  getFollowers, 
+  getFollowing, 
+  sendFollowRequest, 
+  confirmFollowRequest, 
+  rejectFollowRequest, 
+  removeFollower, 
+  unfollow 
+
+} from '../api/friendshipApi'
 import useAuth from '../hooks/useAuth'
 import PostCard from '../components/PostCard'
 import Followers from '../components/Followers'
@@ -156,7 +165,7 @@ const Profile = () => {
           break
   
         case 'followBack':
-          await followRequest(axiosPrivate, targetUserId)
+          await sendFollowRequest(axiosPrivate, targetUserId)
           break
   
         default:
