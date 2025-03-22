@@ -1,4 +1,3 @@
-// import PropTypes from 'prop-types'
 import { createContext, useState } from 'react'
 
 const AuthContext = createContext({})
@@ -15,6 +14,3 @@ export const AuthProvider = ({ children }) => {
 
 export default AuthContext
 
-// AuthProvider.propTypes = {
-//   children: PropTypes.node.isRequired
-// }
