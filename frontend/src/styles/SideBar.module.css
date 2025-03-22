@@ -15,19 +15,22 @@
 }
 
 .home-link,
-.profile-link {
+.profile-link,
+.find-users-list-item {
   margin-bottom: 10px; 
   width: 100%; 
 }
 
-.link {
+
+.link,
+.find-users-button {
   text-decoration: none;
   color: inherit; 
   display: block;
   padding: 0.5rem;
   background-color: rgb(224, 184, 140);
   color: rgb(247, 247, 247);
-  width: 80px;
+  width: 120px;
   margin: 0 auto;
   cursor: pointer;
   border: none;
@@ -35,6 +38,7 @@
   text-align: center; 
 }
 
-.link:hover {
+.link:hover,
+.find-users-button:hover {
   background-color: rgb(194, 159, 122);
 }

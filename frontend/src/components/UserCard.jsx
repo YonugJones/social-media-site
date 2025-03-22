@@ -33,11 +33,14 @@ const UserCard = ({ user, type, following, onAction, profileOwnerId }) => {
               )}
               <button onClick={() => onAction('remove', user.id)}>Remove</button>
             </>
+          ) : type === 'nonFollowing' ? (
+            <button onClick={() => onAction('follow', user.id)}>Follow</button> 
           ) : (
             <button onClick={() => onAction('unfollow', user.id)}>Unfollow</button>
           )}
         </div>
       )}
+
     </div>
   )
 }

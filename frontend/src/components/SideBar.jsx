@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import { getNonFollowing } from '../api/friendshipApi'
-// import NonFollowing from './NonFollowing'
+import { getNonFollowing, sendFollowRequest } from '../api/friendshipApi'
+import NonFollowing from './NonFollowing'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import useAuth from '../hooks/useAuth'
 import { Link } from 'react-router-dom'
@@ -27,11 +27,12 @@ const SideBar = () => {
     }
   }, [showNonFollowing, axiosPrivate, auth.id])
 
-  // const handleAction = (action, userId) => {
-  //   if (action === 'follow') {
-  //     await 
-  //   }
-  // }
+  const handleAction = async (action, userId) => {
+    if (action === 'follow') {
+      await sendFollowRequest(axiosPrivate, userId)
+      setNonFollowing((prev) => prev.filter(user => user.id !== userId))
+    }
+  }
 
   return (
     <div className={styles['side-bar']}>
@@ -42,7 +43,20 @@ const SideBar = () => {
         <li className={styles['profile-link']}>
           <Link to={`/profile/${auth.id}`} className={styles['link']}>PROFILE</Link>
         </li>
+        <li className={styles['find-users-list-item']}>
+          <button className={styles['find-users-button']} onClick={() => setShowNonFollowing(!showNonFollowing)}>
+            FIND USERS
+          </button>
+        </li>
       </ul>
+      {showNonFollowing && (
+        <NonFollowing 
+          nonFollowing={nonFollowing}
+          onClose={() => setShowNonFollowing(false)}
+          onAction={handleAction}
+          profileOwnerId={auth.id}
+        />
+      )}
     </div>
   )
 }

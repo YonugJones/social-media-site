@@ -92,17 +92,17 @@ const sendFollowRequest = asyncHandler(async (req, res) => {
   
   const userId = user.id
 
-  const followId = parseInt(req.params.userId, 10)
-  if (isNaN(followId)) {
+  const targetUserId = parseInt(req.params.userId, 10)
+  if (isNaN(targetUserId)) {
     throw new CustomError('Invalid user ID', 400)
   }
 
-  if (userId === followId) {
+  if (userId === targetUserId) {
     throw new CustomError('You cannot follow yourself', 400)
   }
 
   const existingFriendship = await prisma.friendship.findFirst({
-    where: { followerId: userId, followingId: followId }
+    where: { followerId: userId, followingId: targetUserId }
   })
   if (existingFriendship) {
     return res.status(409).json({
@@ -112,7 +112,7 @@ const sendFollowRequest = asyncHandler(async (req, res) => {
   }
 
   await prisma.friendship.create({
-    data: { followerId: userId, followingId: followId }
+    data: { followerId: userId, followingId: targetUserId }
   })
 
   const following = await prisma.friendship.findMany({

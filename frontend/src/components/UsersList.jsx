@@ -10,7 +10,7 @@ const UsersList = ({ users, following, type, onAction, profileOwnerId }) => {
         'Users you can follow'}
       </h2>
       {users.length === 0 ? (
-        <p>No {type} yet</p>
+        <p>No {type}</p>
       ) : (
         users.map((user) =>
           <UserCard 
