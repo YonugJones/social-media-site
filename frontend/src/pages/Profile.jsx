@@ -27,7 +27,7 @@ const Profile = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
-  const [isEditing, setIsEditing] = useState(false)
+  const [isEditingProfile, setisEditingProfile] = useState(false)
   const [formData, setFormData] = useState({
     username: profile.username || '',
     email: profile.email || '',
@@ -96,20 +96,21 @@ const Profile = () => {
   }
 
   const handleEditClick = () => {
-    setIsEditing(true)
+    setisEditingProfile(true)
   }
 
   const handleCancelEdit = () => {
-    setIsEditing(false)
+    setisEditingProfile(false)
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
     try {
-      const updateUser = await editUser(axiosPrivate, userId, formData)
-      setProfile(updateUser.data)
-      setIsEditing(false)
+      await editUser(axiosPrivate, userId, formData)
+      const userResponse = await getUser(axiosPrivate, userId)
+      setProfile(userResponse.data)
+      setisEditingProfile(false)
     } catch (err) {
       setError(err.response?.data.message || 'Failed to update profile')
     }
@@ -119,7 +120,6 @@ const Profile = () => {
     if (!showFollowers) {
       try {
         const followersData = await getFollowers(axiosPrivate, userId)
-        console.log('Fetched followers:', followersData.data) // correctly shows followers
         setFollowers(followersData.data)
       } catch (err) {
         setError(err.response?.data.message || 'Failed to retrieve followers')
@@ -134,7 +134,6 @@ const Profile = () => {
     if (!showFollowing) {
       try {
         const followingData = await getFollowing(axiosPrivate, userId)
-        console.log('Fetched following:', followingData.data) // correctly shows following, empty array
         setFollowing(followingData.data)
       } catch (err) {
         setError(err.response?.data.message || 'Failed to retreive following')
@@ -184,11 +183,10 @@ const Profile = () => {
       console.error('Error handling follow action:', err)
     }
   }
-  
 
   return (
     <>
-      {isEditing ? (
+      {isEditingProfile ? (
         <form onSubmit={handleSubmit} className={styles['edit-form']}>
           <label>
             Username:
@@ -235,7 +233,7 @@ const Profile = () => {
                 </div>
 
                 <div className={styles['followers-container']}>
-                  <p>{profile?._count?.followers ?? 0}</p> {/* incorrectly shows 4 */}
+                  <p>{profile?._count?.followers ?? 0}</p> 
                   
                   <button onClick={handleShowFollowers} className={styles['toggle-button']}>
                     followers
@@ -298,6 +296,8 @@ const Profile = () => {
               key={post.id} 
               post={post} 
               onToggleCommentForm={() => console.log('Comment icon clicked')} 
+              // onEdit={handleEditPost}
+              // onDelete={handleDeletePost}
             />
           ))
         ) : (

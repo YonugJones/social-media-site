@@ -9,7 +9,7 @@ import styles from '../styles/SideBar.module.css'
 const SideBar = () => {
   const { auth } = useAuth()
   const axiosPrivate = useAxiosPrivate()
-
+  const [pendingRequests, setPendingRequests] = useState([])
   const [showNonFollowing, setShowNonFollowing] = useState(false)
   const [nonFollowing, setNonFollowing] = useState([])
 
@@ -30,6 +30,7 @@ const SideBar = () => {
   const handleAction = async (action, userId) => {
     if (action === 'follow') {
       await sendFollowRequest(axiosPrivate, userId)
+      setPendingRequests((prev) => [...prev, userId])
       setNonFollowing((prev) => prev.filter(user => user.id !== userId))
     }
   }
@@ -52,6 +53,7 @@ const SideBar = () => {
       {showNonFollowing && (
         <NonFollowing 
           nonFollowing={nonFollowing}
+          pendingRequests={pendingRequests}
           onClose={() => setShowNonFollowing(false)}
           onAction={handleAction}
           profileOwnerId={auth.id}

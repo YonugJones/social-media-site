@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import useAuth from '../hooks/useAuth'
-import { faComment, faHeart, faRepeat } from '@fortawesome/free-solid-svg-icons'
+import { faComment, faHeart } from '@fortawesome/free-solid-svg-icons'
+// import { faRepeat } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import styles from '../styles/PostCard.module.css'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
@@ -150,14 +151,14 @@ const PostCard = ({ post, onToggleCommentForm, onEdit, onDelete }) => {
             <p>{likeCount}</p>
           </div>
         </button>
-        <button className={styles['repost-container']} onClick={() => console.log('repost clicked!')}>
+        {/* <button className={styles['repost-container']} onClick={() => console.log('repost clicked!')}>
           <div className={styles['repost-img']}>
             <FontAwesomeIcon className={styles['fa-icon']} icon={faRepeat} /> 
           </div>
           <div className={styles['repost-count']}>
             <p>TBD</p>
           </div>
-        </button>
+        </button> */}
         <button className={styles['comments-container']} onClick={() => onToggleCommentForm(post.id)}>
           <div className={styles['comments-img']}>
             <FontAwesomeIcon className={styles['fa-icon']} icon={faComment} />

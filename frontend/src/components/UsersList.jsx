@@ -1,7 +1,7 @@
 import UserCard from './UserCard'
 import styles from '../styles/UsersList.module.css'
 
-const UsersList = ({ users, following, type, onAction, profileOwnerId }) => {
+const UsersList = ({ users, following, type, pendingRequests, onAction, profileOwnerId }) => {
   return (
     <div className={styles['users-list-container']}>
       <h2>
@@ -18,6 +18,7 @@ const UsersList = ({ users, following, type, onAction, profileOwnerId }) => {
             user={user} 
             following={following}
             type={type} 
+            pendingRequests={pendingRequests}
             onAction={onAction} 
             profileOwnerId={profileOwnerId}
           />

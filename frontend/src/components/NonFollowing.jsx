@@ -1,7 +1,7 @@
 import UsersList from './UsersList'
 import styles from '../styles/Overlay.module.css'
 
-const NonFollowing = ({ nonFollowing, onClose, onAction, profileOwnerId }) => {
+const NonFollowing = ({ nonFollowing, prendingRequests, onClose, onAction, profileOwnerId }) => {
   return (
     <div className={styles['overlay']}>
       <div className={styles['overlay-content']}>
@@ -10,6 +10,7 @@ const NonFollowing = ({ nonFollowing, onClose, onAction, profileOwnerId }) => {
           users={nonFollowing} 
           type='nonFollowing' 
           onAction={onAction} 
+          prendingRequests={prendingRequests}
           profileOwnerId={profileOwnerId}
         />
       </div>
