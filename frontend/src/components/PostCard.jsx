@@ -1,46 +1,25 @@
-import { useState, useEffect } from 'react'
-import useAuth from '../hooks/useAuth'
+// should display the post without comments and allow user to like and author to edit/delete
 import { faComment, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import styles from '../styles/PostCard.module.css'
-import useAxiosPrivate from '../hooks/useAxiosPrivate'
-import { toggleLikePost, editPost, deletePost } from '../api/postApi'
-import { useNavigate } from 'react-router-dom'
 import { formatDistanceToNow } from 'date-fns'
+import styles from '../styles/PostCard.module.css'
+import { useState } from 'react'
+import useAuth from '../hooks/useAuth'
+import usePostActions from '../hooks/usePostActions'
+import { useNavigate } from 'react-router-dom'
 
-const PostCard = ({ post, onToggleCommentForm, onEdit, onDelete }) => {
-  const navigate = useNavigate()
-  const axiosPrivate = useAxiosPrivate()
+const PostCard = ({ post }) => {
   const { auth } = useAuth()
+  const { toggleLike, handleEdit, handleDelete } = usePostActions()
+  const navigate = useNavigate()
 
   const [isLiked, setIsLiked] = useState(post.isLiked)
   const [likeCount, setLikeCount] = useState(post._count.likes)
-  const [isHovered, setIsHovered] = useState(false)
 
   const [isEditing, setIsEditing] = useState(false)
   const [editedContent, setEditedContent] = useState(post.content)
 
-  useEffect(() => {
-    setIsLiked(post.isLiked)
-    setLikeCount(post._count.likes)
-  }, [post])
-
-  const handleLikeClick = async (e) => {
-    e.stopPropagation()
-    const previousLikeState = isLiked
-    const previousLikeCount = likeCount
-
-    setIsLiked(!isLiked)
-    setLikeCount(isLiked ? likeCount - 1 : likeCount + 1)
-
-    try {
-      await toggleLikePost(axiosPrivate, post.id)
-    } catch (err) {
-      console.error('Error toggling like:', err)
-      setIsLiked(previousLikeState)
-      setLikeCount(previousLikeCount)
-    }
-  }
+  const [isHovered, setIsHovered] = useState(false)
 
   const handleCardClick = () => {
     navigate(`/posts/${post.id}`)
@@ -51,87 +30,72 @@ const PostCard = ({ post, onToggleCommentForm, onEdit, onDelete }) => {
     navigate(`/profile/${post.userId}`)
   }
 
-  const handleEditClick = (e) => {
+  const handleLikeClick = async (e) => {
+    e.stopPropagation()
+    setIsLiked(!isLiked)
+    setLikeCount(isLiked ? likeCount - 1 : likeCount + 1)
+    await toggleLike(post.id)
+  }
+
+  const handleEditClick = async (e) => {
     e.stopPropagation()
     setIsEditing(true)
   }
 
   const handleSaveEdit = async (e) => {
     e.stopPropagation()
-    try {
-      const response = await editPost(axiosPrivate, post.id, editedContent)
-      onEdit(response.data)
-      setIsEditing(false)
-    } catch (err) {
-      console.error('Error editing post:', err)
-    }
+    await handleEdit(post.id, editedContent)
+    setIsEditing(false)
   }
 
-  const handleCancelEdit = (e) => {
+  const handleCancelEdit = async (e) => {
     e.stopPropagation()
     setEditedContent(post.content)
     setIsEditing(false)
   }
 
-  const handleDelete = async (e) => {
-    e.stopPropagation()
-
-    try {
-      await deletePost(axiosPrivate, post.id)
-      onDelete(post.id)
-    } catch (err) {
-      console.error('Error deleting post:', err)
-    }
-  }
-
   return (
     <div className={styles['post']} onClick={handleCardClick}>
-      {/* TOP */}
       <div className={styles['header']}>
-
         <div className={styles['header-info']}>
           <div className={styles['header-user']}>
             <img src={post.user.profilePic || '/default-profile.svg'} alt='profile' />
-            <button className={styles['header-user-button']} onClick={handleUsernameClick}><h3>{post.user.username}</h3></button>
+            <button className={styles['header-user-button']} onClick={handleUsernameClick}>
+              {post.user.username || 'Unknown user'}
+            </button>
           </div>
-          <p className={styles['date']}>
-            {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
-          </p>
+          <p className={styles['date']}>{formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}</p>
         </div>
-
-        {auth.id === post.user.id && (
+        
           <div className={styles['button-container']}>
-            {isEditing ? (
+            {auth.id === post.user.id && isEditing ? (
               <>
                 <button onClick={handleSaveEdit}>Save</button>
                 <button onClick={handleCancelEdit}>Cancel</button>
               </>
-            ) : (
+            ) : auth.id === post.user.id ? (
               <>
                 <button onClick={handleEditClick}>Edit</button>
                 <button onClick={handleDelete}>Delete</button>
               </>
-            )}
+            ) : null}
           </div>
-        )}
 
       </div>
 
-      {/* MIDDLE */}
       <div className={styles['content']}>
         {isEditing ? (
           <textarea 
-            className={styles['edit-textarea']}
-            value={editedContent}
-            onChange={(e) => setEditedContent(e.target.value)}
             onClick={(e) => e.stopPropagation()}
+            onChange={(e) => setEditedContent(e.target.value)}
+            value={editedContent}
+            className={styles['edit-textarea']}
           />
         ) : (
           <p>{post.content}</p>
         )}
       </div>
 
-      {/* BOTTOM */}
       <div className={styles['footer']}>
         <button 
           className={`
@@ -150,7 +114,7 @@ const PostCard = ({ post, onToggleCommentForm, onEdit, onDelete }) => {
             <p>{likeCount}</p>
           </div>
         </button>
-        <button className={styles['comments-container']} onClick={() => onToggleCommentForm(post.id)}>
+        <button className={styles['comments-container']}>
           <div className={styles['comments-img']}>
             <FontAwesomeIcon className={styles['fa-icon']} icon={faComment} />
           </div>

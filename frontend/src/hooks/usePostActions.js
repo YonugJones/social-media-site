@@ -9,7 +9,7 @@ const usePostActions = () => {
   const newPost = async (content) => {
     try {
       const response = await axiosPrivate.post('/posts', { content })
-      setPosts((prev) => [response.data, ...prev])
+      setPosts((prev) => [response.data.data, ...prev])
     } catch (err) {
       handleApiError(err)
     }
@@ -27,7 +27,7 @@ const usePostActions = () => {
     try {
       const response = await axiosPrivate.put(`/posts/${postId}`, { content })
       setPosts((prev) =>
-        prev.map((post) => post.id === postId ? response.data : post)
+        prev.map((post) => post.id === postId ? response.data.data : post)
       )
     } catch (err) {
       handleApiError(err)

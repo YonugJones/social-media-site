@@ -1,37 +1,25 @@
-// restructure of UserFeed with post context and hooks - March 22
-
+// should display users feed
 import { useEffect } from 'react'
 import usePost from '../hooks/usePost'
 import usePostFetch from '../hooks/usePostFetch'
-import usePostActions from '../hooks/usePostActions'
-import PostCard from '../components/PostCard'
+import PostList from '../components/PostList'
+import NewPost from '../components/NewPost'
 import styles from '../styles/UserFeed.module.css'
 
 const Feed = () => {
   const { posts } = usePost()
   const { getFeed } = usePostFetch()
-  const { toggleLike, handleDelete } = usePostActions()
+
+  console.log('Feed component fetching post:', posts)
 
   useEffect(() => {
     getFeed()
-  }, [])
+  }, [getFeed])
 
   return (
-    <div className={styles['user-feed']}>
-      <ul>
-        {posts.length > 0 ? (
-          posts.map((post) => (
-            <PostCard 
-              key={post.id} 
-              post={post} 
-              onLike={() => toggleLike(post.id)}
-              onDelete={() => handleDelete(post.id)}
-            />
-          ))
-        ) : (
-          <p>No posts to display</p>
-        )}
-      </ul>
+    <div className={styles['feed-container']}>
+      <NewPost />
+      <PostList posts={posts} />
     </div>
   )
 }
