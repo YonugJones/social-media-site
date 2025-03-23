@@ -1,44 +1,45 @@
-import { newPost as newPostApi, toggleLikePost, editPost, deletePost } from '../api/postApi'
 import usePost from './usePost'
+import useAxiosPrivate from './useAxiosPrivate'
+import { handleApiError } from '../api/apiHelper'
 
 const usePostActions = () => {
   const { setPosts } = usePost()
+  const axiosPrivate = useAxiosPrivate()
 
-  const newPost = async (axiosPrivate, content) => {
+  const newPost = async (content) => {
     try {
-      const newPostData = await newPostApi(axiosPrivate, content)
-      setPosts((prev) => [newPostData.data, ...prev])
+      const response = await axiosPrivate.post('/posts', { content })
+      setPosts((prev) => [response.data, ...prev])
     } catch (err) {
-      console.error('Error creating post:', err)  
+      handleApiError(err)
     }
   }
 
-  const toggleLike = async (axiosPrivate, postId) => {
+  const toggleLike = async (postId) => {
     try {
-      await toggleLikePost(axiosPrivate, postId)
+      await axiosPrivate.post(`/posts/${postId}/like`)
     } catch (err) {
-      console.error('Error toggling post like:', err) 
+      handleApiError(err)
     }
   }
 
-  const handleEdit = async (axiosPrivate, postId, content) => {
+  const handleEdit = async (postId, content) => {
     try {
-      const updatedPost = await editPost(axiosPrivate, postId, content)
-      const updatedPostData = updatedPost.data
+      const response = await axiosPrivate.put(`/posts/${postId}`, { content })
       setPosts((prev) =>
-        prev.map((post) => (post.id === updatedPostData.id ? updatedPostData : post))
-      )      
+        prev.map((post) => post.id === postId ? response.data : post)
+      )
     } catch (err) {
-      console.error('Error editing post:', err)
+      handleApiError(err)
     }
   }
 
-  const handleDelete = async (axiosPrivate, postId) => {
+  const handleDelete = async (postId) => {
     try {
-      await deletePost(axiosPrivate, postId)
+      await axiosPrivate.delete(`/posts/${postId}`)
       setPosts((prev) => prev.filter((post) => post.id !== postId))
     } catch (err) {
-      console.error('Error deleting post:', err)
+      handleApiError(err)
     }
   }
 

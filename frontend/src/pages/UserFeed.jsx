@@ -1,3 +1,4 @@
+// ORIGINAL CODE WITHOUT POST CONTEXT AND HOOKS
 import { useState, useEffect } from 'react'
 import { getFeedPosts } from '../api/postApi'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'

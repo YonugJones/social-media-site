@@ -1,24 +1,27 @@
-import { getFeedPosts, getPostById } from '../api/postApi'
 import usePost from './usePost'
+import useAxiosPrivate from './useAxiosPrivate'
+import { handleApiError } from '../api/apiHelper'
 
 const usePostFetch = () => {
   const { setPosts } = usePost()
+  const axiosPrivate = useAxiosPrivate()
 
-  const getFeed = async (axiosPrivate) => {
-    try {
-      const fetchPosts = await getFeedPosts(axiosPrivate)
-      setPosts(fetchPosts.data)
-    } catch (err) {
-      console.error('Error getting user feed posts:', err)
-    }
+  const getFeed = async () => {
+      try {
+        const response = await axiosPrivate.get('/posts/feed')
+        return response.data
+      } catch (err) {
+        handleApiError(err)
+      }
   }
 
-  const getPost = async (axiosPrivate, postId) => {
+  const getPost = async (postId) => {
     try {
-      const fetchPost = await getPostById(axiosPrivate, postId)
+      const fetchPost = await axiosPrivate.get(`/posts/${postId}`)
       setPosts([fetchPost.data])
     } catch (err) {
-      console.error('Error getting single post:', err)
+      handleApiError(err)
+      setPosts([])
     }
   }
 
