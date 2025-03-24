@@ -10,6 +10,7 @@ const usePostFetch = () => {
 
   const getFeed = useCallback(async () => {
     try {
+      setPosts([])
       const response = await axiosPrivate.get('/posts/feed')
       setPosts(response.data.data)
     } catch (err) {
@@ -20,6 +21,7 @@ const usePostFetch = () => {
 
   const getPost = useCallback(async (postId) => {
     try {
+      setPost(null)
       const response = await axiosPrivate.get(`/posts/${postId}`)
       setPost(response.data.data)
     } catch (err) {
