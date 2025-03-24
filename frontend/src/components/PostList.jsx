@@ -1,7 +1,7 @@
 // should display a list of PostCard components
 import PostCard from './PostCard' 
 
-const PostList = ({ posts }) => {
+const PostList = ({ posts, onEdit, onDelete, onLikeToggle }) => {
   return (
     <div>
       <ul>
@@ -10,6 +10,9 @@ const PostList = ({ posts }) => {
             <PostCard 
               key={post.id}
               post={post}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              onLikeToggle={onLikeToggle}
             />
           )
         ) : (
