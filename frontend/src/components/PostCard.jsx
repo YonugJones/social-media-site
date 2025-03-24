@@ -1,4 +1,4 @@
-// should display the post and allow user to like and author to edit/delete
+// handles display logic, including UI updates
 import { faComment, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { formatDistanceToNow } from 'date-fns'
