@@ -1,7 +1,7 @@
 // fetches single post and displays PostCard and CommentList components
 import { useEffect } from 'react'
-import usePostFetch from '../hooks/usePostFetch'
 import { useParams } from 'react-router-dom'
+import usePostFetch from '../hooks/usePostFetch'
 import usePost from '../hooks/usePost'
 import PostCard from '../components/PostCard'
 import styles from '../styles/PostDetails.module.css'
@@ -9,15 +9,20 @@ import styles from '../styles/PostDetails.module.css'
 const PostDetails = () => {
   const { postId } = useParams()
   const { getPost } = usePostFetch()
-  const { posts } = usePost()
+  const { post, setPost } = usePost()
 
   useEffect(() => {
     getPost(postId)
-  }, [getPost, postId])
+    return () => setPost(null)
+  }, [getPost, postId, setPost])
 
   return (
     <div className={styles['post-details']}>
-      <PostCard post={posts} />
+      {post ? (
+        <PostCard post={post} />
+      ) : (
+        <p>loading posts...</p>
+      )}
     </div>
   )
 }

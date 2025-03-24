@@ -2,18 +2,16 @@
 import usePost from './usePost'
 import useAxiosPrivate from './useAxiosPrivate'
 import { handleApiError } from '../api/apiHelper'
-import useAuth from './useAuth'
+
 
 const usePostActions = () => {
   const { setPosts } = usePost()
   const axiosPrivate = useAxiosPrivate()
-  const { auth } = useAuth()
 
   const newPost = async (content) => {
     try {
       const response = await axiosPrivate.post('/posts', { content })
       setPosts((prev) => [response.data.data, ...prev])
-      console.log('auth after newPost:', auth)
     } catch (err) {
       handleApiError(err)
     }

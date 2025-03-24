@@ -55,6 +55,7 @@ const PostCard = ({ post }) => {
   const handleDeleteClick = async (e) => {
     e.stopPropagation()
     await handleDelete(post.id)
+    navigate('/')
   }
 
   return (
