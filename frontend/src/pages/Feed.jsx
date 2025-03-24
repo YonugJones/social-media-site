@@ -1,4 +1,4 @@
-// fetches user feed and handles post state management
+// fetches user feed and handles posts state management, displays NewPost and PostList
 import { useEffect } from 'react'
 import usePost from '../hooks/usePost'
 import usePostFetch from '../hooks/usePostFetch'
