@@ -5,12 +5,10 @@ import { formatDistanceToNow } from 'date-fns'
 import styles from '../styles/PostCard.module.css'
 import { useState } from 'react'
 import useAuth from '../hooks/useAuth'
-import usePostActions from '../hooks/usePostActions'
 import { useNavigate } from 'react-router-dom'
 
-const PostCard = ({ post }) => {
+const PostCard = ({ post, onEdit, onDelete, onLikeToggle }) => {
   const { auth } = useAuth()
-  const { toggleLike, handleEdit, handleDelete } = usePostActions()
   const navigate = useNavigate()
   const [isLiked, setIsLiked] = useState(post.isLiked)
   const [likeCount, setLikeCount] = useState(post._count.likes || 0)
@@ -27,12 +25,11 @@ const PostCard = ({ post }) => {
     navigate(`/profile/${post.userId}`)
   }
 
-  const handleLikeClick = async (e) => {
+  const handleLikeClick = (e) => {
     e.stopPropagation()
-    console.log('Like clicked')
     setIsLiked(!isLiked)
     setLikeCount(isLiked ? likeCount - 1 : likeCount + 1)
-    await toggleLike(post.id)
+    onLikeToggle(post.id)
   }
 
   const handleEditClick = async (e) => {
@@ -42,7 +39,7 @@ const PostCard = ({ post }) => {
 
   const handleSaveEdit = async (e) => {
     e.stopPropagation()
-    await handleEdit(post.id, editedContent)
+    onEdit(post.id, editedContent)
     setIsEditing(false)
   }
 
@@ -54,7 +51,7 @@ const PostCard = ({ post }) => {
 
   const handleDeleteClick = async (e) => {
     e.stopPropagation()
-    await handleDelete(post.id)
+    onDelete(post.id)
     navigate('/')
   }
 
