@@ -12,13 +12,10 @@ const PostCard = ({ post }) => {
   const { auth } = useAuth()
   const { toggleLike, handleEdit, handleDelete } = usePostActions()
   const navigate = useNavigate()
-
   const [isLiked, setIsLiked] = useState(post.isLiked)
-  const [likeCount, setLikeCount] = useState(post._count.likes)
-
+  const [likeCount, setLikeCount] = useState(post._count.likes || 0)
   const [isEditing, setIsEditing] = useState(false)
   const [editedContent, setEditedContent] = useState(post.content)
-
   const [isHovered, setIsHovered] = useState(false)
 
   const handleCardClick = () => {
@@ -63,6 +60,7 @@ const PostCard = ({ post }) => {
   return (
     <div className={styles['post']} onClick={handleCardClick}>
       <div className={styles['header']}>
+
         <div className={styles['header-info']}>
           <div className={styles['header-user']}>
             <img src={post.user.profilePic || '/default-profile.svg'} alt='profile' />
@@ -120,6 +118,7 @@ const PostCard = ({ post }) => {
             <p>{likeCount}</p>
           </div>
         </button>
+
         <button className={styles['comments-container']}>
           <div className={styles['comments-img']}>
             <FontAwesomeIcon className={styles['fa-icon']} icon={faComment} />
@@ -128,7 +127,9 @@ const PostCard = ({ post }) => {
             <p>{post._count.comments}</p>
           </div>
         </button>
+
       </div>
+
     </div>
   )
 }
