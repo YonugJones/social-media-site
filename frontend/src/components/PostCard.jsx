@@ -1,4 +1,4 @@
-// should display the post without comments and allow user to like and author to edit/delete
+// should display the post and allow user to like and author to edit/delete
 import { faComment, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { formatDistanceToNow } from 'date-fns'

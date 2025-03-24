@@ -1,11 +1,12 @@
+// should display the comment and allow user to like and author to edit/delete
+import { faHeart } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { formatDistanceToNow } from 'date-fns'
+import styles from '../styles/CommentCard.module.css'
 import { useState, useEffect } from 'react'
 import useAuth from '../hooks/useAuth'
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import { toggleLikeComment, editComment, deleteComment } from '../api/commentApi'
-import { formatDistanceToNow } from 'date-fns'
-import { faHeart } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import styles from '../styles/CommentCard.module.css'
 
 const CommentCard = ({ comment, onEdit, onDelete }) => {
   const axiosPrivate = useAxiosPrivate()

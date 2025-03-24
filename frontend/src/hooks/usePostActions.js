@@ -3,7 +3,6 @@ import usePost from './usePost'
 import useAxiosPrivate from './useAxiosPrivate'
 import { handleApiError } from '../api/apiHelper'
 
-
 const usePostActions = () => {
   const { setPosts } = usePost()
   const axiosPrivate = useAxiosPrivate()

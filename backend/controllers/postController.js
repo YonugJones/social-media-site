@@ -2,54 +2,6 @@ const prisma = require('../prisma/prismaClient')
 const asyncHandler = require('express-async-handler')
 const CustomError = require('../errors/customError')
 
-// const getPosts = asyncHandler(async (req, res) => {
-//   const user = req.user
-//   if (!user) {
-//     throw new CustomError('Unauthorized: user not authenticated', 401)
-//   }
-
-//   const posts = await prisma.post.findMany({
-//     orderBy: { createdAt: 'desc' },
-//     include: {
-//       user: {
-//         select: { 
-//           id:true, 
-//           username: true, 
-//           profilePic: true 
-//         }
-//       },
-//       comments: {
-//         orderBy: { createdAt: 'desc' },
-//         select: {
-//           id: true,
-//           postId: true,
-//           content: true,
-//           createdAt: true,
-//           user: {
-//             select: { 
-//               id: true, 
-//               username: true, 
-//               profilePic: true 
-//             }
-//           },
-//           _count: {
-//             select: { likes: true }
-//           }
-//         }
-//       },
-//       _count: {
-//         select: { likes: true }
-//       }
-//     }
-//   })
-
-//   res.status(200).json({
-//     success: true,
-//     message: 'All posts fetched',
-//     data: posts
-//   })
-// })
-
 const getFeedPosts = asyncHandler(async (req, res) => {
   const userId = req.user.id
 
