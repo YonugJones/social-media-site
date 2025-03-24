@@ -10,7 +10,8 @@ const usePostActions = () => {
   const newPost = async (content) => {
     try {
       const response = await axiosPrivate.post('/posts', { content })
-      setPosts((prev) => [response.data.data, ...prev])
+      const newPost = response.data.data
+      setPosts((prevPosts) => [newPost, ...prevPosts])
     } catch (err) {
       handleApiError(err)
     }

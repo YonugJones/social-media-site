@@ -14,5 +14,3 @@ router.put('/:postId', authenticateToken, validatePost, postController.editPost)
 router.delete('/:postId', authenticateToken, postController.deletePost)
 
 module.exports = router
-
-// router.get('/', authenticateToken, postController.getPosts)

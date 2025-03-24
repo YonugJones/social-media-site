@@ -20,6 +20,29 @@ const useCommentActions = () => {
     }
   }
 
+  // const toggleLike = async (postId, commentId) => {
+  //   try {
+  //     const response = await axiosPrivate.post(`/posts/${postId}/comments/${commentId}/like`)
+  //     const newComment = response.data.data
+  //     setPost((prevPost) => ({
+  //       ...prevPost,
+  //       comments: [newComment, ...prevPost.comments]
+  //     }))
+  //   } catch (err) {
+  //     handleApiError(err)
+  //   }
+  // }
+
+  // export const toggleLikeComment = async (axiosPrivateInstance, postId, commentId) => {
+  //   try {
+  //     const response = await axiosPrivateInstance.post(`/posts/${postId}/comments/${commentId}/like`)
+  //     return response.data
+  //   } catch (err) {
+  //     console.error('API error:', err)
+  //     throw err
+  //   }
+  // }
+
   return { newComment }
 }
 

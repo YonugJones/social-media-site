@@ -8,13 +8,12 @@ import styles from '../styles/UserFeed.module.css'
 
 const Feed = () => {
   const { getFeed } = usePostFetch()
-  const { posts } = usePost()
+  const { posts, setPosts } = usePost()
 
   useEffect(() => {
     getFeed()
-  }, [getFeed])
-
-  console.log('Feed component getting posts:', posts)
+    return () => setPosts([])
+  }, [getFeed, setPosts])
 
   return (
     <div className={styles['feed-container']}>
