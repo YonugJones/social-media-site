@@ -4,7 +4,7 @@ import useAxiosPrivate from './useAxiosPrivate'
 import { handleApiError } from '../api/apiHelper'
 
 const usePostActions = () => {
-  const { setPosts } = usePost()
+  const { setPosts, setPost } = usePost()
   const axiosPrivate = useAxiosPrivate()
 
   const newPost = async (content) => {
@@ -19,7 +19,11 @@ const usePostActions = () => {
 
   const toggleLike = async (postId) => {
     try {
-      await axiosPrivate.post(`/posts/${postId}/like`)
+      const response = await axiosPrivate.post(`/posts/${postId}/like`)
+      const updatedPost = response.data.data
+      setPost((prevPost) => 
+        prevPost.map((post) => post.id === postId ? updatedPost : post)
+      )
     } catch (err) {
       handleApiError(err)
     }
@@ -28,8 +32,9 @@ const usePostActions = () => {
   const handleEdit = async (postId, content) => {
     try {
       const response = await axiosPrivate.put(`/posts/${postId}`, { content })
+      const updatedPost = response.data.data
       setPosts((prev) =>
-        prev.map((post) => post.id === postId ? response.data.data : post)
+        prev.map((post) => post.id === postId ? updatedPost : post)
       )
     } catch (err) {
       handleApiError(err)
