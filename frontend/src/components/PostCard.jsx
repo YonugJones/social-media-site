@@ -32,6 +32,7 @@ const PostCard = ({ post }) => {
 
   const handleLikeClick = async (e) => {
     e.stopPropagation()
+    console.log('Like clicked')
     setIsLiked(!isLiked)
     setLikeCount(isLiked ? likeCount - 1 : likeCount + 1)
     await toggleLike(post.id)
@@ -52,6 +53,11 @@ const PostCard = ({ post }) => {
     e.stopPropagation()
     setEditedContent(post.content)
     setIsEditing(false)
+  }
+
+  const handleDeleteClick = async (e) => {
+    e.stopPropagation()
+    await handleDelete(post.id)
   }
 
   return (
@@ -76,7 +82,7 @@ const PostCard = ({ post }) => {
             ) : auth.id === post.user.id ? (
               <>
                 <button onClick={handleEditClick}>Edit</button>
-                <button onClick={handleDelete}>Delete</button>
+                <button onClick={handleDeleteClick}>Delete</button>
               </>
             ) : null}
           </div>

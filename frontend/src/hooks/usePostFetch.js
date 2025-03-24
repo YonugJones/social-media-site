@@ -1,3 +1,4 @@
+// custom hook for fetching post data
 import usePost from './usePost'
 import useAxiosPrivate from './useAxiosPrivate'
 import { useCallback } from 'react'

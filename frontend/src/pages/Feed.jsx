@@ -10,8 +10,6 @@ const Feed = () => {
   const { posts } = usePost()
   const { getFeed } = usePostFetch()
 
-  console.log('Feed component fetching post:', posts)
-
   useEffect(() => {
     getFeed()
   }, [getFeed])

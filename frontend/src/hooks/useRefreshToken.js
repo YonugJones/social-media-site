@@ -1,5 +1,3 @@
-// This calls the refresh api function and sets the auth with the accessToken
-
 import useAuth from './useAuth'
 import { axiosPublic } from '../utils/axios'
 
