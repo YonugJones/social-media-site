@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import styles from '../styles/NewComment.module.css'
 
-const NewComment = ({ onNewComment }) => {
+const NewComment = ({ postId, onNewComment }) => {
   const [content, setContent] = useState('')
 
   const handleChange = (e) => {
@@ -11,7 +11,7 @@ const NewComment = ({ onNewComment }) => {
   const handleSubmit = (e) => {
     e.preventDefault()
     if (content.trim()) {
-      onNewComment(content)
+      onNewComment(postId, content)
       setContent('')
     }
   }

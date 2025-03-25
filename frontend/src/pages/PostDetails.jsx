@@ -7,13 +7,14 @@ import useCommentActions from '../hooks/useCommentActions'
 import { useParams } from 'react-router-dom'
 import PostCard from '../components/PostCard'
 import CommentList from '../components/CommentList'
+import NewComment from '../components/NewComment'
 import styles from '../styles/PostDetails.module.css'
 
 const PostDetails = () => {
   const { post, setPost } = usePost()
   const { getPost } = usePostFetch()
   const { editPost, deletePost, toggleLike } = usePostActions()
-  const { editComment, deleteComment, toggleCommentLike } = useCommentActions()
+  const { createComment, editComment, deleteComment, toggleCommentLike } = useCommentActions()
   const { postId } = useParams()
 
   // Immeiately fetch Post on mount, clear setPost on dismount
@@ -39,6 +40,14 @@ const PostDetails = () => {
   }
 
   // Comment Handlers
+  const handleNewComment = async (postId, content) => {
+    const newComment = await createComment(postId, content) 
+    setPost((prevPost) => ({
+      ...prevPost,
+      comments: [newComment, ...prevPost.comments]
+    }))
+  }
+
   const handleEditComment = async (postId, commentId, content) => {
     const updatedComment = await editComment(postId, commentId, content)
     setPost((prevPost) => ({
@@ -72,6 +81,10 @@ const PostDetails = () => {
             onEdit={handleEditPost}
             onDelete={handleDeletePost}
             onLikeToggle={handleLikePostToggle}
+          />
+          <NewComment 
+            postId={post.id}
+            onNewComment={handleNewComment}
           />
           <CommentList 
             comments={post.comments}
