@@ -4,7 +4,7 @@ import usePostActions from '../hooks/usePostActions'
 import styles from '../styles/NewPost.module.css'
 
 const NewPost = () => {
-  const { newPost } = usePostActions()
+  const { createPost } = usePostActions()
   const [content, setContent] = useState('')
   const [success, setSuccess] = useState(false)
   const [errMsg, setErrMsg] = useState('')
@@ -23,7 +23,7 @@ const NewPost = () => {
 
     if (content.trim()) {
       try {
-        await newPost(content)
+        await createPost(content)
         setContent('')  
         setSuccess(true)
       } catch (err) {
