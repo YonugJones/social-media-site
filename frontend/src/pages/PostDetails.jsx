@@ -43,13 +43,16 @@ const PostDetails = () => {
     const updatedComment = await editComment(postId, commentId, content)
     setPost((prevPost) => ({
       ...prevPost,
-      comments: prevPost.comments.map((comment) => comment.id === commentId ? updatedComment : comment)
+      comments: prevPost?.comments.map((comment) => comment.id === commentId ? updatedComment : comment)
     }))
   }
 
   const handleDeleteComment = async (postId, commentId) => {
     await deleteComment(postId, commentId)
-    setPost((prevPost) => prevPost.comments.filter((comment) => comment.id !== commentId))
+    setPost((prevPost) => ({
+      ...prevPost,
+      comments: prevPost.comments.filter((comment) => comment.id !== commentId)
+    }))
   }
 
   const handleLikeCommentToggle = async (postId, commentId) => {
