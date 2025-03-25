@@ -32,24 +32,24 @@ const PostCard = ({ post, onEdit, onDelete, onLikeToggle }) => {
     onLikeToggle(post.id)
   }
 
-  const handleEditClick = async (e) => {
+  const handleEditClick = (e) => {
     e.stopPropagation()
     setIsEditing(true)
   }
 
-  const handleSaveEdit = async (e) => {
+  const handleSaveEdit = (e) => {
     e.stopPropagation()
     onEdit(post.id, editedContent)
     setIsEditing(false)
   }
 
-  const handleCancelEdit = async (e) => {
+  const handleCancelEdit = (e) => {
     e.stopPropagation()
     setEditedContent(post.content)
     setIsEditing(false)
   }
 
-  const handleDeleteClick = async (e) => {
+  const handleDeleteClick = (e) => {
     e.stopPropagation()
     onDelete(post.id)
     navigate('/')
