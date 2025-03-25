@@ -14,7 +14,34 @@ const useCommentActions = () => {
     }
   }
 
-  return { createComment }
+  const editComment = async (postId, commentId, content) => {
+    try {
+      const response = await axiosPrivate.put(`/posts/${postId}/comments/${commentId}`, { content })
+      return response.data.data
+    } catch (err) {
+      handleApiError(err)
+    }
+  }
+
+  const deleteComment = async (postId, commentId) => {
+    try {
+      await axiosPrivate.delete(`/posts/${postId}/comments/${commentId}`)
+      return { postId, commentId }
+    } catch (err) {
+      handleApiError(err)
+    }
+  }
+
+  const toggleLike = async (postId, commentId) => {
+    try {
+      const response = await axiosPrivate.post(`/posts/${postId}/comments/${commentId}/like`)
+      return response.data.data
+    } catch (err) {
+      handleApiError(err)
+    }
+  } 
+
+  return { createComment, editComment, deleteComment, toggleLike }
 }
 
 export default useCommentActions
