@@ -11,6 +11,7 @@ const usePostActions = () => {
       return response.data.data
     } catch (err) {
       handleApiError(err)
+      return null
     }
   }
 
@@ -20,7 +21,7 @@ const usePostActions = () => {
       return response.data.data
     } catch (err) {
       handleApiError(err)
-      throw err
+      return null
     }
   }
 
@@ -30,7 +31,7 @@ const usePostActions = () => {
       return postId
     } catch (err) {
       handleApiError(err)
-      throw err
+      return null
     }
   }
 
@@ -40,7 +41,7 @@ const usePostActions = () => {
       return response.data.data
     } catch (err) {
       handleApiError(err)
-      throw err
+      return null
     }
   }
 

@@ -11,6 +11,7 @@ const useCommentActions = () => {
       return response.data.data
     } catch (err) {
       handleApiError(err)
+      return null
     }
   }
 
@@ -20,6 +21,7 @@ const useCommentActions = () => {
       return response.data.data
     } catch (err) {
       handleApiError(err)
+      return null
     }
   }
 
@@ -29,6 +31,7 @@ const useCommentActions = () => {
       return { postId, commentId }
     } catch (err) {
       handleApiError(err)
+      return null
     }
   }
 
@@ -38,6 +41,7 @@ const useCommentActions = () => {
       return response.data.data
     } catch (err) {
       handleApiError(err)
+      return null
     }
   } 
 
