@@ -35,7 +35,7 @@ const useCommentActions = () => {
     }
   }
 
-  const toggleLike = async (postId, commentId) => {
+  const toggleCommentLike = async (postId, commentId) => {
     try {
       const response = await axiosPrivate.post(`/posts/${postId}/comments/${commentId}/like`)
       return response.data.data
@@ -45,7 +45,7 @@ const useCommentActions = () => {
     }
   } 
 
-  return { createComment, editComment, deleteComment, toggleLike }
+  return { createComment, editComment, deleteComment, toggleCommentLike }
 }
 
 export default useCommentActions
