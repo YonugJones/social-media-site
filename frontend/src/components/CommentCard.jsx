@@ -1,57 +1,34 @@
-// should display the comment and allow user to like and author to edit/delete
+// handles display logic, including UI updates
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { formatDistanceToNow } from 'date-fns'
 import styles from '../styles/CommentCard.module.css'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import useAuth from '../hooks/useAuth'
-import useAxiosPrivate from '../hooks/useAxiosPrivate'
-import { toggleLikeComment, editComment, deleteComment } from '../api/commentApi'
+import { useNavigate } from 'react-router-dom'
 
-const CommentCard = ({ comment, onEdit, onDelete }) => {
-  const axiosPrivate = useAxiosPrivate()
+const CommentCard = ({ comment, onEdit, onDelete, onLikeToggle }) => {
   const { auth } = useAuth()
-
+  const navigate = useNavigate()
   const [isLiked, setIsLiked] = useState(comment.isLiked) 
   const [likeCount, setLikeCount] = useState(comment._count.likes || 0)
-  const [isHovered, setIsHovered] = useState(false)
-
   const [isEditing, setIsEditing] = useState(false)
   const [editedContent, setEditedContent] = useState(comment.content)
+  const [isHovered, setIsHovered] = useState(false)
 
-  useEffect(() => {
-    setIsLiked(comment.isLiked)
-    setLikeCount(comment._count.likes)
-  }, [comment])
-
-  const handleLikeClick = async () => {
-    const previousLikeState = isLiked
-    const previousLikeCount = likeCount
-
+  const handleLikeClick = () => {
     setIsLiked(!isLiked)
     setLikeCount(isLiked ? likeCount - 1 : likeCount + 1)
-
-    try {
-      await toggleLikeComment(axiosPrivate, comment.postId, comment.id) 
-    } catch (err) {
-      console.error('Error toggling like:', err)
-      setIsLiked(previousLikeState)
-      setLikeCount(previousLikeCount)
-    }
+    onLikeToggle(comment.postId, comment.id)
   }
 
   const handleEditClick = () => {
     setIsEditing(true)
   }
 
-  const handleSaveEdit = async () => {
-    try {
-      const updatedComment = await editComment(axiosPrivate, comment.postId, comment.id, editedContent)
-      onEdit(updatedComment.data)
-      setIsEditing(false)
-    } catch (err) {
-      console.error('Error editing comment:', err)
-    }
+  const handleSaveEdit = () => {
+    onEdit(comment.postId, comment.id, editedContent)
+    setIsEditing(false)
   }
 
   const handleCancelEdit = () => {
@@ -59,13 +36,9 @@ const CommentCard = ({ comment, onEdit, onDelete }) => {
     setIsEditing(false)
   }
 
-  const handleDelete = async () => {
-    try {
-      await deleteComment(axiosPrivate, comment.postId, comment.id)
-      onDelete(comment.id)
-    } catch (err) {
-      console.error('Error deleting comment:', err)
-    }
+  const handleDelete = () => {
+    onDelete(comment.postId, comment.id)
+    navigate(`/posts/${comment.postId}`)
   }
 
   return (
