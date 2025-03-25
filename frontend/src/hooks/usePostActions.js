@@ -8,6 +8,9 @@ const usePostActions = () => {
   const createPost = async (content) => {
     try {
       const response = await axiosPrivate.post('/posts', { content })
+      if (!response.data.data) {
+        throw new Error('Invalid response: No post data returned')
+      }
       return response.data.data
     } catch (err) {
       handleApiError(err)
@@ -20,6 +23,7 @@ const usePostActions = () => {
       return response.data.data
     } catch (err) {
       handleApiError(err)
+      throw err
     }
   }
 
@@ -29,6 +33,7 @@ const usePostActions = () => {
       return postId
     } catch (err) {
       handleApiError(err)
+      throw err
     }
   }
 
@@ -38,6 +43,7 @@ const usePostActions = () => {
       return response.data.data
     } catch (err) {
       handleApiError(err)
+      throw err
     }
   }
 

@@ -1,12 +1,9 @@
 // component allows users to create a post
 import { useState, useEffect } from 'react'
-import usePostActions from '../hooks/usePostActions'
 import styles from '../styles/NewPost.module.css'
 
-const NewPost = () => {
-  const { createPost } = usePostActions()
+const NewPost = ({ onNewPost }) => {
   const [content, setContent] = useState('')
-  const [success, setSuccess] = useState(false)
   const [errMsg, setErrMsg] = useState('')
 
   // remove errMsg when input changes
@@ -23,11 +20,10 @@ const NewPost = () => {
 
     if (content.trim()) {
       try {
-        await createPost(content)
+        onNewPost(content)
         setContent('')  
-        setSuccess(true)
       } catch (err) {
-        setErrMsg(err)
+        setErrMsg(err.message || 'Failed to create post. Please try again.')
       }
     }
   }
@@ -42,7 +38,6 @@ const NewPost = () => {
         />
         <button type='submit'>Post</button>
       </form>
-      {success && <p className={styles['success-msg']}>Post created successfully</p>}
       {errMsg && <p className={styles['err-msg']}>{errMsg}</p>}
     </>
   )
