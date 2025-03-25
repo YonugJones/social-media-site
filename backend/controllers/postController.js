@@ -36,14 +36,13 @@ const getFeedPosts = asyncHandler(async (req, res) => {
 
   const postsWithLikes = posts.map(post => ({
     ...post,
-    isLiked: post.likes.some(like => like.userId === userId)
+    isLiked: post.likes.some((like) => like.userId === userId)
   }))
 
   res.status(200).json({ 
     success: true, 
     message: 'User feed fetched', 
     data: postsWithLikes 
-
   })
 })
 
@@ -136,10 +135,7 @@ const editPost = asyncHandler(async (req, res) => {
 
   if (post.userId !== user.id) throw new CustomError('Unauthorized: only post author can edit post', 403)
 
-  const updatedPost = await prisma.post.update({
-    where: { id: postId },
-    data: { content }
-  })
+  const updatedPost = await prisma.post.update({ where: { id: postId }, data: { content } })
 
   const postWithInfo = await prisma.post.findUnique({
     where: { id: updatedPost.id }, include: postIncludes
