@@ -1,21 +1,28 @@
-// fetches user profile and user posts and handles user and posts state management
-// displays ProfileCard and PostList
+// fetches user profile and user posts and handles user and posts state management and displays ProfileCard and PostList
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import useUser from '../hooks/useUser'
 import useUserFetch from '../hooks/useUserFetch'
 import ProfileCard from '../components/ProfileCard'
+import PostList from '../components/PostList'
 import styles from '../styles/Profile.module.css'
+import usePost from '../hooks/usePost'
 
 const Profile = () => {
   const { userId } = useParams()
   const { user, setUser } = useUser()
-  const { getUserProfile } = useUserFetch()
+  const { getUserProfile, getUserPosts } = useUserFetch()
+  const { posts, setPosts } = usePost()
 
   useEffect(() => {
     getUserProfile(userId)
     return () => setUser(null)
   }, [getUserProfile, userId, setUser])
+
+  useEffect(() => {
+    getUserPosts(userId)
+    return () => setPosts(null)
+  }, [getUserPosts, userId, setPosts])
 
   return (
     <div className={styles['profile-container']}>
@@ -24,9 +31,16 @@ const Profile = () => {
           <ProfileCard 
             user={user}
           />
+          {posts ? (
+            <PostList 
+            posts={posts}
+          />
+          ) : (
+            <p>This user has no posts.</p>
+          )}
         </>
       ) : (
-        <p>Loading profile...</p>
+        <p>Profile not found</p>
       )}
     </div>
   )
