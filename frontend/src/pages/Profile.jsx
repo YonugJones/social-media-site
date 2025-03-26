@@ -3,16 +3,18 @@ import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import useUser from '../hooks/useUser'
 import useUserFetch from '../hooks/useUserFetch'
+import useUserActions from '../hooks/useUserActions'
+import usePost from '../hooks/usePost'
+import usePostActions from '../hooks/usePostActions'
 import ProfileCard from '../components/ProfileCard'
 import PostList from '../components/PostList'
 import styles from '../styles/Profile.module.css'
-import usePost from '../hooks/usePost'
-import usePostActions from '../hooks/usePostActions'
 
 const Profile = () => {
   const { userId } = useParams()
   const { user, setUser } = useUser()
   const { getUserProfile, getUserPosts } = useUserFetch()
+  const { editUserProfile } = useUserActions()
   const { posts, setPosts } = usePost()
   const { editPost, deletePost, toggleLike } = usePostActions() 
 
@@ -20,6 +22,11 @@ const Profile = () => {
     getUserProfile(userId)
     return () => setUser()
   }, [getUserProfile, userId, setUser])
+
+  const handleEditUser = async (userId, content) => {
+    const updatedUser = await editUserProfile(userId, content)
+    setUser(updatedUser)
+  }
 
   useEffect(() => {
     getUserPosts(userId)
@@ -51,6 +58,7 @@ const Profile = () => {
         <>
           <ProfileCard 
             user={user}
+            onEdit={handleEditUser}
           />
           {posts ? (
             <PostList 
