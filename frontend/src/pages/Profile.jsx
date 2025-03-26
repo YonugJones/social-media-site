@@ -7,12 +7,14 @@ import ProfileCard from '../components/ProfileCard'
 import PostList from '../components/PostList'
 import styles from '../styles/Profile.module.css'
 import usePost from '../hooks/usePost'
+import usePostActions from '../hooks/usePostActions'
 
 const Profile = () => {
   const { userId } = useParams()
   const { user, setUser } = useUser()
   const { getUserProfile, getUserPosts } = useUserFetch()
   const { posts, setPosts } = usePost()
+  const { editPost, deletePost, toggleLike } = usePostActions() 
 
   useEffect(() => {
     getUserProfile(userId)
@@ -24,6 +26,25 @@ const Profile = () => {
     return () => setPosts([])
   }, [getUserPosts, userId, setPosts])
 
+  const handleEditPost = async (postId, content) => {
+    const updatedPost = await editPost(postId, content)
+    setPosts((prevPosts) =>
+      prevPosts.map((post) => (post.id === postId ? updatedPost : post))
+    )
+  }
+
+  const handleDeletePost = async (postId) => {
+    await deletePost(postId)
+    setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId))
+  }
+
+  const handleLikeToggle = async (postId) => {
+    const updatedPost = await toggleLike(postId)
+    setPosts((prevPosts) =>
+      prevPosts.map((post) => (post.id === postId ? updatedPost : post))
+    )
+  }
+
   return (
     <div className={styles['profile-container']}>
       {user ? (
@@ -34,6 +55,9 @@ const Profile = () => {
           {posts ? (
             <PostList 
               posts={posts}
+              onEdit={handleEditPost}
+              onDelete={handleDeletePost}
+              onLikeToggle={handleLikeToggle}
             />
             ) : (
               <p>This user has no posts.</p>
