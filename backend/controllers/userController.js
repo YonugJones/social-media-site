@@ -2,6 +2,48 @@ const prisma = require('../prisma/prismaClient')
 const asyncHandler = require('express-async-handler')
 const CustomError = require('../errors/customError')
 
+const userIncludes = {
+  id: true,
+  username: true,
+  email: true,
+  bio: true,
+  profilePic: true,
+  _count: {
+    select: {
+      posts: true,
+      followers: { where: { isConfirmed: true } },
+      following: { where: { isConfirmed: true } }
+    }
+  },
+  followers: {
+    where: { isConfirmed: true },
+    select: {
+      follower: { select: { id: true, username: true, profilePic: true } }
+    }
+  },
+  following: {
+    where: { isConfirmed: true },
+    select: {
+      following: { select: { id: true, username: true, profilePic: true } }
+    }
+  }
+}
+
+const postIncludes = {
+  user: { select: { id: true, username: true, profilePic: true } },
+  comments: {
+    orderBy: { createdAt: 'desc' },
+    select: {
+      id: true, postId: true, content: true, createdAt: true, 
+      user: { select: { id: true, username: true, profilePic: true } },
+      likes: { select: { userId: true } },
+      _count: { select: { likes: true } }
+    }
+  },
+  likes: { select: { userId: true } },
+  _count: { select: { likes: true, comments: true } }
+}
+
 const getUser = asyncHandler(async (req, res) => {
   const user = req.user
   if (!user) {
@@ -15,40 +57,7 @@ const getUser = asyncHandler(async (req, res) => {
 
   const userProfile = await prisma.user.findUnique({
     where: { id: userId },
-    select: {
-      id: true,
-      username: true,
-      email: true,
-      bio: true,
-      profilePic: true,
-      _count: {
-        select: {
-          posts: true,
-          followers: {
-            where: { isConfirmed: true }
-          },
-          following: {
-            where: { isConfirmed: true }
-          }
-        }
-      },
-      followers: { 
-        where: { isConfirmed: true, followingId: userId },
-        select: {
-          follower: { 
-            select: { id: true, username: true, profilePic: true }
-          }
-        }
-      },
-      following: { 
-        where: { isConfirmed: true, followerId: userId },
-        select: {
-          following: { 
-            select: { id: true, username: true, profilePic: true }
-          }
-        }
-      }
-    }
+    select: userIncludes
   })
 
   if (!userProfile) {
@@ -99,19 +108,8 @@ const editUser = asyncHandler(async (req, res) => {
 
   const updatedProfile = await prisma.user.update({
     where: { id: userId },
-    data: {
-      username,
-      email,
-      bio,
-      profilePic
-    },
-    select: {
-      id: true,
-      username: true,
-      email: true,
-      bio: true,
-      profilePic: true
-    }
+    data: { username, email, bio, profilePic },
+    select: userIncludes
   })
 
   res.status(200).json({
@@ -165,43 +163,7 @@ const getPostsByUser = asyncHandler(async (req, res) => {
   const posts = await prisma.post.findMany({
     where: { userId },
     orderBy: { createdAt: 'desc' },
-    include: {
-      user: {
-        select: { 
-          id:true, 
-          username: true, 
-          profilePic: true 
-        }
-      },
-      likes: {
-        select: { userId: true }
-      },
-      comments: {
-        orderBy: { createdAt: 'desc' },
-        select: {
-          id: true,
-          postId: true,
-          content: true,
-          createdAt: true,
-          user: {
-            select: { 
-              id: true, 
-              username: true, 
-              profilePic: true 
-            }
-          },
-          _count: {
-            select: { likes: true }
-          }
-        }
-      },
-      _count: {
-        select: { 
-          likes: true, 
-          comments: true
-        }
-      }
-    }
+    include: postIncludes
   })
   
   const postsWithLikes = posts.map(post => ({
@@ -211,7 +173,7 @@ const getPostsByUser = asyncHandler(async (req, res) => {
 
   res.status(200).json({
     success: true,
-    message: 'All posts by user fetched',
+    message: `All posts by userId: ${userId} fetched`,
     data: postsWithLikes
   })
 })
