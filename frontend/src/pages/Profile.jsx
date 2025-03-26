@@ -33,10 +33,10 @@ const Profile = () => {
           />
           {posts ? (
             <PostList 
-            posts={posts}
-          />
-          ) : (
-            <p>This user has no posts.</p>
+              posts={posts}
+            />
+            ) : (
+              <p>This user has no posts.</p>
           )}
         </>
       ) : (

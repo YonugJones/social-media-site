@@ -23,6 +23,7 @@ const PostDetails = () => {
     return () => setPost(null)
   }, [getPost, postId, setPost])
 
+
   // Post Handlers
   const handleEditPost = async (postId, content) => {
     const updatedPost = await editPost(postId, content)
@@ -76,7 +77,7 @@ const PostDetails = () => {
     <div className={styles['post-details']}>
       {post ? (
         <>
-          <PostCard 
+          <PostCard
             post={post} 
             onEdit={handleEditPost}
             onDelete={handleDeletePost}
