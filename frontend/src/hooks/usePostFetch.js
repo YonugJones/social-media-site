@@ -5,7 +5,7 @@ import { useCallback } from 'react'
 import { handleApiError } from '../api/apiHelper'
 
 const usePostFetch = () => {
-  const { setPosts, setPost } = usePost()
+  const { setPosts } = usePost()
   const axiosPrivate = useAxiosPrivate()
 
   const getFeed = useCallback(async () => {
@@ -21,12 +21,12 @@ const usePostFetch = () => {
   const getPost = useCallback(async (postId) => {
     try {
       const response = await axiosPrivate.get(`/posts/${postId}`)
-      setPost(response.data.data)
+      setPosts(response.data.data)
     } catch (err) {
       handleApiError(err)
-      setPost(null)
+      setPosts(null)
     }
-  }, [axiosPrivate, setPost])
+  }, [axiosPrivate, setPosts])
 
   return { getFeed, getPost }
 }
