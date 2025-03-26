@@ -16,12 +16,12 @@ const Profile = () => {
 
   useEffect(() => {
     getUserProfile(userId)
-    return () => setUser(null)
+    return () => setUser()
   }, [getUserProfile, userId, setUser])
 
   useEffect(() => {
     getUserPosts(userId)
-    return () => setPosts(null)
+    return () => setPosts([])
   }, [getUserPosts, userId, setPosts])
 
   return (
