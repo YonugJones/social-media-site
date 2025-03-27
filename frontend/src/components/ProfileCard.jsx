@@ -46,19 +46,38 @@ const ProfileCard = ({ user, onEdit, onDelete }) => {
         <form className={styles['edit-form']}>
           <label>
             Username:
-            <input type='text' name='username' value={editData.username} onChange={handleChange} />
+            <input 
+              type='text' 
+              name='username' 
+              value={editData.username} 
+              onChange={handleChange} 
+            />
           </label>
           <label>
             Email:
-            <input type='email' name='email' value={editData.email} onChange={handleChange} />
+            <input 
+              type='email' 
+              name='email' 
+              value={editData.email} 
+              onChange={handleChange} 
+            />
           </label>
           <label>
             Bio:
-            <textarea name='bio' value={editData.bio} onChange={handleChange} />
+            <textarea 
+              name='bio' 
+              value={editData.bio} 
+              onChange={handleChange} 
+            />
           </label>
           <label>
             Profile Picture URL:
-            <input type='text' name='profilePic' value={editData.profilePic} onChange={handleChange} />
+            <input 
+              type='text' 
+              name='profilePic' 
+              value={editData.profilePic} 
+              onChange={handleChange} 
+            />
           </label>
           <button type='button' onClick={handleSaveEdit}>Save</button>
           <button type='button' onClick={handleCancelEdit}>Cancel</button>
@@ -79,7 +98,8 @@ const ProfileCard = ({ user, onEdit, onDelete }) => {
                   <p>{user?._count?.posts ?? 0}</p>
                   <p>posts</p>
                 </div>
-                <div className={styles['followers-container']}>
+                {/* REMOVED FOLLOWERS WHILE follower info is taken out of getUser backend res */}
+                {/* <div className={styles['followers-container']}>
                   <p>{user?._count?.followers ?? 0}</p> 
                   <button className={styles['toggle-button']}>
                     followers
@@ -90,7 +110,7 @@ const ProfileCard = ({ user, onEdit, onDelete }) => {
                   <button className={styles['toggle-button']}>
                     following
                   </button>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
