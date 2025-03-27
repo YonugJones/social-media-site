@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import useAuth from '../hooks/useAuth'
+import { useNavigate } from 'react-router-dom'
 import styles from '../styles/ProfileCard.module.css'
 
-const ProfileCard = ({ user, onEdit }) => {
+const ProfileCard = ({ user, onEdit, onDelete }) => {
   const { auth } = useAuth()
   const [isEditing, setIsEditng] = useState(false)
   const [editData, setEditData] = useState({
@@ -11,6 +12,7 @@ const ProfileCard = ({ user, onEdit }) => {
     bio: user.bio || '',
     profilePic: user.profilePic || ''
   })
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -28,6 +30,14 @@ const ProfileCard = ({ user, onEdit }) => {
 
   const handleCancelEdit = () => {
     setIsEditng(false)
+  }
+
+  const handleDeleteClick = () => {
+    const confirmDelete = window.confirm('Deleting your profile is permanent. Are you sure?')
+    if (confirmDelete) {
+      onDelete(user.id)
+      navigate('/signup')
+    }
   }
 
   return (
@@ -88,12 +98,20 @@ const ProfileCard = ({ user, onEdit }) => {
             <p>{user.bio}</p>
           </div>
           {auth.id === Number(user.id) && (
-            <button 
-              className={styles['edit-button']}
-              onClick={handleEditClick}
-            >
-              Edit Profile
-            </button>
+            <div className={styles['edit-delete-buttons']}>
+              <button 
+                className={styles['edit-button']}
+                onClick={handleEditClick}
+              >
+                Edit Profile
+              </button>
+              <button 
+                className={styles['delete-button']}
+                onClick={handleDeleteClick}
+              >
+                Delete Profile
+              </button>
+            </div>
           )}
         </div>
       )}

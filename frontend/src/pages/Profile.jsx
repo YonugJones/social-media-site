@@ -14,7 +14,7 @@ const Profile = () => {
   const { userId } = useParams()
   const { user, setUser } = useUser()
   const { getUserProfile, getUserPosts } = useUserFetch()
-  const { editUserProfile } = useUserActions()
+  const { editUserProfile, deleteUserProfile } = useUserActions()
   const { posts, setPosts } = usePost()
   const { editPost, deletePost, toggleLike } = usePostActions() 
 
@@ -26,6 +26,11 @@ const Profile = () => {
   const handleEditUser = async (userId, content) => {
     const updatedUser = await editUserProfile(userId, content)
     setUser(updatedUser)
+  }
+
+  const handleDeleteUser = async (userId) => {
+    await deleteUserProfile(userId)
+    setUser(null)
   }
 
   useEffect(() => {
@@ -59,6 +64,7 @@ const Profile = () => {
           <ProfileCard 
             user={user}
             onEdit={handleEditUser}
+            onDelete={handleDeleteUser}
           />
           {posts ? (
             <PostList 
