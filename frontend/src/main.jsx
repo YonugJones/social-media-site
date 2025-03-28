@@ -5,6 +5,7 @@ import router from './routes/AppRoutes.jsx'
 import { AuthProvider } from './contexts/AuthContext.jsx'
 import { PostProvider } from './contexts/PostContext.jsx'
 import { UserProvider } from './contexts/UserContext.jsx'
+import { FriendshipProvider } from './contexts/FriendshipContext.jsx'
 import './styles/index.css'
 
 createRoot(document.getElementById('root')).render(
@@ -12,7 +13,9 @@ createRoot(document.getElementById('root')).render(
     <AuthProvider>
       <PostProvider>
         <UserProvider>
-          <RouterProvider router={router} />
+          <FriendshipProvider>
+            <RouterProvider router={router} />
+          </FriendshipProvider>
         </UserProvider>
       </PostProvider>
     </AuthProvider>
