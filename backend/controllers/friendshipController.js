@@ -198,135 +198,70 @@ const confirmFollowRequest = asyncHandler(async (req, res) => {
 
 const rejectFollowRequest = asyncHandler(async (req, res) => {
   const user = req.user
-  if (!user) {
-    throw new CustomError('Unauthorized: user not authenticated', 401)
-  }
+  if (!user) throw new CustomError('Unauthorized: user not authenticated', 401)
 
   const userId = user.id
   const { followerId } = req.body
-
-  if (!followerId) {
-    throw new CustomError('Follower ID is required', 400)
-  }
+  if (!followerId) throw new CustomError('Follower ID is required', 400)
 
   const existingFriendship = await prisma.friendship.findFirst({
-    where: {
-      followerId, 
-      followingId: userId,
-      isConfirmed: false
-    }
+    where: { followerId, followingId: userId, isConfirmed: false }
   })
 
-  if (!existingFriendship) {
-    throw new CustomError('Friendship request not found', 404)
-  }
+  if (!existingFriendship) throw new CustomError('Friendship request not found', 404)
 
-  await prisma.friendship.delete({
-    where: { id: existingFriendship.id }
-  })
-
-  const followers = await prisma.friendship.findMany({
-    where: { isConfirmed: true, followingId: userId },
-    select: {
-      follower: {
-        select: { id: true, username: true, profilePic: true }
-      }
-    }
-  })  
+  await prisma.friendship.delete({ where: { id: existingFriendship.id } })
 
   res.status(200).json({ 
     success: true, 
-    message: 'Follow request rejected',
-    data: followers.map(f => f.follower)
+    message: 'Follow request rejected'
   })  
 })
 
 const removeFollower = asyncHandler(async (req, res) => {
   const user = req.user
-  if (!user) {
-    throw new CustomError('Unauthorized: user not authenticated', 401)
-  }
+  if (!user) throw new CustomError('Unauthorized: user not authenticated', 401)
 
   const userId = user.id
   const { followerId } = req.body
 
-  if (!followerId) {
-    throw new CustomError('Follower ID is required', 400)
-  }
+  if (!followerId) throw new CustomError('Follower ID is required', 400)
 
   const existingFriendship = await prisma.friendship.findFirst({
-    where: {
-      followerId, 
-      followingId: userId,
-      isConfirmed: true
-    }
+    where: { followerId, followingId: userId, isConfirmed: true }
   })
-  if (!existingFriendship) {
-    throw new CustomError('Friendship not found', 404)
-  }
+  if (!existingFriendship) throw new CustomError('Friendship not found', 404)
 
   await prisma.friendship.delete({
     where: { id: existingFriendship.id }
   })
 
-  const followers = await prisma.friendship.findMany({
-    where: { isConfirmed: true, followingId: userId },
-    select: {
-      follower: {
-        select: { id: true, username: true, profilePic: true }
-      }
-    }
-  })  
-
   res.status(200).json({ 
     success: true, 
-    message: 'Follower removed', 
-    data: followers.map(f => f.follower)
+    message: 'Follower removed'
   })
 })
 
 const unfollow = asyncHandler(async (req, res) => {
   const user = req.user
-  if (!user) {
-    throw new CustomError('Unauthorized: user not authenticated', 401)
-  }
+  if (!user) throw new CustomError('Unauthorized: user not authenticated', 401)
 
   const userId = user.id
   const { followingId } = req.body
-
-  if (!followingId) {
-    throw new CustomError('Following ID is required', 400)
-  }
+  if (!followingId) throw new CustomError('Following ID is required', 400)
 
   const existingFriendship = await prisma.friendship.findFirst({
-    where: {
-      followerId: userId, 
-      followingId,
-      isConfirmed: true
-    }
+    where: { followerId: userId, followingId, isConfirmed: true }
   })
-
-  if (!existingFriendship) {
-    throw new CustomError('Friendship not found', 404)
-  }
+  if (!existingFriendship) throw new CustomError('Friendship not found', 404)
 
   await prisma.friendship.delete({
     where: { id: existingFriendship.id }
   })
 
-  const following = await prisma.friendship.findMany({
-    where: { isConfirmed: true, followerId: userId },
-    select: {
-      following: {
-        select: { id: true, username: true, profilePic: true }
-      }
-    }
-  })
-
   res.status(200).json({ 
     success: true, 
-    message: 'User unfollowed', 
-    data: following.map(f => f.following)
+    message: 'User unfollowed'
   })
 })
 
