@@ -12,6 +12,7 @@ const ProfileCard = ({ user, onEdit, onDelete }) => {
     bio: user.bio || '',
     profilePic: user.profilePic || ''
   })
+
   const navigate = useNavigate()
 
   const handleChange = (e) => {
@@ -86,7 +87,10 @@ const ProfileCard = ({ user, onEdit, onDelete }) => {
         <div className={styles['profile-card-container']}>
           <div className={styles['header']}>
             <div className={styles['profile-pic']}>
-              <img src={user.profilePic || '/default-profile.svg'} alt='profile' />
+              <img 
+                src={user.profilePic || '/default-profile.svg'} 
+                alt={`${user.username}'s profile`}
+              />
             </div>
             <div className={styles['info']}>
               <div className={styles['username-and-email-container']}>
@@ -98,8 +102,7 @@ const ProfileCard = ({ user, onEdit, onDelete }) => {
                   <p>{user?._count?.posts ?? 0}</p>
                   <p>posts</p>
                 </div>
-                {/* REMOVED FOLLOWERS WHILE follower info is taken out of getUser backend res */}
-                {/* <div className={styles['followers-container']}>
+                <div className={styles['followers-container']}>
                   <p>{user?._count?.followers ?? 0}</p> 
                   <button className={styles['toggle-button']}>
                     followers
@@ -110,7 +113,7 @@ const ProfileCard = ({ user, onEdit, onDelete }) => {
                   <button className={styles['toggle-button']}>
                     following
                   </button>
-                </div> */}
+                </div>
               </div>
             </div>
           </div>
