@@ -7,7 +7,7 @@ friendship
 */
 router.get('/:userId/followers', authenticateToken, friendshipController.getFollowers)
 router.get('/:userId/following', authenticateToken, friendshipController.getFollowing)
-router.get('/:userId/pending-followers', authenticateToken, friendshipController.getPendingFollowers)
+router.get('/pending-followers', authenticateToken, friendshipController.getPendingFollowers)
 router.get('/:userId/nonfollowing', authenticateToken, friendshipController.getNonFollowing)
 router.post('/:userId/follow', authenticateToken, friendshipController.sendFollowRequest)
 router.post('/confirm', authenticateToken, friendshipController.confirmFollowRequest)

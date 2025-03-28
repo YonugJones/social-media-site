@@ -7,9 +7,9 @@ import UserList from '../components/UserList'
 import styles from '../styles/FriendshipRequests.module.css'
 
 const FriendshipRequests = () => {
-  const { followers, setFollowers, setFollowing } = useFriendship()
+  const { followers, setFollowers } = useFriendship()
   const { getPendingFollowers } = useFriendshipFetch()
-  const { sendFollowRequest, confirmFollowRequest, rejectFollowRequest } = useFriendshipActions()
+  const { confirmFollowRequest, rejectFollowRequest } = useFriendshipActions()
 
   // fetches pending follower list on mount, removes list on dismount
   useEffect(() => {
@@ -17,23 +17,19 @@ const FriendshipRequests = () => {
     return () => setFollowers([])
   }, [getPendingFollowers, setFollowers])
 
-  const handleSendRequest = async (userId) => {
-    const friendlist = await sendFollowRequest(userId)
-    if (friendlist) setFollowing(friendlist)
-  }
 
   const handleConfirmRequest = async (followerId) => {
-    const newFriendList = await confirmFollowRequest(followerId) 
-    if (newFriendList) {
-      setFollowers(newFriendList)
+    const updatedFriendList = await confirmFollowRequest(followerId) 
+    if (updatedFriendList) {
+      setFollowers(updatedFriendList)
       getPendingFollowers()
     }
   }
 
   const handleRejectRequest = async (followerId) => {
-    const newFriendList = await rejectFollowRequest(followerId)
-    if (newFriendList) {
-      setFollowers(newFriendList)
+    const updatedFriendList = await rejectFollowRequest(followerId)
+    if (updatedFriendList) {
+      setFollowers(updatedFriendList)
       getPendingFollowers()
     }
   }
@@ -42,7 +38,6 @@ const FriendshipRequests = () => {
     <div className={styles['friendship-requests-containerr']}>
       <UserList 
         users={followers}
-        onFollow={handleSendRequest}
         onConfirm={handleConfirmRequest}
         onReject={handleRejectRequest}
       />
