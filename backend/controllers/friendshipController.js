@@ -4,18 +4,15 @@ const CustomError = require('../errors/customError')
 
 const getFollowers = asyncHandler(async (req, res) => {
   const user = req.user
-  if (!user) {
-    throw new CustomError('Unauthorized: user not authenticated', 401)
-  }
+  if (!user) throw new CustomError('Unauthorized: user not authenticated', 401)
 
-  const userId = user.id
+  const userId = parseInt(req.params.userId, 10)
+  if (isNaN(userId)) throw new CustomError('Invalid user ID', 400)
 
   const followers = await prisma.friendship.findMany({
     where: { isConfirmed: true, followingId: userId },
     select: {
-      follower: {
-        select: { id: true, username: true, profilePic: true }
-      }
+      follower: { select: { id: true, username: true, profilePic: true } }
     }
   })
 
@@ -28,18 +25,15 @@ const getFollowers = asyncHandler(async (req, res) => {
 
 const getFollowing = asyncHandler(async (req, res) => {
   const user = req.user
-  if (!user) {
-    throw new CustomError('Unauthorized: user not authenticated', 401)
-  }
+  if (!user) throw new CustomError('Unauthorized: user not authenticated', 401)
 
-  const userId = user.id
+  const userId = parseInt(req.params.userId, 10)
+  if (isNaN(userId)) throw new CustomError('Invalid user ID', 400)
 
   const following = await prisma.friendship.findMany({
     where: { isConfirmed: true, followerId: userId },
     select: {
-      following: {
-        select: { id: true, username: true, profilePic: true }
-      }
+      following: { select: { id: true, username: true, profilePic: true } }
     }
   })
 
