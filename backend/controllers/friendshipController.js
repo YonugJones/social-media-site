@@ -23,6 +23,31 @@ const getFollowers = asyncHandler(async (req, res) => {
   })
 })
 
+const getPendingFollowers = asyncHandler(async (req, res) => {
+  const user = req.user
+  if (!user) {
+    throw new CustomError('Unauthorized: user not authenticated', 401)
+  }
+
+  const userId = user.id
+
+  const pendingFollowers = await prisma.friendship.findMany({
+    where: {
+      followingId: userId,
+      isConfirmed: false 
+    },
+    select: {
+      follower: { select: { id: true, username: true, profilePic: true } }
+    }
+  })
+
+  res.status(200).json({
+    success: true,
+    message: 'Pending followers fetched',
+    data: pendingFollowers.map(f => f.follower) 
+  })
+})
+
 const getFollowing = asyncHandler(async (req, res) => {
   const user = req.user
   if (!user) throw new CustomError('Unauthorized: user not authenticated', 401)
