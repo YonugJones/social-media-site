@@ -10,16 +10,21 @@ const getFollowers = asyncHandler(async (req, res) => {
   if (isNaN(userId)) throw new CustomError('Invalid user ID', 400)
 
   const followers = await prisma.friendship.findMany({
-    where: { isConfirmed: true, followingId: userId },
+    where: { followingId: userId },
     select: {
-      follower: { select: { id: true, username: true, profilePic: true } }
+      follower: { select: { id: true, username: true, profilePic: true } },
+      isConfirmed: true
     }
   })
 
   res.status(200).json({
     success: true,
     message: 'Followers fetched',
-    data: followers.map(f => f.follower)
+    data: followers.map(f => ({
+      ...f.follower,
+      isFollowing: f.isConfirmed,
+      isPending: !f.isConfirmed
+    }))
   })
 })
 
