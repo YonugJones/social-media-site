@@ -7,6 +7,7 @@ import MainLayout from '../layouts/MainLayout'
 import Feed from '../pages/Feed'
 import Profile from '../pages/Profile'
 import PostDetails from '../pages/PostDetails'
+import FriendshipRequests from '../pages/FriendshipRequests'
 
 const router = createBrowserRouter([
   {
@@ -24,7 +25,8 @@ const router = createBrowserRouter([
         children: [
           { path: '/', element: <Feed /> },
           { path: '/profile/:userId', element: <Profile /> },
-          { path: '/posts/:postId', element: <PostDetails /> }
+          { path: '/posts/:postId', element: <PostDetails /> },
+          { path: '/profile/:userId/follow-requests', element: <FriendshipRequests /> }
         ]
       }
     ]
