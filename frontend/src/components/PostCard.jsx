@@ -61,7 +61,12 @@ const PostCard = ({ post, onEdit, onDelete, onLikeToggle }) => {
 
         <div className={styles['header-info']}>
           <div className={styles['header-user']}>
-            <img src={post.user.profilePic || '/default-profile.svg'} alt='profile' />
+            <div className={styles['profile-pic']}>
+              <img 
+                src={post.user.profilePic || '/default-profile.svg'} 
+                alt={`${post.user.username}'s profile`}
+              />
+            </div>
             <button className={styles['header-user-button']} onClick={handleUsernameClick}>
               {post.user.username || 'Unknown user'}
             </button>

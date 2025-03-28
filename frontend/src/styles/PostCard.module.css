@@ -40,6 +40,25 @@
   outline: none;
 }
 
+.profile-pic {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #f0f0f0;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
+.profile-pic img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .button-container {
   display: flex;
   align-items: center;
