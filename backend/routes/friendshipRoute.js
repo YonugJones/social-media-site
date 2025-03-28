@@ -10,8 +10,8 @@ router.get('/:userId/following', authenticateToken, friendshipController.getFoll
 router.get('/:userId/nonfollowing', authenticateToken, friendshipController.getNonFollowing)
 router.post('/:userId/follow', authenticateToken, friendshipController.sendFollowRequest)
 router.post('/confirm', authenticateToken, friendshipController.confirmFollowRequest)
-router.post('/reject', authenticateToken, friendshipController.rejectFollowRequest)
-router.post('/remove', authenticateToken, friendshipController.removeFollower)
-router.post('/unfollow', authenticateToken, friendshipController.unfollow)
+router.delete('/reject', authenticateToken, friendshipController.rejectFollowRequest)
+router.delete('/remove', authenticateToken, friendshipController.removeFollower)
+router.delete('/unfollow', authenticateToken, friendshipController.unfollow)
 
 module.exports = router;
