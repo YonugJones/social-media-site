@@ -36,6 +36,7 @@ const FriendshipRequests = () => {
 
   return (
     <div className={styles['friendship-requests-containerr']}>
+      <h2>Friendship Requests</h2>
       <UserList 
         users={followers}
         onConfirm={handleConfirmRequest}
