@@ -28,7 +28,17 @@ const useFriendshipFetch = () => {
     }
   }, [axiosPrivate, setFollowing])
 
-  return { getFollowers, getFollowing }
+  const getPendingFollowers = useCallback(async (userId) => {
+    try {
+      const response = await axiosPrivate.get(`/friendship/${userId}/pending-followers`)
+      setFollowers(response.data.data)
+    } catch (err) {
+      handleApiError(err)
+      setFollowers([])
+    }
+  }, [axiosPrivate, setFollowers])
+
+  return { getFollowers, getFollowing, getPendingFollowers }
 }
 
 export default useFriendshipFetch
