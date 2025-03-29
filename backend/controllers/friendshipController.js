@@ -2,100 +2,153 @@ const prisma = require('../prisma/prismaClient')
 const asyncHandler = require('express-async-handler')
 const CustomError = require('../errors/customError')
 
-// const getFollowers = asyncHandler(async (req, res) => {
-//   const user = req.user
-//   if (!user) throw new CustomError('Unauthorized: user not authenticated', 401)
-
-//   const userId = parseInt(req.params.userId, 10)
-//   if (isNaN(userId)) throw new CustomError('Invalid user ID', 400)
-
-//   const followers = await prisma.friendship.findMany({
-//     where: { followingId: userId },
-//     select: {
-//       follower: { select: { id: true, username: true, profilePic: true } },
-//       isConfirmed: true
-//     }
-//   })
-
-//   const userFollowingIds = await prisma.friendship.findMany({
-//     where: { followingId: userId, isConfirmed: true },
-//     select: { followingId: true }
-//   })
-
-//   const followingIdsSet = new Set(userFollowingIds.map(f => f.followingId))
-
-//   res.status(200).json({
-//     success: true,
-//     message: 'Followers fetched',
-//     data: followers.map(f => ({
-//       id: f.follower.id,
-//       username: f.follower.username,
-//       profilePic: f.follower.profilePic,
-//       isConfirmed: f.isConfirmed,
-//       isFollowingBack: followingIdsSet.has(f.follower.id)
-//     }))
-//   })
-// })
-
-// const getFollowing = asyncHandler(async (req, res) => {
-//   const user = req.user
-//   if (!user) throw new CustomError('Unauthorized: user not authenticated', 401)
-
-//   const userId = parseInt(req.params.userId, 10)
-//   if (isNaN(userId)) throw new CustomError('Invalid user ID', 400)
-
-//   const following = await prisma.friendship.findMany({
-//     where: { followerId: userId },
-//     select: {
-//       following: { select: { id: true, username: true, profilePic: true } },
-//       isConfirmed: true
-//     }
-//   })
-
-//   res.status(200).json({
-//     success: true,
-//     message: 'Following fetched',
-//     data: following.map(f => ({
-//       id: f.following.id,
-//       username: f.following.username,
-//       profilePic: f.following.profilePic,
-//       isConfirmed: f.following.isConfirmed
-//     })) 
-//   })
-// })
-
-const getFriendshipData = asyncHandler(async (req, res) => {
+const getFollowers = asyncHandler(async (req, res) => {
   const user = req.user
   if (!user) throw new CustomError('Unauthorized: user not authenticated', 401)
 
   const userId = parseInt(req.params.userId, 10)
   if (isNaN(userId)) throw new CustomError('Invalid user ID', 400)
 
-  const [followers, pendingFollowers, following, pendingFollowing] = await Promise.all([
-    prisma.friendship.findMany({ 
-      orderBy: { createdAt: 'desc' },
-      where: { followingId: userId, isConfirmed: true } 
-    }),
-    prisma.friendship.findMany({ 
-      orderBy: { createdAt: 'desc' },
-      where: { followingId: userId, isConfirmed: false } 
-    }),
-    prisma.friendship.findMany({ 
-      orderBy: { createdAt: 'desc' },
-      where: { followerId: userId, isConfirmed: true } 
-    }),
-    prisma.friendship.findMany({ 
-      orderBy: { createdAt: 'desc' },
-      where: { followerId: userId, isConfirmed: false } 
-    })
-  ])
+  const followers = await prisma.friendship.findMany({
+    where: { followingId: userId, isConfirmed: true },
+    orderBy: { createdAt: 'desc' },
+    select: {
+      follower: { select: { id: true, username: true, profilePic: true } }
+    }
+  })
+
+  const followingList = await prisma.friendship.findMany({
+    where: { followerId: userId },
+    select: { followingId: true, isConfirmed: true }
+  })
+
+  const confirmedFollowingIds = new Set(followingList.filter(f => f.isConfirmed).map(f => f.followingId));
+  const pendingFollowingIds = new Set(followingList.filter(f => !f.isConfirmed).map(f => f.followingId));
+
 
   res.status(200).json({
     success: true,
-    message: 'Friendship data retrieved',
-    data: { followers, pendingFollowers, following, pendingFollowing }
+    message: 'Followers fetched',
+    data: followers.map(f => ({
+      id: f.follower.id,
+      username: f.follower.username,
+      profilePic: f.follower.profilePic,
+      isFollowing: confirmedFollowingIds.has(f.follower.id),
+      isFollowingPending: pendingFollowingIds.has(f.follower.id)
+    }))
   })
 })
+
+const getPendingFollowers = asyncHandler(async (req,res) => {
+  const user = req.user
+  if (!user) throw new CustomError('Unauthorized: user not authenticated', 401)
+
+  const userId = parseInt(req.params.userId, 10)
+  if (isNaN(userId)) throw new CustomError('Invalid user ID', 400)
+
+  const pendingFollowers = await prisma.friendship.findMany({
+    where: { followingId: userId, isConfirmed: false },
+    orderBy: { createdAt: 'desc' },
+    select: {
+      follower: { select: { id: true, username: true, profilePic: true } }
+    }
+  })
+
+  res.status(200).json({
+    success: true,
+    message: 'Pending followers fetched',
+    data: pendingFollowers.map(f => ({
+      id: f.follower.id,
+      username: f.follower.username,
+      profilePic: f.follower.profilePic,
+    }))
+  })
+})
+
+const getFollowing = asyncHandler(async (req, res) => {
+  const user = req.user
+  if (!user) throw new CustomError('Unauthorized: user not authenticated', 401)
+
+  const userId = parseInt(req.params.userId, 10)
+  if (isNaN(userId)) throw new CustomError('Invalid user ID', 400)
+
+  const following = await prisma.friendship.findMany({
+    where: { followerId: userId, isConfirmed: true },
+    orderBy: { createdAt: 'desc' },
+    select: {
+      following: { select: { id: true, username: true, profilePic: true } }
+    }
+  })
+
+  res.status(200).json({
+    success: true,
+    message: 'Following fetched',
+    data: following.map(f => ({
+      id: f.following.id,
+      username: f.following.username,
+      profilePic: f.following.profilePic
+    })) 
+  })
+})
+
+const getPendingFollowing = asyncHandler(async (req, res) => {
+  const user = req.user
+  if (!user) throw new CustomError('Unauthorized: user not authenticated', 401)
+
+  const userId = parseInt(req.params.userId, 10)
+  if (isNaN(userId)) throw new CustomError('Invalid user ID', 400)
+
+  const pendingFollowing = await prisma.friendship.findMany({
+    where: { followerId: userId, isConfirmed: false },
+    orderBy: { createdAt: 'desc' },
+    select: {
+      following: { select: { id: true, username: true, profilePic: true } }
+    }
+  })
+
+  res.status(200).json({
+    success: true,
+    message: 'All pending following fetched',
+    data: pendingFollowing.map(f => ({
+      id: f.following.id,
+      username: f.following.username,
+      profilePic: f.following.profilePic
+    }))
+  })
+})
+
+// const getFriendshipData = asyncHandler(async (req, res) => {
+//   const user = req.user
+//   if (!user) throw new CustomError('Unauthorized: user not authenticated', 401)
+
+//   const userId = parseInt(req.params.userId, 10)
+//   if (isNaN(userId)) throw new CustomError('Invalid user ID', 400)
+
+//   const [followers, pendingFollowers, following, pendingFollowing] = await Promise.all([
+//     prisma.friendship.findMany({ 
+//       orderBy: { createdAt: 'desc' },
+//       where: { followingId: userId, isConfirmed: true } 
+//     }),
+//     prisma.friendship.findMany({ 
+//       orderBy: { createdAt: 'desc' },
+//       where: { followingId: userId, isConfirmed: false } 
+//     }),
+//     prisma.friendship.findMany({ 
+//       orderBy: { createdAt: 'desc' },
+//       where: { followerId: userId, isConfirmed: true } 
+//     }),
+//     prisma.friendship.findMany({ 
+//       orderBy: { createdAt: 'desc' },
+//       where: { followerId: userId, isConfirmed: false } 
+//     })
+//   ])
+
+//   res.status(200).json({
+//     success: true,
+//     message: 'Friendship data retrieved',
+//     data: { followers, pendingFollowers, following, pendingFollowing }
+//   })
+// })
 
 const sendFollowRequest = asyncHandler(async (req, res) => {
   const user = req.user
@@ -243,9 +296,10 @@ const unfollow = asyncHandler(async (req, res) => {
 })
 
 module.exports = {
-  getFriendshipData,
-  // getFollowers,
-  // getFollowing,
+  getFollowers,
+  getPendingFollowers,
+  getFollowing,
+  getPendingFollowing,
   sendFollowRequest,
   confirmFollowRequest,
   rejectFollowRequest,
