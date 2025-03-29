@@ -4,12 +4,22 @@ const FriendshipContext = createContext()
 
 export const FriendshipProvider = ({ children }) => {
   const [followers, setFollowers] = useState([])
+  const [pendingFollowers, setPendingFollowers] = useState([])
   const [following, setFollowing] = useState([])
-  const [pendingRequests, setPendingRequests] = useState([])
+  const [pendingFollowing, setPendingFollowing] = useState([])
 
   return (
     <FriendshipContext.Provider 
-      value={{ followers, setFollowers, following, setFollowing, pendingRequests, setPendingRequests }}
+      value={{ 
+        followers, 
+        setFollowers, 
+        pendingFollowers, 
+        setPendingFollowers, 
+        following, 
+        setFollowing, 
+        pendingFollowing, 
+        setPendingFollowing 
+      }}
     >
       {children}
     </FriendshipContext.Provider>
