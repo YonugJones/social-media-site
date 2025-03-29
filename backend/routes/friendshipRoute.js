@@ -5,8 +5,7 @@ const router = express.Router()
 /*
 friendship
 */
-router.get('/:userId/followers', authenticateToken, friendshipController.getFollowers)
-router.get('/:userId/following', authenticateToken, friendshipController.getFollowing)
+router.get('/:userId', authenticateToken, friendshipController.getFriendshipData)
 router.post('/:userId/follow', authenticateToken, friendshipController.sendFollowRequest)
 router.post('/confirm', authenticateToken, friendshipController.confirmFollowRequest)
 router.delete('/reject', authenticateToken, friendshipController.rejectFollowRequest)
