@@ -5,7 +5,10 @@ const router = express.Router()
 /*
 friendship
 */
-router.get('/:userId', authenticateToken, friendshipController.getFriendshipData)
+router.get('/:userId/followers', authenticateToken, friendshipController.getFollowers)
+router.get('/:userId/pending-followers', authenticateToken, friendshipController.getPendingFollowers)
+router.get('/:userId/following', authenticateToken, friendshipController.getFollowing)
+router.get('/:userId/pending-following', authenticateToken, friendshipController.getPendingFollowing)
 router.post('/:userId/follow', authenticateToken, friendshipController.sendFollowRequest)
 router.post('/confirm', authenticateToken, friendshipController.confirmFollowRequest)
 router.delete('/reject', authenticateToken, friendshipController.rejectFollowRequest)
