@@ -1,44 +1,48 @@
-// fetches user friendship and handles friendship state management, displays UserCard and UsersList
+// fetches user friendship and handles friendship state management, displays FriendCard and FriendList
 import { useEffect } from 'react'
 import useFriendship from '../hooks/useFriendship'
 import useFriendshipFetch from '../hooks/useFriendshipFetch'
 import useFriendshipActions from '../hooks/useFriendshipActions'
-import UserList from '../components/UserList'
+import { useParams } from 'react-router-dom'
+import FriendList from '../components/FriendList'
 import styles from '../styles/FriendshipRequests.module.css'
 
 const FriendshipRequests = () => {
-  const { followers, setFollowers } = useFriendship()
-  const { getPendingFollowers } = useFriendshipFetch()
+  const { pendingFollowers, setPendingFollowers } = useFriendship()
+  const { fetchPendingFollowers } = useFriendshipFetch()
   const { confirmFollowRequest, rejectFollowRequest } = useFriendshipActions()
+  const { userId } = useParams()
 
   // fetches pending follower list on mount, removes list on dismount
   useEffect(() => {
-    getPendingFollowers()
-    return () => setFollowers([])
-  }, [getPendingFollowers, setFollowers])
+    fetchPendingFollowers(userId)
+    return () => setPendingFollowers([])
+  }, [fetchPendingFollowers, setPendingFollowers, userId])
 
 
   const handleConfirmRequest = async (followerId) => {
-    const updatedFriendList = await confirmFollowRequest(followerId) 
-    if (updatedFriendList) {
-      setFollowers(updatedFriendList)
-      getPendingFollowers()
+    const confirmedUser = await confirmFollowRequest(followerId) 
+    if (confirmedUser) {
+      setPendingFollowers((prevFollowers) =>
+        prevFollowers.filter((user) => user.id !== confirmedUser.id)
+      )
     }
   }
 
   const handleRejectRequest = async (followerId) => {
-    const updatedFriendList = await rejectFollowRequest(followerId)
-    if (updatedFriendList) {
-      setFollowers(updatedFriendList)
-      getPendingFollowers()
+    const rejectedUserId = await rejectFollowRequest(followerId)
+    if (rejectedUserId) {
+      setPendingFollowers((prevFollowers) =>
+        prevFollowers.filter((user) => user.id !== rejectedUserId)
+      )
     }
   }
 
   return (
-    <div className={styles['friendship-requests-containerr']}>
+    <div className={styles['friendship-requests-container']}>
       <h2>Friendship Requests</h2>
-      <UserList 
-        users={followers}
+      <FriendList 
+        users={pendingFollowers}
         onConfirm={handleConfirmRequest}
         onReject={handleRejectRequest}
       />
