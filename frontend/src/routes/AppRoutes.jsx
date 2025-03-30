@@ -10,6 +10,7 @@ import PostDetails from '../pages/PostDetails'
 import FriendshipRequests from '../pages/FriendshipRequests'
 import Followers from '../pages/Followers'
 import Following from '../pages/Following'
+import Users from '../pages/Users'
 
 const router = createBrowserRouter([
   {
@@ -30,7 +31,8 @@ const router = createBrowserRouter([
           { path: '/posts/:postId', element: <PostDetails /> },
           { path: '/profile/:userId/follow-requests', element: <FriendshipRequests /> },
           { path: '/friendship/:userId/followers', element: <Followers /> },
-          { path: '/friendship/:userId/following', element: <Following /> }
+          { path: '/friendship/:userId/following', element: <Following /> },
+          { path: '/friendship/:userId', element: <Users /> }
         ]
       }
     ]
