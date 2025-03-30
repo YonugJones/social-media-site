@@ -2,27 +2,28 @@ import styles from '../styles/FriendCard.module.css'
 
 const FriendCard = ({ user, onFollow, onUnfollow, onConfirm, onReject, onRemove }) => {
 
-  const followButtonText = user.isFollowingPending ? 'Request Pending' : 'Follow';
-
   const handleFollow = async () => {
-    if (onFollow) await onFollow(user.id);
+    if (onFollow) await onFollow(user.id)
   }
 
   const handleUnfollow = async () => {
-    if (onUnfollow) await onUnfollow(user.id);
+    if (onUnfollow) await onUnfollow(user.id)
   }
 
   const handleConfirm = async () => {
-    if (onConfirm) await onConfirm(user.id);
+    if (onConfirm) await onConfirm(user.id)
   }
 
   const handleReject = async () => {
-    if (onReject) await onReject(user.id);
+    if (onReject) await onReject(user.id)
   }
 
   const handleRemove = async () => {
-    if (onRemove) await onRemove(user.id);
+    if (onRemove) await onRemove(user.id)
   }
+
+  console.log('onRemove:', onRemove)
+  console.log('user.isFollowing', user.isFollowing)
 
   return (
     <div className={styles['user-card']}>
@@ -35,23 +36,39 @@ const FriendCard = ({ user, onFollow, onUnfollow, onConfirm, onReject, onRemove 
         </div>
         <p>{user.username}</p>
       </div>
+
       <div className={styles['actions']}>
+        {/* Followers.jsx and Users.jsx */}
         {onFollow && !user.isFollowing && !user.isFollowingPending && (
-          <button onClick={handleFollow}>{followButtonText}</button>
+          <button onClick={handleFollow}>
+            {user.isFollower ? 'Follow Back' : 'Follow'}
+          </button>
         )}
+
+        {/* Followers.jsx and Users.jsx */}
         {onFollow && user.isFollowingPending && (
-          <button disabled>{followButtonText}</button>
+          <button disabled>Request Pending</button>
         )}
-        {user.isFollowing && onFollow && (
-          <button disabled>Following Back</button>
+        
+        {/* FriendRequests.jsx */}
+        {onConfirm && onReject && (
+          <>
+            <button onClick={handleConfirm}>Confirm Request</button>
+            <button onClick={handleReject}>Reject Request</button>
+          </>
         )}
-        {onUnfollow && (
+        
+        {/* Followers.jsx and Users.jsx */}
+        {onRemove && onFollow && user.isFollower && !user.isFollowerPending && (
+          <button onClick={handleRemove}>Remove Follower</button>
+        )}
+
+        {/* Following.jsx and Users.jsx */}
+        {onUnfollow && user.isFollowing && (
           <button onClick={handleUnfollow}>Unfollow</button>
         )}
-        {onConfirm && <button onClick={handleConfirm}>Confirm</button>}
-        {onReject && <button onClick={handleReject}>Reject</button>}
-        {onRemove && <button onClick={handleRemove}>Remove</button>}
       </div>
+
     </div>
   )
 }
