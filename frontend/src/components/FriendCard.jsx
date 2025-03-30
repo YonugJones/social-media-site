@@ -22,9 +22,6 @@ const FriendCard = ({ user, onFollow, onUnfollow, onConfirm, onReject, onRemove 
     if (onRemove) await onRemove(user.id)
   }
 
-  console.log('onRemove:', onRemove)
-  console.log('user.isFollowing', user.isFollowing)
-
   return (
     <div className={styles['user-card']}>
       <div className={styles['user-info']}>
