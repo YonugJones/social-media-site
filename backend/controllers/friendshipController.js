@@ -88,7 +88,9 @@ const getFollowers = asyncHandler(async (req, res) => {
       username: f.follower.username,
       profilePic: f.follower.profilePic,
       isFollowing: confirmedFollowingIds.has(f.follower.id),
-      isFollowingPending: pendingFollowingIds.has(f.follower.id)
+      isFollowingPending: pendingFollowingIds.has(f.follower.id),
+      isFollower: true,
+      isFollowerPending: false
     }))
   })
 })
@@ -130,14 +132,13 @@ const getFollowing = asyncHandler(async (req, res) => {
     where: { followerId: userId, isConfirmed: true },
     orderBy: { createdAt: 'desc' },
     select: {
-      following: { select: { id: true, username: true, profilePic: true } },
-      isConfirmed: true
+      following: { select: { id: true, username: true, profilePic: true } }
     }
   })
 
   const followerList = await prisma.friendship.findMany({
-    where: { followerId: userId },
-    select: { followerId: true, isConfirmed: true }
+    where: { followingId: userId, isConfirmed: true },
+    select: { followerId: true }
   })
 
   const confirmedFollowerListIds = new Set(followerList.filter(f => f.isConfirmed).map(f => f.followerId))
@@ -151,7 +152,9 @@ const getFollowing = asyncHandler(async (req, res) => {
       username: f.following.username,
       profilePic: f.following.profilePic,
       isFollower: confirmedFollowerListIds.has(f.following.id),
-      isFollowerPending: pendingFollowerListIds.has(f.following.id)
+      isFollowerPending: pendingFollowerListIds.has(f.following.id),
+      isFollowing: true,
+      isFollowingPending: false
     })) 
   })
 })
