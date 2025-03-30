@@ -5,6 +5,7 @@ const router = express.Router()
 /*
 friendship
 */
+router.get('/:userId', authenticateToken, friendshipController, friendshipController.getAllUsersWithFriendshipStatus)
 router.get('/:userId/followers', authenticateToken, friendshipController.getFollowers)
 router.get('/:userId/pending-followers', authenticateToken, friendshipController.getPendingFollowers)
 router.get('/:userId/following', authenticateToken, friendshipController.getFollowing)
