@@ -1,4 +1,5 @@
 // fetches user friendship and handles friendship state management, displays FriendCard and FriendList
+
 import { useEffect } from 'react'
 import useFriendship from '../hooks/useFriendship'
 import useFriendshipFetch from '../hooks/useFriendshipFetch'
@@ -13,7 +14,6 @@ const FriendshipRequests = () => {
   const { confirmFollowRequest, rejectFollowRequest } = useFriendshipActions()
   const { userId } = useParams()
 
-  // fetches pending follower list on mount, removes list on dismount
   useEffect(() => {
     fetchPendingFollowers(userId)
     return () => setPendingFollowers([])
@@ -22,20 +22,12 @@ const FriendshipRequests = () => {
 
   const handleConfirmRequest = async (followerId) => {
     const confirmedUser = await confirmFollowRequest(followerId) 
-    if (confirmedUser) {
-      setPendingFollowers((prevFollowers) =>
-        prevFollowers.filter((user) => user.id !== confirmedUser.id)
-      )
-    }
+    if (confirmedUser) fetchPendingFollowers(userId)
   }
 
   const handleRejectRequest = async (followerId) => {
     const rejectedUserId = await rejectFollowRequest(followerId)
-    if (rejectedUserId) {
-      setPendingFollowers((prevFollowers) =>
-        prevFollowers.filter((user) => user.id !== rejectedUserId)
-      )
-    }
+    if (rejectedUserId) fetchPendingFollowers(userId)
   }
 
   return (
