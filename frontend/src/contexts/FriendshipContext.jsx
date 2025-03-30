@@ -7,6 +7,7 @@ export const FriendshipProvider = ({ children }) => {
   const [pendingFollowers, setPendingFollowers] = useState([])
   const [following, setFollowing] = useState([])
   const [pendingFollowing, setPendingFollowing] = useState([])
+  const [users, setUsers] = useState([])
 
   return (
     <FriendshipContext.Provider 
@@ -18,7 +19,9 @@ export const FriendshipProvider = ({ children }) => {
         following, 
         setFollowing, 
         pendingFollowing, 
-        setPendingFollowing 
+        setPendingFollowing,
+        users,
+        setUsers
       }}
     >
       {children}
