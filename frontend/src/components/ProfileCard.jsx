@@ -104,13 +104,13 @@ const ProfileCard = ({ user, onEdit, onDelete }) => {
                 </div>
                 <div className={styles['followers-container']}>
                   <p>{user?._count?.followers ?? 0}</p> 
-                  <button className={styles['toggle-button']}>
+                  <button className={styles['toggle-button']} onClick={() => navigate(`/friendship/${user.id}/followers`)}>
                     followers
                   </button>
                 </div>
                 <div className={styles['following-container']}>
                   <p>{user?._count?.following ?? 0}</p>
-                  <button className={styles['toggle-button']}>
+                  <button className={styles['toggle-button']} onClick={() => navigate(`/friendship/${user.id}/following`)}>
                     following
                   </button>
                 </div>
