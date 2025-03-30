@@ -1,4 +1,5 @@
 // fetches user friendship and handles friendship state management, displays FriendCard and UsersList
+
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import useFriendship from '../hooks/useFriendship'
@@ -17,11 +18,9 @@ const Following = () => {
     return () => setFollowing([])
   }, [fetchFollowing, setFollowing, userId])
 
-  const handleUnfollow = async (userId) => {
-    const success = await unfollow(userId)
-    if (success) {
-      setFollowing((prevFollowing) => prevFollowing.filter(f => f.id !== userId))
-    }
+  const handleUnfollow = async (targetUserId) => {
+    const confirmedUnfollow = await unfollow(targetUserId)
+    if (confirmedUnfollow) fetchFollowing(userId)
   }
 
   return (
