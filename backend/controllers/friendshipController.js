@@ -326,6 +326,7 @@ const unfollow = asyncHandler(async (req, res) => {
 })
 
 module.exports = {
+  getAllUsersWithFriendshipStatus,
   getFollowers,
   getPendingFollowers,
   getFollowing,
