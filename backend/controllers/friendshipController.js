@@ -11,6 +11,8 @@ const getAllUsersWithFriendshipStatus = asyncHandler(async (req, res) => {
 
   const allUsers = await prisma.user.findMany()
 
+  const filteredUsers = allUsers.filter(u => u.id !== userId)
+
   const followingList = await prisma.friendship.findMany({
     where: { followerId: userId, isConfirmed: true },
     select: { followingId: true }
@@ -36,7 +38,7 @@ const getAllUsersWithFriendshipStatus = asyncHandler(async (req, res) => {
   const pendingFollowingIds = new Set(pendingFollowingList.map(f => f.followingId))
   const pendingFollowerIds = new Set(pendingFollowersList.map(f => f.followerId))
 
-  const usersWithStatus = allUsers.map(user => ({
+  const usersWithStatus = filteredUsers.map(user => ({
     id: user.id,
     username: user.username,
     profilePic: user.profilePic,
